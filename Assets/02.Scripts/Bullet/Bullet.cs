@@ -7,6 +7,10 @@ public class Bullet : MonoBehaviour
     public float Duration = 1.2f;
 
     protected float _speed;
+   
+    public float Damage;
+
+    public bool IsLeft;
 
     protected virtual void Start()
     {
@@ -28,5 +32,20 @@ public class Bullet : MonoBehaviour
     {
         //기본 새 위치 = 현재 위치 + 위쪽 방향 * 속도 * 시간
         return (Vector2)transform.position + Vector2.up * _speed * Time.deltaTime;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy") == false)
+            return;
+
+        EnemyHitBox enemyHitBox = collision.GetComponent<EnemyHitBox>();
+
+        if (enemyHitBox == null)
+            return;
+
+        Enemy enemy = enemyHitBox.Owner;
+        enemy.Hit(Damage * enemyHitBox.DamageMultiplier);
+        Destroy(gameObject);
     }
 }

@@ -42,17 +42,26 @@ public class PlayerFire : MonoBehaviour
 
     private void MakeBullets()
     {
-        GameObject bullet1 = Instantiate(BulletPrefab);
-        GameObject bullet2 = Instantiate(BulletPrefab);
+        Bullet bullet1 = Instantiate(BulletPrefab).GetComponent<Bullet>();
+        Bullet bullet2 = Instantiate(BulletPrefab).GetComponent<Bullet>(); ;
+        
+        bullet1.IsLeft = true;
+        bullet2.IsLeft = false;
 
         bullet1.transform.position = FirePosition.position + new Vector3(-FireOffset, 0, 0);
         bullet2.transform.position = FirePosition.position + new Vector3(FireOffset, 0, 0);
+        
+        
+
     }
 
     private void MakeSubBullets()
     {
-        GameObject bullet1 = Instantiate(SubBulletPrefab);
-        GameObject bullet2 = Instantiate(SubBulletPrefab);
+        Bullet bullet1 = Instantiate(SubBulletPrefab).GetComponent<Bullet>();
+        Bullet bullet2 = Instantiate(SubBulletPrefab).GetComponent<Bullet>(); ;
+
+        bullet1.IsLeft = true;
+        bullet2.IsLeft = false;
 
         bullet1.transform.position = SubFirePositionLeft.position;
         bullet2.transform.position = SubFirePositionRight.position;

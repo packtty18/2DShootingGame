@@ -22,9 +22,13 @@ public class SBullet : Bullet
         // 위쪽으로 이동 (기본 속도 적용)
         float newY = transform.position.y + _speed * Time.deltaTime;
 
-        // 좌우로 S자 이동 (sin 함수 사용)
-        float newX = transform.position.x + Mathf.Sin(_time * Frequency) * Amplitude * Time.deltaTime;
+        float directionMultiplier = IsLeft ? -1f : 1f;
 
+        // 좌우로 S자 이동 (sin 함수 사용)
+        float newX = transform.position.x + Mathf.Sin(_time * Frequency) * Amplitude * Time.deltaTime * directionMultiplier;
+        
         return new Vector2(newX, newY);
     }
+
+    
 }
