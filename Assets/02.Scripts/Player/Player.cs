@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -12,5 +13,10 @@ public class Player : MonoBehaviour
             Debug.Log("Player Dead");
             Destroy(gameObject);
         }
+    }
+
+    internal void Heal(float value)
+    {
+        _health += value;
     }
 }

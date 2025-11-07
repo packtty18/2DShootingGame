@@ -8,7 +8,9 @@ public class PlayerMove : MonoBehaviour
     public float MaxSpeed = 5;
     public float MinSpeed = 1;
     public float ShiftSpeed = 1.5f;
-    
+
+    private float _speed;
+
     [Header("시작위치")]
     private Vector2 _originPosition;
     
@@ -18,14 +20,22 @@ public class PlayerMove : MonoBehaviour
     public float MinY = -5;
     public float MaxY =  0;
 
+    public bool IsAutoMode = false;
+
     private void Start()
     {
         _originPosition = transform.position;
+        _speed = Speed;
     }
     
     
     private void Update()
     {
+        if (IsAutoMode)
+        {
+
+            return;
+        }
         //Q와 E로 속도 조절
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -95,6 +105,10 @@ public class PlayerMove : MonoBehaviour
         
         transform.Translate(direction * speed * Time.deltaTime);
     }
-    
-    
+
+    public void SpeedUp(float value)
+    {
+        _speed += value;
+        _speed = Mathf.Min(MaxSpeed, _speed);
+    }
 }

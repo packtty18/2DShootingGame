@@ -1,24 +1,25 @@
 using UnityEngine;
 
-public class BezierBullet : Bullet
+/// <summary>
+/// 베지어 곡선을 통해 뒤로 이동했다가 유턴하는 총알
+/// </summary>
+public class BazierBullet : BulletBase
 {
-    /*
-     * 4개의 점을 사용한 3차 베지어 곡선을 따라 이동
-     * 출발점, 제어점1, 제어점2, 도착점을 구성
-     * 
-     */
+    [Header("Debug Bezier")]
+    [Header("베지어 곡선의 제어점 변수")]
     public float DownOffset = 4f;
     public float SideOffset = 2f;
-    public float DestinationOffsetY = 5f;
+    public float DestinationOffset = 5f;
 
     private Vector2 _startPos;
     private Vector2 _p1;
     private Vector2 _p2;
     private Vector2 _endPos;
 
-    private float _BezierProgress;                 // 진행 정도 (0~1)
+    private float _bezierProgress;                  // 진행 정도 (0~1)
     private bool _isBezierDone = false;
-    private Vector2 _lastDir;         // 마지막 이동 방향
+    private Vector2 _lastDir;                       // 마지막 이동 방향
+    private float _bezierDuration = 1f;
 
     protected override void Start()
     {
@@ -38,21 +39,21 @@ public class BezierBullet : Bullet
             _p2 = _startPos + new Vector2(SideOffset, 0f);
         }
         
-        _endPos = _startPos + new Vector2(0f, DestinationOffsetY);
+        _endPos = _startPos + new Vector2(0f, DestinationOffset);
 
-        _BezierProgress = 0f;
+        _bezierProgress = 0f;
     }
 
     protected override Vector2 GetNewPosition()
     {
         if (!_isBezierDone)
         {
-            _BezierProgress += Time.deltaTime / Duration;
-            _BezierProgress = Mathf.Clamp01(_BezierProgress);
+            _bezierProgress += Time.deltaTime / _bezierDuration;
+            _bezierProgress = Mathf.Clamp01(_bezierProgress);
 
-            Vector2 bezierPos = GetCubicBezier(_startPos, _p1, _p2, _endPos, _BezierProgress);
+            Vector2 bezierPos = GetCubicBezier(_startPos, _p1, _p2, _endPos, _bezierProgress);
 
-            if (_BezierProgress >= 1f)
+            if (_bezierProgress >= 1f)
             {
                 _isBezierDone = true;
                 _lastDir = (_endPos - _p2).normalized;

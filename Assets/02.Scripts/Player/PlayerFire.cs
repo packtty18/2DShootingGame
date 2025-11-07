@@ -2,24 +2,24 @@ using UnityEngine;
 
 public class PlayerFire : MonoBehaviour
 {
-    [Header("총알 프리팹")] 
+    [Header("Fire Debug")]
+    [Header("Prefabs")] 
     public GameObject BulletPrefab;
     public GameObject SubBulletPrefab;
     
-    [Header("발사위치")]
+    [Header("FirePos")]
     public Transform FirePosition;
     public float FireOffset = 0.3f;
     public Transform SubFirePositionLeft;
     public Transform SubFirePositionRight;
 
-    [Header("쿨타임")] 
-    public const float CoolTime = 0.6f;
+    [Header("CoolTime(s)")] 
+    public float CoolTime = 0.6f;
     private float _coolTimer;
 
     [Header("자동사격")] 
     public bool AutoMode = false;
 
-    
     private void Update()
     {
         // 자동사격 입력
@@ -42,28 +42,30 @@ public class PlayerFire : MonoBehaviour
 
     private void MakeBullets()
     {
-        Bullet bullet1 = Instantiate(BulletPrefab).GetComponent<Bullet>();
-        Bullet bullet2 = Instantiate(BulletPrefab).GetComponent<Bullet>(); ;
+        BasicBullet bullet1 = Instantiate(BulletPrefab).GetComponent<BasicBullet>();
+        BasicBullet bullet2 = Instantiate(BulletPrefab).GetComponent<BasicBullet>(); ;
         
         bullet1.IsLeft = true;
         bullet2.IsLeft = false;
 
         bullet1.transform.position = FirePosition.position + new Vector3(-FireOffset, 0, 0);
         bullet2.transform.position = FirePosition.position + new Vector3(FireOffset, 0, 0);
-        
-        
-
     }
 
     private void MakeSubBullets()
     {
-        Bullet bullet1 = Instantiate(SubBulletPrefab).GetComponent<Bullet>();
-        Bullet bullet2 = Instantiate(SubBulletPrefab).GetComponent<Bullet>(); ;
+        BulletBase bullet1 = Instantiate(SubBulletPrefab).GetComponent<BulletBase>();
+        BulletBase bullet2 = Instantiate(SubBulletPrefab).GetComponent<BulletBase>();
 
         bullet1.IsLeft = true;
         bullet2.IsLeft = false;
 
         bullet1.transform.position = SubFirePositionLeft.position;
         bullet2.transform.position = SubFirePositionRight.position;
+    }
+
+    public void SpeedUp(float value)
+    {
+        CoolTime -= value;
     }
 }

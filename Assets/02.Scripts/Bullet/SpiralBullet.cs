@@ -1,10 +1,13 @@
 using UnityEngine;
 
-public class SprialBullet : Bullet
+/// <summary>
+/// 나선형으로 회전하며 이동하는 총알
+/// </summary>
+public class SpiralBullet : BulletBase
 {
-    //나선형 궤적을 그리기 위해선 사인함수와 코사인함수를 사용
-    //그외 
-    public float AngularSpeed = 10f;   //각도 변화량 정도
+    [Header("Debug Sprial")]
+    [Tooltip("각도 변화량 정도")]
+    public float AngularSpeed = 10f;
 
     private Vector2 center; // 궤적의 중심
     private float angle;    // 현재 각도

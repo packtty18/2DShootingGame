@@ -13,7 +13,7 @@ GameObject:
   m_Layer: 0
   m_Name: EnemySpawner
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -44,7 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94ce223405b8279469d1a1b56c1d23e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyPrefab: {fileID: 2217309539269707524, guid: 2542c6ef60d73c54caac22a19ca0599f, type: 3}
+  EnemyPrefab:
+  - {fileID: 2217309539269707524, guid: 2542c6ef60d73c54caac22a19ca0599f, type: 3}
+  - {fileID: 2217309539269707524, guid: 5ea513ff3d79bc84f8e687606e6b7822, type: 3}
+  - {fileID: 2217309539269707524, guid: 614ca7237f613c742b6d6496dfa77ca0, type: 3}
   CoolTime: 2
   MinCoolTime: 1
   MaxCoolTime: 3
