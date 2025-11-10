@@ -35,7 +35,7 @@ public class Item : MonoBehaviour
                 }
             case EItemType.HealthUp:
                 {
-                    Player player = collision.GetComponent<Player>();
+                    PlayerHealth player = collision.GetComponent<PlayerHealth>();
                     player.Heal(Value);
                     break;
 
