@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyObserver : MonoBehaviour
@@ -8,11 +9,10 @@ public class EnemyObserver : MonoBehaviour
     {
         get
         {
-            if(instance == null)
-                instance = new EnemyObserver();
             return instance;
         }
     }
+
     public int Id;
 
     //private 변경가능성 존재s
@@ -44,28 +44,39 @@ public class EnemyObserver : MonoBehaviour
     /// </summary>
     public int InsertEnemy(GameObject enemy)
     {
+
         _enemyList.Add(Id, enemy);
-        Id++;
-        return Id;
+        //Debug.Log($"ID 등록 : {Id}");
+        return Id++;
     }
 
-    public void RemoveEnemy(int id)
+    public void RemoveEnemy(int removeId)
     {
-        if (!_enemyList.ContainsKey(id))
+        if (!_enemyList.ContainsKey(removeId))
         {
             return;
         }
 
-        _enemyList.Remove(id);
+        //Debug.Log($"ID 삭제 : {removeId}");
+        _enemyList.Remove(removeId);
     }
 
     [ContextMenu("Debug Enemies")]
     public void DebugEnemies()
     {
         Debug.Log("Search Enemies");
+        Debug.Log("count :"  +  _enemyList.Count);
         foreach (var enemy in _enemyList)
         {
-            Enemy enemyInstance = enemy.Value.GetComponent<Enemy>();
+            GameObject enemyObject = enemy.Value;
+            if (enemyObject == null)
+            {
+                Debug.LogError("RemoveError : " + enemy.Key);
+            }
+
+            Enemy enemyInstance = enemyObject.GetComponent<Enemy>();
+            
+
             Debug.Log("id : " + enemyInstance.GetID() + " name : " + enemy.Value.name);
         }
         Debug.Log("Search End");

@@ -43,7 +43,7 @@ public class Enemy : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (EnemyObserver.Instance == null)
+        if (EnemyObserver.Instance != null)
         {
             EnemyObserver.Instance.RemoveEnemy(id);
         }
@@ -57,14 +57,14 @@ public class Enemy : MonoBehaviour
     public void OnInstantiated()
     {
         EnemyObserver enemyObserver = EnemyObserver.Instance;
-        if (enemyObserver != null)
-        {
-            id = enemyObserver.InsertEnemy(gameObject);
-        }
-        else
+
+        if(enemyObserver == null) 
         {
             Debug.LogError("There's no Observer");
+            return;
         }
+
+        id = enemyObserver.InsertEnemy(gameObject);
     }
 
     private void MoveDirection()
@@ -152,7 +152,7 @@ public class Enemy : MonoBehaviour
         if(!collision.gameObject.CompareTag("Player")) 
             return;
 
-        Player player = collision.gameObject.GetComponent<Player>();
+        PlayerHealth player = collision.gameObject.GetComponent<PlayerHealth>();
         if(player == null) 
             return;
 
