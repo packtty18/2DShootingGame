@@ -6,6 +6,7 @@ public class PlayerMove : MonoBehaviour
 {
     private PlayerStat _stat;
     private PlayerInput _input;
+    private Animator _animator;
 
     private float _speed;
 
@@ -21,6 +22,8 @@ public class PlayerMove : MonoBehaviour
     {
         _stat = GetComponent<PlayerStat>();
         _input = GetComponent<PlayerInput>();
+        _animator = GetComponent<Animator>();
+
         _originPosition = transform.position;
         _speed = _stat.Speed;
         //자동
@@ -136,8 +139,6 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    
-
     private void ChaseUpdate()
     {
         if (_targetEnemy == null)
@@ -246,6 +247,8 @@ public class PlayerMove : MonoBehaviour
 
     private void Move(Vector2 direction, bool onDash = false)
     {
+        _animator.SetInteger("x", (int)direction.x);
+
         float moveSpeed = onDash ? _speed * _stat.ShiftSpeed : _speed;
         Vector2 newPos = (Vector2)transform.position + direction.normalized * moveSpeed * Time.deltaTime;
         transform.position = EditValidPosition(newPos);
