@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.Windows;
 
 public class PlayerFire : MonoBehaviour
 {
     private PlayerStat _stat;
+    private PlayerInput _input;
 
     [Header("Prefabs")] 
     public GameObject BulletPrefab;
@@ -18,22 +20,21 @@ public class PlayerFire : MonoBehaviour
     private void Start()
     {
         _stat = GetComponent<PlayerStat>();
+        _input = GetComponent<PlayerInput>();
         _coolTimer = _stat.CoolTime;
     }
 
     private void Update()
     {
         // 자동사격 입력
-        if(Input.GetKeyDown(KeyCode.Alpha1))
-            _stat.IsAutoMode = true;
-        if(Input.GetKeyDown(KeyCode.Alpha2))
-            _stat.IsAutoMode = false;
+        if(_input.IsInputAutoMode)
+            _stat.IsAutoMode = !_stat.IsAutoMode;
         
         //타이머가 0보다 작으면 발사 가능
         _coolTimer -= Time.deltaTime;
         if (_coolTimer > 0) 
             return; 
-        if (Input.GetKey(KeyCode.Space) || _stat.IsAutoMode)
+        if (_input.IsinputFire || _stat.IsAutoMode)
         {
             _coolTimer = _stat.CoolTime;
             MakeBullets();

@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Windows;
 
 public class PlayerMove : MonoBehaviour
 {
     private PlayerStat _stat;
+    private PlayerInput _input;
 
     private float _speed;
 
@@ -15,12 +17,10 @@ public class PlayerMove : MonoBehaviour
     private GameObject _targetEnemy = null;
 
 
-    
-
-
     private void Start()
     {
         _stat = GetComponent<PlayerStat>();
+        _input = GetComponent<PlayerInput>();
         _originPosition = transform.position;
         _speed = _stat.Speed;
         //자동
@@ -35,11 +35,11 @@ public class PlayerMove : MonoBehaviour
     
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (_input.IsInputSpeedUp)
         {
             _speed++;
         }
-        else if (Input.GetKeyDown(KeyCode.E))
+        else if (_input.IsInputSpeedDown)
         {
             _speed--;
         }
@@ -58,25 +58,13 @@ public class PlayerMove : MonoBehaviour
 
     private void OnControlMode()
     {
-        float finalSpeed = _speed;
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (_input.IsInputOrigin)
         {
-            finalSpeed = finalSpeed * _stat.ShiftSpeed;
-        }
-
-        if (Input.GetKey(KeyCode.R))
-        {
-            MoveToOrigin(finalSpeed);
+            MoveToOrigin();
             return;
         }
 
-        //기본 입력
-        float h = Input.GetAxisRaw("Horizontal");
-        float v = Input.GetAxisRaw("Vertical");
-
-        Vector2 direction = new Vector2(h, v);
-        direction.Normalize();
-        Move(direction, Input.GetKey(KeyCode.LeftShift));
+        Move(_input.MoveDirection, _input.IsInputDash);
        
     }
 
@@ -99,11 +87,11 @@ public class PlayerMove : MonoBehaviour
     /// <summary>
     /// Translate 사용하여 원점으로 이동시킬 것
     /// </summary>
-    private void MoveToOrigin(float speed)
+    private void MoveToOrigin()
     {
         //목표방향 = 목표위치 - 현재위치
         Vector2 direction = _originPosition - (Vector2)transform.position;
-        
+        float speed = _input.IsInputDash ? _speed * _stat.ShiftSpeed : _speed;
         transform.Translate(direction * speed * Time.deltaTime);
     }
 
@@ -140,7 +128,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (!FindTarget())
         {
-            MoveToOrigin(_speed);
+            MoveToOrigin();
         }
         else
         {
