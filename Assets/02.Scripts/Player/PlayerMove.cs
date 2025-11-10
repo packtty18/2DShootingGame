@@ -121,31 +121,7 @@ public class PlayerMove : MonoBehaviour
         return newPosition;
     }
 
-    private void OnAutoMode()
-    {
-        switch (_state)
-        {
-            case EPlayerMoveState.Idle:
-                {
-                    OnIdle();
-                    break;
-                }
-            case EPlayerMoveState.Chase:
-                {
-                    OnChase();
-                    break;
-                }
-            case EPlayerMoveState.Retreat:
-                {
-                    OnRetreat();
-                    break;
-                }
-
-        }
-        return;
-    }
-
-   
+    
     /// <summary>
     /// Translate 사용하여 원점으로 이동시킬 것
     /// </summary>
@@ -164,32 +140,30 @@ public class PlayerMove : MonoBehaviour
     }
 
     #region AutoMode
-    private bool FindTarget()
+    private void OnAutoMode()
     {
-        SortedDictionary<int, GameObject> targetList = EnemyObserver.Instance.GetDictionary();
-
-        _targetEnemy = null;
-        foreach (GameObject enemy in targetList.Values)
+        switch (_state)
         {
-            if (enemy == null || enemy.transform.position.y < gameObject.transform.position.y+3 
-                || Mathf.Abs(enemy.transform.position.x - transform.position.x) <= 1.5f)
-            {
-                continue; //게임 오브젝트가 삭제됨 or 너무 가깝거나 플레이어보다 아래이 있는 적은 넘김
-            }
-            else
-            {
-                _targetEnemy = enemy;
-            }
-
-                
+            case EPlayerMoveState.Idle:
+                {
+                    IdleUpdate(); 
+                    break;
+                }
+            case EPlayerMoveState.Chase:
+                {
+                    ChaseUpdate(); 
+                    break;
+                }
+            case EPlayerMoveState.Retreat:
+                {
+                    RetreatUpdate(); 
+                    break;
+                }
         }
-
-        return _targetEnemy != null ? true : false;
     }
 
-    private void OnIdle()
+    private void IdleUpdate()
     {
-        FindTarget();
         if (!FindTarget())
         {
             MoveToOrigin(Speed);
@@ -198,78 +172,56 @@ public class PlayerMove : MonoBehaviour
         {
             _state = EPlayerMoveState.Chase;
         }
-
     }
 
-    private void OnChase()
+    private void ChaseUpdate()
     {
-        //타겟이 격추되어 없어지면 Idle 상태로
         if (_targetEnemy == null)
         {
             _state = EPlayerMoveState.Idle;
             return;
         }
 
-        float yDistance = _targetEnemy.transform.position.y - transform.position.y;
+        Vector2 direction = (Vector2)_targetEnemy.transform.position - (Vector2)transform.position;
+        float yDistance = direction.y;
+        float xDistance = direction.x;
 
-        if(yDistance >=6 )
-        {
-            MoveUp(true);
-        }
-        else if(yDistance >= 4)
-        {
-            MoveUp();
-        }
-        else
-        {
+        // Y축 이동
+        if (yDistance >= 6) 
+            Move(Vector2.up, true);
+        else if (yDistance >= 4)
+            Move(Vector2.up);
+        else 
             _state = EPlayerMoveState.Retreat;
-        }
 
-        float xDistance = _targetEnemy.transform.position.x - transform.position.x;
-        if (Mathf.Abs(xDistance) <= 0.1f)
+        // X축 이동
+        if (Mathf.Abs(xDistance) > 0.1f)
         {
-            return;
-        }
-
-        if (Mathf.Abs(xDistance) > 1)
-        {
-            if(xDistance <= 0)
+            if (Mathf.Abs(xDistance) > 1f)
             {
-                MoveLeft();
+                Move(xDistance < 0 ? Vector2.left : Vector2.right, true);
             }
             else
             {
-                MoveRight();
-            }
-        }
-        else
-        {
-            if (xDistance <= 0)
-            {
-                MoveLeft();
-            }
-            else
-            {
-                MoveRight();
+                Move(xDistance < 0 ? Vector2.left : Vector2.right);
             }
         }
     }
 
-    private void OnRetreat()
+    private void RetreatUpdate()
     {
         if (_targetEnemy == null)
         {
             _state = EPlayerMoveState.Idle;
             return;
         }
-        float yDistance = _targetEnemy.transform.position.y - transform.position.y;
 
-        
+        Vector2 direction = (Vector2)_targetEnemy.transform.position - (Vector2)transform.position;
+        float yDistance = direction.y;
+
         if (yDistance <= 3)
         {
-            //다른 타겟으로 이동
-            FindTarget();
-            if(_targetEnemy == null)
+            if (!FindTarget())
             {
                 _state = EPlayerMoveState.Idle;
             }
@@ -279,42 +231,50 @@ public class PlayerMove : MonoBehaviour
             }
             return;
         }
-        else if(yDistance <= 4)
+
+        if (yDistance <= 4)
         {
-            MoveDown();
+            Move(Vector2.down);
         }
-        
     }
 
-    private void MoveUp(bool OnBoost = false)
+    private bool FindTarget()
     {
-        Speed = OnBoost == true ? Speed * ShiftSpeed : Speed;
-        Vector2 newPosition = (Vector2)transform.position + Vector2.up * Speed * Time.deltaTime;
-        newPosition = EditValidPosition(newPosition);
-        transform.position = newPosition;
+        SortedDictionary<int, GameObject> enemies = EnemyObserver.Instance.GetDictionary();
+        GameObject nearestEnemy = null;
+        float minDistance = 100; //임시
+
+        foreach (GameObject enemyObject in enemies.Values)
+        {
+            if (enemyObject == null) 
+                continue;
+
+            float yDistance = enemyObject.transform.position.y - transform.position.y;
+            float xDistance = Mathf.Abs(enemyObject.transform.position.x - transform.position.x);
+
+            if (yDistance < 3 || xDistance <= 1.5f) 
+                continue;
+
+            float distance = enemyObject.transform.position.sqrMagnitude;
+            if (distance < minDistance)
+            {
+                nearestEnemy = enemyObject;
+                minDistance = distance;
+            }
+        }
+
+        _targetEnemy = nearestEnemy;
+        return _targetEnemy != null;
+    }
+    #endregion
+
+    #region Movement
+    private void Move(Vector2 direction, bool onDash = false)
+    {
+        float moveSpeed = onDash ? Speed * ShiftSpeed : Speed;
+        Vector2 newPos = (Vector2)transform.position + direction.normalized * moveSpeed * Time.deltaTime;
+        transform.position = EditValidPosition(newPos);
     }
 
-    private void MoveDown(bool OnBoost = false)
-    {
-        Speed = OnBoost == true ? Speed * ShiftSpeed : Speed;
-        Vector2 newPosition = (Vector2)transform.position + Vector2.down * Speed * Time.deltaTime;
-        newPosition = EditValidPosition(newPosition);
-        transform.position = newPosition;
-    }
-
-    private void MoveRight(bool OnBoost = false)
-    {
-        Speed = OnBoost == true ? Speed * ShiftSpeed : Speed;
-        Vector2 newPosition = (Vector2)transform.position + Vector2.right * Speed * Time.deltaTime;
-        newPosition = EditValidPosition(newPosition);
-        transform.position = newPosition;
-    }
-    private void MoveLeft(bool OnBoost = false)
-    {
-        Speed = OnBoost == true ? Speed * ShiftSpeed : Speed;
-        Vector2 newPosition = (Vector2)transform.position + Vector2.left * Speed * Time.deltaTime;
-        newPosition = EditValidPosition(newPosition);
-        transform.position = newPosition;
-    }
     #endregion
 }
