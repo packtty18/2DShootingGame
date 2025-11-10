@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    private Animator _animator;
     [Header("Type")]
     public EEnemyType Type;
     public int id;
@@ -22,6 +23,7 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
+        _animator = GetComponent<Animator>();
         _health = Health;
     }
 
@@ -85,6 +87,7 @@ public class Enemy : MonoBehaviour
 
     public void Hit(float damage)
     {
+        _animator.SetTrigger("Hit");
         _health -= damage;
 
         if(Type == EEnemyType.Teleport && _health > 0)

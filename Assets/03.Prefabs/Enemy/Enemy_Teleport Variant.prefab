@@ -8,6 +8,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 258496857795190127, guid: 676bebac76399e940b62f8312c5f9215, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 258496857795190127, guid: 676bebac76399e940b62f8312c5f9215, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 258496857795190127, guid: 676bebac76399e940b62f8312c5f9215, type: 3}
+      propertyPath: m_Color.r
+      value: 0.5879774
+      objectReference: {fileID: 0}
     - target: {fileID: 1587455392655004967, guid: 676bebac76399e940b62f8312c5f9215, type: 3}
       propertyPath: m_Name
       value: Enemy_Teleport Variant
@@ -30,11 +42,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5646648935317689683, guid: 676bebac76399e940b62f8312c5f9215, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -1.5893853
       objectReference: {fileID: 0}
     - target: {fileID: 5646648935317689683, guid: 676bebac76399e940b62f8312c5f9215, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.44
+      value: 1.4292266
       objectReference: {fileID: 0}
     - target: {fileID: 5646648935317689683, guid: 676bebac76399e940b62f8312c5f9215, type: 3}
       propertyPath: m_LocalPosition.z

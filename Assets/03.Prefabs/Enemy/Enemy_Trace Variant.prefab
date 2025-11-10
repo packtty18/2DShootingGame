@@ -20,6 +20,18 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2662401792428106672, guid: a93a9d1a8fa8f054294bac261fdb3bd8, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2662401792428106672, guid: a93a9d1a8fa8f054294bac261fdb3bd8, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2662401792428106672, guid: a93a9d1a8fa8f054294bac261fdb3bd8, type: 3}
+      propertyPath: m_Color.r
+      value: 0.9177282
+      objectReference: {fileID: 0}
     - target: {fileID: 3558788821239688184, guid: a93a9d1a8fa8f054294bac261fdb3bd8, type: 3}
       propertyPath: m_Name
       value: Enemy_Trace Variant
