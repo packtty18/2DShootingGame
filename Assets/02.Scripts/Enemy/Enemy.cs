@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
 {
     [Header("Type")]
     public EEnemyType Type;
+    public int id;
 
     [Header("Stat")]
     public float Health = 100;
@@ -37,6 +38,32 @@ public class Enemy : MonoBehaviour
         else if (Type == EEnemyType.Teleport)
         {
             MoveDirection();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (EnemyObserver.Instance == null)
+        {
+            EnemyObserver.Instance.RemoveEnemy(id);
+        }
+    }
+
+    public int GetID()
+    {
+        return id;
+    }
+
+    public void OnInstantiated()
+    {
+        EnemyObserver enemyObserver = EnemyObserver.Instance;
+        if (enemyObserver != null)
+        {
+            id = enemyObserver.InsertEnemy(gameObject);
+        }
+        else
+        {
+            Debug.LogError("There's no Observer");
         }
     }
 
@@ -83,7 +110,6 @@ public class Enemy : MonoBehaviour
         {
             SpawnItem();
         }
-            
 
         Destroy(gameObject);
     }
@@ -134,4 +160,6 @@ public class Enemy : MonoBehaviour
 
         Destroy(gameObject);
     }
+
+    
 }

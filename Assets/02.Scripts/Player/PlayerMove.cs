@@ -1,4 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
 public class PlayerMove : MonoBehaviour
@@ -9,7 +14,7 @@ public class PlayerMove : MonoBehaviour
     public float MinSpeed = 1;
     public float ShiftSpeed = 1.5f;
 
-    private float _speed;
+    private bool _onDash = false;
 
     [Header("시작위치")]
     private Vector2 _originPosition;
@@ -20,23 +25,33 @@ public class PlayerMove : MonoBehaviour
     public float MinY = -5;
     public float MaxY =  0;
 
+
+    [Header("자동")]
     public bool IsAutoMode = false;
+
+    [Header("Debug")]
+    [SerializeField]
+    private EPlayerMoveState _state;
+    [SerializeField]
+    private GameObject _targetEnemy = null;
+
 
     private void Start()
     {
         _originPosition = transform.position;
-        _speed = Speed;
+
+        //자동
+        GameObject PlayerObject = GameObject.FindGameObjectWithTag("Player");
+        if (PlayerObject == null)
+        {
+            Debug.LogError("Can't Find Player Object");
+        }
+
     }
     
     
     private void Update()
     {
-        if (IsAutoMode)
-        {
-
-            return;
-        }
-        //Q와 E로 속도 조절
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Speed++;
@@ -46,39 +61,53 @@ public class PlayerMove : MonoBehaviour
             Speed--;
         }
 
-        //속도 제한.
-        //speed가 mSpeed보다 작으면 minSpeed로 설정.
-        //maxSpeed보다 크면 maxSpeed로 설정.
         Speed = Mathf.Clamp(Speed, MinSpeed, MaxSpeed);
-        
-        float finalSpeed = Speed;
 
-        //Shift키를 누르면 가속
+        if (IsAutoMode)
+        {
+            OnAutoMode();
+        }
+        else
+        {
+            OnControlMode();
+        }
+    }
+
+    private void OnControlMode()
+    {
+        float finalSpeed = Speed;
         if (Input.GetKey(KeyCode.LeftShift))
         {
             finalSpeed = finalSpeed * ShiftSpeed;
         }
 
-        //R키를 누르면 원점으로 이동
         if (Input.GetKey(KeyCode.R))
         {
             MoveToOrigin(finalSpeed);
             return;
         }
-        
+
         //기본 입력
         float h = Input.GetAxisRaw("Horizontal");
-        float v = Input.GetAxisRaw("Vertical"); 
-        
+        float v = Input.GetAxisRaw("Vertical");
+
         Vector2 direction = new Vector2(h, v);
         direction.Normalize();
-        Vector2 position = transform.position; 
-        
+        Vector2 position = transform.position;
+
         //다음 프레임 위치 계산
         Vector2 newPosition = position + direction * finalSpeed * Time.deltaTime;
 
         //이동 범위 제한 + 좌우 끝으로 이동시 반대편으로 이동
         //newPosition.x = Mathf.Clamp(newPosition.x, MinX, MaxX);
+        newPosition = EditValidPosition(newPosition);
+
+        //최종 위치 적용
+        transform.position = newPosition;
+    }
+
+    private Vector2 EditValidPosition(Vector2 newPosition)
+    {
         if (newPosition.x < MinX)
         {
             newPosition.x = MaxX;
@@ -87,17 +116,39 @@ public class PlayerMove : MonoBehaviour
         {
             newPosition.x = MinX;
         }
-        
-        newPosition.y = Mathf.Clamp(newPosition.y, MinY, MaxY);
 
-        //최종 위치 적용
-        transform.position = newPosition;        
+        newPosition.y = Mathf.Clamp(newPosition.y, MinY, MaxY);
+        return newPosition;
     }
 
+    private void OnAutoMode()
+    {
+        switch (_state)
+        {
+            case EPlayerMoveState.Idle:
+                {
+                    OnIdle();
+                    break;
+                }
+            case EPlayerMoveState.Chase:
+                {
+                    OnChase();
+                    break;
+                }
+            case EPlayerMoveState.Retreat:
+                {
+                    OnRetreat();
+                    break;
+                }
+
+        }
+        return;
+    }
+
+   
     /// <summary>
     /// Translate 사용하여 원점으로 이동시킬 것
     /// </summary>
-    /// <param name="speed"></param>
     private void MoveToOrigin(float speed)
     {
         //목표방향 = 목표위치 - 현재위치
@@ -108,7 +159,162 @@ public class PlayerMove : MonoBehaviour
 
     public void SpeedUp(float value)
     {
-        _speed += value;
-        _speed = Mathf.Min(MaxSpeed, _speed);
+        Speed += value;
+        Speed = Mathf.Min(MaxSpeed, Speed);
     }
+
+    #region AutoMode
+    private bool FindTarget()
+    {
+        SortedDictionary<int, GameObject> targetList = EnemyObserver.Instance.GetDictionary();
+
+        _targetEnemy = null;
+        foreach (GameObject enemy in targetList.Values)
+        {
+            if (enemy == null || enemy.transform.position.y < gameObject.transform.position.y+3 
+                || Mathf.Abs(enemy.transform.position.x - transform.position.x) <= 1.5f)
+            {
+                continue; //게임 오브젝트가 삭제됨 or 너무 가깝거나 플레이어보다 아래이 있는 적은 넘김
+            }
+            else
+            {
+                _targetEnemy = enemy;
+            }
+
+                
+        }
+
+        return _targetEnemy != null ? true : false;
+    }
+
+    private void OnIdle()
+    {
+        FindTarget();
+        if (!FindTarget())
+        {
+            MoveToOrigin(Speed);
+        }
+        else
+        {
+            _state = EPlayerMoveState.Chase;
+        }
+
+    }
+
+    private void OnChase()
+    {
+        //타겟이 격추되어 없어지면 Idle 상태로
+        if (_targetEnemy == null)
+        {
+            _state = EPlayerMoveState.Idle;
+            return;
+        }
+
+        float yDistance = _targetEnemy.transform.position.y - transform.position.y;
+
+        if(yDistance >=6 )
+        {
+            MoveUp(true);
+        }
+        else if(yDistance >= 4)
+        {
+            MoveUp();
+        }
+        else
+        {
+            _state = EPlayerMoveState.Retreat;
+        }
+
+        float xDistance = _targetEnemy.transform.position.x - transform.position.x;
+        if (Mathf.Abs(xDistance) <= 0.1f)
+        {
+            return;
+        }
+
+        if (Mathf.Abs(xDistance) > 1)
+        {
+            if(xDistance <= 0)
+            {
+                MoveLeft();
+            }
+            else
+            {
+                MoveRight();
+            }
+        }
+        else
+        {
+            if (xDistance <= 0)
+            {
+                MoveLeft();
+            }
+            else
+            {
+                MoveRight();
+            }
+        }
+    }
+
+    private void OnRetreat()
+    {
+        if (_targetEnemy == null)
+        {
+            _state = EPlayerMoveState.Idle;
+            return;
+        }
+        float yDistance = _targetEnemy.transform.position.y - transform.position.y;
+
+        
+        if (yDistance <= 3)
+        {
+            //다른 타겟으로 이동
+            FindTarget();
+            if(_targetEnemy == null)
+            {
+                _state = EPlayerMoveState.Idle;
+            }
+            else
+            {
+                _state = EPlayerMoveState.Chase;
+            }
+            return;
+        }
+        else if(yDistance <= 4)
+        {
+            MoveDown();
+        }
+        
+    }
+
+    private void MoveUp(bool OnBoost = false)
+    {
+        Speed = OnBoost == true ? Speed * ShiftSpeed : Speed;
+        Vector2 newPosition = (Vector2)transform.position + Vector2.up * Speed * Time.deltaTime;
+        newPosition = EditValidPosition(newPosition);
+        transform.position = newPosition;
+    }
+
+    private void MoveDown(bool OnBoost = false)
+    {
+        Speed = OnBoost == true ? Speed * ShiftSpeed : Speed;
+        Vector2 newPosition = (Vector2)transform.position + Vector2.down * Speed * Time.deltaTime;
+        newPosition = EditValidPosition(newPosition);
+        transform.position = newPosition;
+    }
+
+    private void MoveRight(bool OnBoost = false)
+    {
+        Speed = OnBoost == true ? Speed * ShiftSpeed : Speed;
+        Vector2 newPosition = (Vector2)transform.position + Vector2.right * Speed * Time.deltaTime;
+        newPosition = EditValidPosition(newPosition);
+        transform.position = newPosition;
+    }
+    private void MoveLeft(bool OnBoost = false)
+    {
+        Speed = OnBoost == true ? Speed * ShiftSpeed : Speed;
+        Vector2 newPosition = (Vector2)transform.position + Vector2.left * Speed * Time.deltaTime;
+        newPosition = EditValidPosition(newPosition);
+        transform.position = newPosition;
+    }
+    #endregion
 }

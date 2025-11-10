@@ -55,6 +55,8 @@ public class EnemySpawner : MonoBehaviour
             }
 
             GameObject spawnedEnemy = Instantiate(EnemyPrefab[selectedIndex]);
+            
+            spawnedEnemy.GetComponent<Enemy>().OnInstantiated();
             spawnedEnemy.transform.position = transform.position;
         }
     }

@@ -18,3 +18,10 @@ public enum EPlayerAIStateType
     Attack,
     Retreat
 }
+
+public enum EPlayerMoveState
+{
+    Idle,
+    Chase,
+    Retreat
+}
