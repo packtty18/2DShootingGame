@@ -56,7 +56,6 @@ public class ItemMove : MonoBehaviour
         if (_bezierProgress <= 0.9f)
         {
             _bezierProgress += Time.deltaTime;
-            Debug.Log(_bezierProgress);
             _bezierProgress = Mathf.Clamp01(_bezierProgress);
 
             Vector2 bezierPos = GetCubicBezier(_startPos, _p1, _p2, _endPos, _bezierProgress);
