@@ -17,6 +17,7 @@ public class PlayerStat : MonoBehaviour
     public float MinY = -5;
     public float MaxY = 0;
 
+    [Header("AutoMove")]
     public bool IsAutoMode = false;
     public float YDistanceOnFindTarget = 3;
     public float XDistanceOnFindTarget = 1.5f;

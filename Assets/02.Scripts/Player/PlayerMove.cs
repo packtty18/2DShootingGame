@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
-    public PlayerStat stat;
+    private PlayerStat _stat;
 
     private float _speed;
 
@@ -20,9 +20,9 @@ public class PlayerMove : MonoBehaviour
 
     private void Start()
     {
-        stat = GetComponent<PlayerStat>();
+        _stat = GetComponent<PlayerStat>();
         _originPosition = transform.position;
-        _speed = stat.Speed;
+        _speed = _stat.Speed;
         //자동
         GameObject PlayerObject = GameObject.FindGameObjectWithTag("Player");
         if (PlayerObject == null)
@@ -44,9 +44,9 @@ public class PlayerMove : MonoBehaviour
             _speed--;
         }
 
-        _speed = Mathf.Clamp(_speed, stat.MinSpeed, stat.MaxSpeed);
+        _speed = Mathf.Clamp(_speed, _stat.MinSpeed, _stat.MaxSpeed);
 
-        if (stat.IsAutoMode)
+        if (_stat.IsAutoMode)
         {
             OnAutoMode();
         }
@@ -61,7 +61,7 @@ public class PlayerMove : MonoBehaviour
         float finalSpeed = _speed;
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            finalSpeed = finalSpeed * stat.ShiftSpeed;
+            finalSpeed = finalSpeed * _stat.ShiftSpeed;
         }
 
         if (Input.GetKey(KeyCode.R))
@@ -82,16 +82,16 @@ public class PlayerMove : MonoBehaviour
 
     private Vector2 EditValidPosition(Vector2 newPosition)
     {
-        if (newPosition.x < stat.MinX)
+        if (newPosition.x < _stat.MinX)
         {
-            newPosition.x = stat.MaxX;
+            newPosition.x = _stat.MaxX;
         }
-        else if (newPosition.x > stat.MaxX)
+        else if (newPosition.x > _stat.MaxX)
         {
-            newPosition.x = stat.MinX;
+            newPosition.x = _stat.MinX;
         }
 
-        newPosition.y = Mathf.Clamp(newPosition.y, stat.MinY, stat.MaxY);
+        newPosition.y = Mathf.Clamp(newPosition.y, _stat.MinY, _stat.MaxY);
         return newPosition;
     }
 
@@ -110,7 +110,7 @@ public class PlayerMove : MonoBehaviour
     public void SpeedUp(float value)
     {
         _speed += value;
-        _speed = Mathf.Min(stat.MaxSpeed, _speed);
+        _speed = Mathf.Min(_stat.MaxSpeed, _speed);
     }
 
 
@@ -163,11 +163,11 @@ public class PlayerMove : MonoBehaviour
         float xDistance = direction.x;
 
         // Y축 이동
-        if (yDistance >= stat.YDashMoveInChase)
+        if (yDistance >= _stat.YDashMoveInChase)
         {
             Move(Vector2.up, true);
         }
-        else if (yDistance >= stat.YJustMoveInChase)
+        else if (yDistance >= _stat.YJustMoveInChase)
         {
             Move(Vector2.up);
         }
@@ -177,9 +177,9 @@ public class PlayerMove : MonoBehaviour
         }
 
         // X축 이동
-        if (Mathf.Abs(xDistance) > stat.XDistanceToEnemyThreshHoldInChase)
+        if (Mathf.Abs(xDistance) > _stat.XDistanceToEnemyThreshHoldInChase)
         {
-            if (Mathf.Abs(xDistance) > stat.XDistanceToMoveInChase)
+            if (Mathf.Abs(xDistance) > _stat.XDistanceToMoveInChase)
             {
                 Move(xDistance < 0 ? Vector2.left : Vector2.right, true);
             }
@@ -201,7 +201,7 @@ public class PlayerMove : MonoBehaviour
         Vector2 direction = (Vector2)_targetEnemy.transform.position - (Vector2)transform.position;
         float yDistance = direction.y;
 
-        if (yDistance <= stat.AvoidDistance)
+        if (yDistance <= _stat.AvoidDistance)
         {
             if (!FindTarget())
             {
@@ -214,7 +214,7 @@ public class PlayerMove : MonoBehaviour
             return;
         }
 
-        if (yDistance <= stat.RetreatDistance)
+        if (yDistance <= _stat.RetreatDistance)
         {
             Move(Vector2.down);
         }
@@ -241,7 +241,7 @@ public class PlayerMove : MonoBehaviour
             float yDistance = enemyObject.transform.position.y - transform.position.y;
             float xDistance = Mathf.Abs(enemyObject.transform.position.x - transform.position.x);
 
-            if (yDistance < stat.YDistanceOnFindTarget || xDistance <= stat.XDistanceOnFindTarget) 
+            if (yDistance < _stat.YDistanceOnFindTarget || xDistance <= _stat.XDistanceOnFindTarget) 
                 continue;
 
             float distance = enemyObject.transform.position.sqrMagnitude;
@@ -258,7 +258,7 @@ public class PlayerMove : MonoBehaviour
 
     private void Move(Vector2 direction, bool onDash = false)
     {
-        float moveSpeed = onDash ? _speed * stat.ShiftSpeed : _speed;
+        float moveSpeed = onDash ? _speed * _stat.ShiftSpeed : _speed;
         Vector2 newPos = (Vector2)transform.position + direction.normalized * moveSpeed * Time.deltaTime;
         transform.position = EditValidPosition(newPos);
     }

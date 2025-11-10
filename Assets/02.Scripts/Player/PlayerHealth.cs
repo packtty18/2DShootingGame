@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public PlayerStat stat;
+    private PlayerStat _stat;
 
     private float _health;
 
     private void Start()
     {
-        stat = GetComponent<PlayerStat>();
-        _health = stat.Health;
+        _stat = GetComponent<PlayerStat>();
+        _health = _stat.Health;
     }
 
     public void Hit(float damage)

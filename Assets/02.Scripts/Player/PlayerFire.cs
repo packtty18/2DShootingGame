@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerFire : MonoBehaviour
 {
-    public PlayerStat stat;
+    private PlayerStat _stat;
 
     [Header("Prefabs")] 
     public GameObject BulletPrefab;
@@ -17,25 +17,25 @@ public class PlayerFire : MonoBehaviour
 
     private void Start()
     {
-        PlayerStat stat = GetComponent<PlayerStat>();
-        _coolTimer = stat.CoolTime;
+        _stat = GetComponent<PlayerStat>();
+        _coolTimer = _stat.CoolTime;
     }
 
     private void Update()
     {
         // 자동사격 입력
         if(Input.GetKeyDown(KeyCode.Alpha1))
-            stat.IsAutoMode = true;
+            _stat.IsAutoMode = true;
         if(Input.GetKeyDown(KeyCode.Alpha2))
-            stat.IsAutoMode = false;
+            _stat.IsAutoMode = false;
         
         //타이머가 0보다 작으면 발사 가능
         _coolTimer -= Time.deltaTime;
         if (_coolTimer > 0) 
             return; 
-        if (Input.GetKey(KeyCode.Space) || stat.IsAutoMode)
+        if (Input.GetKey(KeyCode.Space) || _stat.IsAutoMode)
         {
-            _coolTimer = stat.CoolTime;
+            _coolTimer = _stat.CoolTime;
             MakeBullets();
             MakeSubBullets();
         }
@@ -49,8 +49,8 @@ public class PlayerFire : MonoBehaviour
         bullet1.IsLeft = true;
         bullet2.IsLeft = false;
 
-        bullet1.transform.position = FirePosition.position + new Vector3(-stat.FireOffset, 0, 0);
-        bullet2.transform.position = FirePosition.position + new Vector3(stat.FireOffset, 0, 0);
+        bullet1.transform.position = FirePosition.position + new Vector3(-_stat.FireOffset, 0, 0);
+        bullet2.transform.position = FirePosition.position + new Vector3(_stat.FireOffset, 0, 0);
     }
 
     private void MakeSubBullets()
