@@ -1,9 +1,17 @@
 using System;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class PlayerHealth : MonoBehaviour
 {
-    private float _health = 3;
+    public PlayerStat stat;
+
+    private float _health;
+
+    private void Start()
+    {
+        stat = GetComponent<PlayerStat>();
+        _health = stat.Health;
+    }
 
     public void Hit(float damage)
     {

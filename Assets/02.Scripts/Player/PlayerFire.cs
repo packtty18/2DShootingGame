@@ -2,39 +2,40 @@ using UnityEngine;
 
 public class PlayerFire : MonoBehaviour
 {
-    [Header("Fire Debug")]
+    public PlayerStat stat;
+
     [Header("Prefabs")] 
     public GameObject BulletPrefab;
     public GameObject SubBulletPrefab;
     
     [Header("FirePos")]
     public Transform FirePosition;
-    public float FireOffset = 0.3f;
     public Transform SubFirePositionLeft;
     public Transform SubFirePositionRight;
 
-    [Header("CoolTime(s)")] 
-    public float CoolTime = 0.6f;
     private float _coolTimer;
 
-    [Header("자동사격")] 
-    public bool AutoMode = false;
+    private void Start()
+    {
+        PlayerStat stat = GetComponent<PlayerStat>();
+        _coolTimer = stat.CoolTime;
+    }
 
     private void Update()
     {
         // 자동사격 입력
-        if(Input.GetKeyDown(KeyCode.Alpha1)) 
-            AutoMode = true;
-        if(Input.GetKeyDown(KeyCode.Alpha2)) 
-            AutoMode = false;
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+            stat.IsAutoMode = true;
+        if(Input.GetKeyDown(KeyCode.Alpha2))
+            stat.IsAutoMode = false;
         
         //타이머가 0보다 작으면 발사 가능
         _coolTimer -= Time.deltaTime;
         if (_coolTimer > 0) 
             return; 
-        if (Input.GetKey(KeyCode.Space) || AutoMode)
+        if (Input.GetKey(KeyCode.Space) || stat.IsAutoMode)
         {
-            _coolTimer = CoolTime;
+            _coolTimer = stat.CoolTime;
             MakeBullets();
             MakeSubBullets();
         }
@@ -48,8 +49,8 @@ public class PlayerFire : MonoBehaviour
         bullet1.IsLeft = true;
         bullet2.IsLeft = false;
 
-        bullet1.transform.position = FirePosition.position + new Vector3(-FireOffset, 0, 0);
-        bullet2.transform.position = FirePosition.position + new Vector3(FireOffset, 0, 0);
+        bullet1.transform.position = FirePosition.position + new Vector3(-stat.FireOffset, 0, 0);
+        bullet2.transform.position = FirePosition.position + new Vector3(stat.FireOffset, 0, 0);
     }
 
     private void MakeSubBullets()
@@ -66,6 +67,6 @@ public class PlayerFire : MonoBehaviour
 
     public void SpeedUp(float value)
     {
-        CoolTime -= value;
+        _coolTimer -= value;
     }
 }
