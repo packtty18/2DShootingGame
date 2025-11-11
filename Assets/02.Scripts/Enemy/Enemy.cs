@@ -20,6 +20,8 @@ public class Enemy : MonoBehaviour
     public GameObject[] ItemPrefabs;
     public float[] ItemWeight;
 
+    [Header("ExplosionPrefab")]
+    public GameObject[] ExplosionPrefabs;
 
     private void Start()
     {
@@ -114,7 +116,14 @@ public class Enemy : MonoBehaviour
             SpawnItem();
         }
 
+        MakeExplosionEffect();
+
         Destroy(gameObject);
+    }
+
+    private void MakeExplosionEffect()
+    {
+        Instantiate(ExplosionPrefabs[Random.Range(0, ExplosionPrefabs.Length)], transform.position, Quaternion.identity);
     }
 
     private void SpawnItem()
