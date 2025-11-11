@@ -25,7 +25,7 @@ public class Item : MonoBehaviour
                     PlayerMove playerMove = collision.GetComponent<PlayerMove>();
                     playerMove.SpeedUp(Value);
                     PlayerEffector playerEffector = collision.GetComponent<PlayerEffector>();
-                    playerEffector.InstantiateMoveSpeedUpEffect();
+                    playerEffector.InstantiateEffect(EItemType.MoveSpeedUp);
                     break;
                 }
 
@@ -34,7 +34,7 @@ public class Item : MonoBehaviour
                     PlayerFire playerFire = collision.GetComponent<PlayerFire>();
                     playerFire.SpeedUp(Value);
                     PlayerEffector playerEffector = collision.GetComponent<PlayerEffector>();
-                    playerEffector.InstantiateAttackSpeedUpEffect();
+                    playerEffector.InstantiateEffect(EItemType.AttackSpeedUp);
                     break;
                 }
             case EItemType.HealthUp:
@@ -42,7 +42,7 @@ public class Item : MonoBehaviour
                     PlayerHealth player = collision.GetComponent<PlayerHealth>();
                     player.Heal(Value);
                     PlayerEffector playerEffector = collision.GetComponent<PlayerEffector>();
-                    playerEffector.InstantiateHealEffect();
+                    playerEffector.InstantiateEffect(EItemType.HealthUp);
                     break;
                 }
         }

@@ -3,20 +3,27 @@ using UnityEngine;
 public class PlayerEffector : MonoBehaviour
 {
     [Header("Prefabs")]
-    public GameObject MoveSpeedUpEffectPrefab;
-    public GameObject AttackSpeedUpEffectPrefab;
-    public GameObject HealEffectPrefab;
+    [SerializeField] private GameObject _moveSpeedUpEffectPrefab;
+    [SerializeField] private GameObject _attackSpeedUpEffectPrefab;
+    [SerializeField] private GameObject _healEffectPrefab;
 
-    public void InstantiateMoveSpeedUpEffect()
+    private System.Collections.Generic.Dictionary<EItemType, GameObject> _effectPrefabs;
+
+    private void Awake()
     {
-        Instantiate(MoveSpeedUpEffectPrefab, transform);
+        _effectPrefabs = new System.Collections.Generic.Dictionary<EItemType, GameObject>
+        {
+            { EItemType.MoveSpeedUp, _moveSpeedUpEffectPrefab },
+            { EItemType.AttackSpeedUp, _attackSpeedUpEffectPrefab },
+            { EItemType.HealthUp, _healEffectPrefab }
+        };
     }
-    public void InstantiateAttackSpeedUpEffect()
+
+    public void InstantiateEffect(EItemType itemType)
     {
-        Instantiate(AttackSpeedUpEffectPrefab, transform);
-    }
-    public void InstantiateHealEffect()
-    {
-        Instantiate(HealEffectPrefab, transform);
+        if (_effectPrefabs.TryGetValue(itemType, out GameObject prefab) && prefab != null)
+        {
+            Instantiate(prefab, transform);
+        }
     }
 }
