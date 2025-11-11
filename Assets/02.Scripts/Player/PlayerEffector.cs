@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerEffector : MonoBehaviour
 {
@@ -7,11 +8,11 @@ public class PlayerEffector : MonoBehaviour
     [SerializeField] private GameObject _attackSpeedUpEffectPrefab;
     [SerializeField] private GameObject _healEffectPrefab;
 
-    private System.Collections.Generic.Dictionary<EItemType, GameObject> _effectPrefabs;
+    private Dictionary<EItemType, GameObject> _effectPrefabs;
 
     private void Awake()
     {
-        _effectPrefabs = new System.Collections.Generic.Dictionary<EItemType, GameObject>
+        _effectPrefabs = new Dictionary<EItemType, GameObject>
         {
             { EItemType.MoveSpeedUp, _moveSpeedUpEffectPrefab },
             { EItemType.AttackSpeedUp, _attackSpeedUpEffectPrefab },
