@@ -38,8 +38,10 @@ public class Item : MonoBehaviour
                     PlayerHealth player = collision.GetComponent<PlayerHealth>();
                     player.Heal(Value);
                     break;
-
                 }
         }
+
+        PlayerEffector playerEffector = collision.GetComponent<PlayerEffector>();
+        playerEffector.InstantiateEffect(Type);
     }
 }
