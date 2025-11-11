@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    private GameObject _player;
     private Animator _animator;
+
     [Header("Type")]
-    public EEnemyType Type;
+    [SerializeField] private EEnemyType _type;
     public int id;
 
     [Header("Stat")]
-    public float Health = 100;
-    public float Speed = 3;
-    public float Damage = 1;
+
+    [SerializeField] private float _maxHealth = 100;
+    [SerializeField] private float _speed = 3;
+    [SerializeField] private float _damage = 1;
 
     private float _health;
+
+
+    
 
     [Header("Items")]
     public GameObject[] ItemPrefabs;
@@ -26,20 +32,21 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         _animator = GetComponent<Animator>();
-        _health = Health;
+        _health = _maxHealth;
+        _player = GameObject.FindWithTag("Player");
     }
 
     private void Update()
     {
-        if (Type == EEnemyType.Direction)
+        if (_type == EEnemyType.Direction)
         {
             MoveDirection();
         }
-        else if (Type == EEnemyType.Trace)
+        else if (_type == EEnemyType.Trace)
         {
             MoveTrace();
         }
-        else if (Type == EEnemyType.Teleport)
+        else if (_type == EEnemyType.Teleport)
         {
             MoveDirection();
         }
@@ -74,17 +81,18 @@ public class Enemy : MonoBehaviour
     private void MoveDirection()
     {
         Vector2 direction = Vector2.down;
-        transform.Translate(direction * Speed * Time.deltaTime);
+        transform.Translate(direction * _speed * Time.deltaTime);
     }
 
     private void MoveTrace()
     {
-        GameObject player = GameObject.FindWithTag("Player");
-        Vector2 playerPosition = player.transform.position;
+        Vector2 direction = ((Vector2)_player.transform.position - (Vector2)transform.position).normalized;
 
-        Vector2 direction = (playerPosition - (Vector2)transform.position).normalized;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg +90;
+        Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        transform.rotation = targetRotation;
 
-        transform.Translate(direction * Speed * Time.deltaTime);
+        transform.position += (Vector3)(direction * _speed * Time.deltaTime);
     }
 
     public void Hit(float damage)
@@ -92,7 +100,7 @@ public class Enemy : MonoBehaviour
         _animator.SetTrigger("Hit");
         _health -= damage;
 
-        if(Type == EEnemyType.Teleport && _health > 0)
+        if(_type == EEnemyType.Teleport && _health > 0)
         {
             float randomX = Random.Range(-2f, 2f);
             transform.position = new Vector2(randomX, transform.position.y);
@@ -165,7 +173,7 @@ public class Enemy : MonoBehaviour
         if(player == null) 
             return;
 
-        player.Hit(Damage);
+        player.Hit(_damage);
 
         Destroy(gameObject);
     }

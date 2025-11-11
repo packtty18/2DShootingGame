@@ -27,7 +27,7 @@ public class BombBullet : MonoBehaviour
 
     private void Update()
     {
-        if(Vector2.Distance(_targetPos, transform.position) < _threshHold)
+        if(Vector2.Distance(_targetPos, transform.position) < _thresHold)
         {
             Instantiate(_effect, _targetPos, Quaternion.identity);
             Instantiate(_bombPrefab, _targetPos, Quaternion.identity);
