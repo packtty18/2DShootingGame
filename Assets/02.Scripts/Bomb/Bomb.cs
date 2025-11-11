@@ -22,9 +22,9 @@ public class Bomb : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Enemy"))
+        if (collision.TryGetComponent<Enemy>(out var enemy))
         {
-            collision.GetComponent<Enemy>().OnDead();
+            enemy.Hit(float.MaxValue);
         }
     }
 }

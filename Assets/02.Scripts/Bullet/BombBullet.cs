@@ -12,7 +12,7 @@ public class BombBullet : MonoBehaviour
     [SerializeField]
     private float _moveSpeed = 5f;
     [SerializeField]
-    private float _threshHold = 0.1f;
+    private float _thresHold = 0.1f;
     private Vector2 _direction;
 
 
@@ -29,8 +29,8 @@ public class BombBullet : MonoBehaviour
     {
         if(Vector2.Distance(_targetPos, transform.position) < _threshHold)
         {
-            Instantiate(_effect, Vector2.zero, Quaternion.identity);
-            Instantiate(_bombPrefab, Vector2.zero, Quaternion.identity);
+            Instantiate(_effect, _targetPos, Quaternion.identity);
+            Instantiate(_bombPrefab, _targetPos, Quaternion.identity);
             Destroy(gameObject);
         }
         transform.position = (Vector2)transform.position + _direction * _moveSpeed*Time.deltaTime;

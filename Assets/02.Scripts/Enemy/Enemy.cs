@@ -104,7 +104,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void OnDead()
+    private void OnDead()
     {
         //70%확률로 아이템 드롭
         float dropCheckIndex = Random.Range(0f, 1f);
