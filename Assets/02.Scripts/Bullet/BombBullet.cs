@@ -12,7 +12,7 @@ public class BombBullet : MonoBehaviour
     [SerializeField]
     private float _moveSpeed = 5f;
     [SerializeField]
-    private float _thresHold = 0.1f;
+    private float _threshold = 0.1f;
     private Vector2 _direction;
 
 

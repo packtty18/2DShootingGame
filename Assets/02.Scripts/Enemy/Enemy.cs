@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    private GameObject _player;
+    private const float SPRITE_ROTATION_OFFSET = 90f;
+    private Transform _playerTransform;
     private Animator _animator;
 
     [Header("Type")]
@@ -33,7 +34,7 @@ public class Enemy : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _health = _maxHealth;
-        _player = GameObject.FindWithTag("Player");
+        _playerTransform = GameObject.FindWithTag("Player").transform;
     }
 
     private void Update()
@@ -86,9 +87,9 @@ public class Enemy : MonoBehaviour
 
     private void MoveTrace()
     {
-        Vector2 direction = ((Vector2)_player.transform.position - (Vector2)transform.position).normalized;
+        Vector2 direction = ((Vector2)_playerTransform.transform.position - (Vector2)transform.position).normalized;
 
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg +90;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + SPRITE_ROTATION_OFFSET;
         Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
         transform.rotation = targetRotation;
 
