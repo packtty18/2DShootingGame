@@ -862,6 +862,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1667411929}
   - component: {fileID: 1667411928}
+  - component: {fileID: 1667411939}
   - component: {fileID: 1667411932}
   - component: {fileID: 1667411933}
   - component: {fileID: 1667411936}
@@ -869,7 +870,7 @@ GameObject:
   - component: {fileID: 1667411935}
   - component: {fileID: 1667411930}
   - component: {fileID: 1667411931}
-  - component: {fileID: 1667411939}
+  - component: {fileID: 1667411940}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -976,6 +977,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BulletPrefab: {fileID: 8657631675410667922, guid: 077eec484332e7c469abe12d7ebbcd5d, type: 3}
   SubBulletPrefab: {fileID: 7795052279045789160, guid: 4d8ddfd06245d5a4fb91446ee5338322, type: 3}
+  BombBulletPrefab: {fileID: 8657631675410667922, guid: 6925e959720ab394bb6bd972fbe430d1, type: 3}
   FirePosition: {fileID: 902624370}
   SubFirePositionLeft: {fileID: 1144817253}
   SubFirePositionRight: {fileID: 778897502}
@@ -1130,6 +1132,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1667411940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667411927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2513efcbce5107c4bae7bb881c055f17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveSpeedUpEffectPrefab: {fileID: 5880797563127281583, guid: 5129b101630f1c945b6ffe931cb539e1, type: 3}
+  _attackSpeedUpEffectPrefab: {fileID: 4021103657954561961, guid: fa9c78db84a8e58439018308baff073e, type: 3}
+  _healEffectPrefab: {fileID: 8771972552311404799, guid: a6b53affea70b364ea72ace22976bc9d, type: 3}
 --- !u!1 &1786705169
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,6 +9,7 @@ public class PlayerFire : MonoBehaviour
     [Header("Prefabs")] 
     public GameObject BulletPrefab;
     public GameObject SubBulletPrefab;
+    public GameObject BombBulletPrefab;
     
     [Header("FirePos")]
     public Transform FirePosition;
@@ -29,6 +30,11 @@ public class PlayerFire : MonoBehaviour
         // 자동사격 입력
         if(_input.IsInputAutoMode)
             _stat.IsAutoMode = !_stat.IsAutoMode;
+
+        if(_input.IsInputSpecialAttack)
+        {
+            MakeBomb();
+        }
         
         //타이머가 0보다 작으면 발사 가능
         _coolTimer -= Time.deltaTime;
@@ -64,6 +70,11 @@ public class PlayerFire : MonoBehaviour
 
         bullet1.transform.position = SubFirePositionLeft.position;
         bullet2.transform.position = SubFirePositionRight.position;
+    }
+
+    private void MakeBomb()
+    {
+        Instantiate(BombBulletPrefab, transform.position, Quaternion.identity);
     }
 
     public void SpeedUp(float value)
