@@ -220,7 +220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BackgroundMaterial: {fileID: 2100000, guid: af809c217b41eaa44b28621d7488b896, type: 2}
-  ScrollSpeed: 0.15
+  ScrollSpeed: 1.2
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1283,7 +1283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BackgroundMaterial: {fileID: 2100000, guid: c80cb2fddcf1283498ac5592bc4f3c1d, type: 2}
-  ScrollSpeed: 0.2
+  ScrollSpeed: 1.5
 --- !u!1001 &1988422281
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1486,7 +1486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BackgroundMaterial: {fileID: 2100000, guid: 9c5c4450d9b23534cba723adecdcd104, type: 2}
-  ScrollSpeed: 0.1
+  ScrollSpeed: 0.8
 --- !u!4 &2137104667 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 589948489822844839, guid: 58502c1e27a8ff84bb9c442ffc70ea89, type: 3}

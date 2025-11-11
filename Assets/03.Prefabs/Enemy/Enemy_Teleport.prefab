@@ -329,11 +329,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01d4835b016772b43ae3f96ff884ee7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 2
+  _type: 2
   id: 0
-  Health: 150
-  Speed: 3
-  Damage: 1
+  _maxHealth: 150
+  _speed: 3
+  _damage: 1
   ItemPrefabs:
   - {fileID: 6538928302844893629, guid: d9947bcc4b6c79d4b9070d983b19566c, type: 3}
   - {fileID: 2431613818223073192, guid: ebada3920e44eeb4bacfb0bd78149e93, type: 3}
