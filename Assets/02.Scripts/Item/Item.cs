@@ -24,6 +24,8 @@ public class Item : MonoBehaviour
                 {
                     PlayerMove playerMove = collision.GetComponent<PlayerMove>();
                     playerMove.SpeedUp(Value);
+                    PlayerEffector playerEffector = collision.GetComponent<PlayerEffector>();
+                    playerEffector.InstantiateMoveSpeedUpEffect();
                     break;
                 }
 
@@ -31,14 +33,17 @@ public class Item : MonoBehaviour
                 {
                     PlayerFire playerFire = collision.GetComponent<PlayerFire>();
                     playerFire.SpeedUp(Value);
+                    PlayerEffector playerEffector = collision.GetComponent<PlayerEffector>();
+                    playerEffector.InstantiateAttackSpeedUpEffect();
                     break;
                 }
             case EItemType.HealthUp:
                 {
                     PlayerHealth player = collision.GetComponent<PlayerHealth>();
                     player.Heal(Value);
+                    PlayerEffector playerEffector = collision.GetComponent<PlayerEffector>();
+                    playerEffector.InstantiateHealEffect();
                     break;
-
                 }
         }
     }
