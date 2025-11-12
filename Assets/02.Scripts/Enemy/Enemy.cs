@@ -115,7 +115,7 @@ public class Enemy : MonoBehaviour
 
     private void OnDead()
     {
-        //70%È®·ü·Î ¾ÆÀÌÅÛ µå·Ó
+        //70%í™•ë¥ ë¡œ ì•„ì´í…œ ë“œë¡­
         float dropCheckIndex = Random.Range(0f, 1f);
         if (dropCheckIndex < 0.7f)
         {
@@ -155,8 +155,8 @@ public class Enemy : MonoBehaviour
 
         float randomValue = Random.Range(0f, totalWeight);
 
-        float cumulateSum= 0f; //´©ÀûÇÕ°è
-        int selectedIndex = 0; //¼±ÅÃµÈ ¾ÆÀÌÅÛ
+        float cumulateSum= 0f; //ëˆ„ì í•©ê³„
+        int selectedIndex = 0; //ì„ íƒëœ ì•„ì´í…œ
 
         for (int i = 0; i < ItemWeight.Length; i++)
         {
@@ -168,7 +168,7 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        // ¾ÆÀÌÅÛ ½ºÆù
+        // ì•„ì´í…œ ìŠ¤í°
         GameObject spawnedItem = Instantiate(ItemPrefabs[selectedIndex]);
         spawnedItem.transform.position = transform.position;
     }

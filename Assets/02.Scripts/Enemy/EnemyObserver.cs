@@ -15,7 +15,7 @@ public class EnemyObserver : MonoBehaviour
 
     public int Id;
 
-    //private º¯°æ°¡´É¼º Á¸Àçs
+    //private ë³€ê²½ê°€ëŠ¥ì„± ì¡´ì¬s
     private SortedDictionary<int, GameObject> _enemyList;
 
     private void Awake()
@@ -40,13 +40,13 @@ public class EnemyObserver : MonoBehaviour
     }
 
     /// <summary>
-    /// ÀûÀ» µî·ÏÇÏ°í ÇØ´ç µî·ÏÇÑ ID¸¦ ¹İÈ¯
+    /// ì ì„ ë“±ë¡í•˜ê³  í•´ë‹¹ ë“±ë¡í•œ IDë¥¼ ë°˜í™˜
     /// </summary>
     public int InsertEnemy(GameObject enemy)
     {
 
         _enemyList.Add(Id, enemy);
-        //Debug.Log($"ID µî·Ï : {Id}");
+        //Debug.Log($"ID ë“±ë¡ : {Id}");
         return Id++;
     }
 
@@ -57,7 +57,7 @@ public class EnemyObserver : MonoBehaviour
             return;
         }
 
-        //Debug.Log($"ID »èÁ¦ : {removeId}");
+        //Debug.Log($"ID ì‚­ì œ : {removeId}");
         _enemyList.Remove(removeId);
     }
 

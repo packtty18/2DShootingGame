@@ -1,11 +1,9 @@
-using UnityEditor.VersionControl;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
     /*
-     * ¸ñÇ¥ : ÀûÀ» Á×ÀÏ¶§¸¶´Ù Á¡¼ö ¿Ã¸®°í UI ¹İ¿µ
+     * ëª©í‘œ : ì ì„ ì£½ì¼ë•Œë§ˆë‹¤ ì ìˆ˜ ì˜¬ë¦¬ê³  UI ë°˜ì˜
      */
     private static ScoreManager instance;
     public static ScoreManager Instance
@@ -33,23 +31,24 @@ public class ScoreManager : MonoBehaviour
 
     private void Start()
     {
-        _currentScore = 0;
-        string changeText = "ÇöÀç Á¡¼ö : 0";
+        _currentScore = PlayerPrefs.GetInt("Score", 0);
 
-        RefreshUI(changeText);
+        RefreshtextUI();
     }
 
 
     public void AddScore(int score)
     {
         _currentScore += score;
-        string changeText = "ÇöÀç Á¡¼ö : " + _currentScore.ToString("N0");
 
-        RefreshUI(changeText);
+        SaveScore(_currentScore);
+        RefreshtextUI();
     }
 
-    private void RefreshUI(string text)
+    private void RefreshtextUI()
     {
+        string changeText = "í˜„ì¬ ì ìˆ˜ : " + _currentScore.ToString("N0");
+
         UIManager ui = UIManager.Instance;
         if (ui == null)
         {
@@ -57,6 +56,20 @@ public class ScoreManager : MonoBehaviour
             return;
         }
 
-        ui.ChangeScoreText(text);
+        ui.ChangeScoreText(changeText);
+    }
+
+
+    //PlayerPrefs ëª¨ë“ˆì„ ì‚¬ìš©í•œ ì €ì¥
+    private void SaveScore(int score)
+    {
+        PlayerPrefs.SetInt("Score", score);
+    }
+
+    [ContextMenu("ResetScore")]
+    public void ResetScore()
+    {
+        PlayerPrefs.SetInt("Score", 0);
+        Debug.Log("Score is resetted");
     }
 }
