@@ -395,7 +395,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000a183c643
+  m_ApplyToSortingLayers: 00000000a183c643e94fe979
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -816,7 +816,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4a5f108b3f2697439f8457220e93dc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScoreTextUI: {fileID: 1498138852}
+  _scoreTextUI: {fileID: 1498138852}
 --- !u!1 &1177419338
 GameObject:
   m_ObjectHideFlags: 0
@@ -1214,7 +1214,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: 2045333481
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &1542885282
@@ -2163,6 +2163,6 @@ SceneRoots:
   - {fileID: 1692583980}
   - {fileID: 519420032}
   - {fileID: 1177419339}
-  - {fileID: 1667411929}
   - {fileID: 1542885282}
   - {fileID: 1252834657}
+  - {fileID: 1667411929}
