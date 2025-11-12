@@ -201,6 +201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 1
   id: 0
+  _score: 120
   _maxHealth: 80
   _speed: 3
   _damage: 1

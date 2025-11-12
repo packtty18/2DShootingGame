@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour
     public int id;
 
     [Header("Stat")]
-
+    [SerializeField] private int _score = 100;
     [SerializeField] private float _maxHealth = 100;
     [SerializeField] private float _speed = 3;
     [SerializeField] private float _damage = 1;
@@ -117,14 +117,23 @@ public class Enemy : MonoBehaviour
     {
         //70%확률로 아이템 드롭
         float dropCheckIndex = Random.Range(0f, 1f);
-        if(dropCheckIndex < 0.7f)
+        if (dropCheckIndex < 0.7f)
         {
             SpawnItem();
         }
 
         MakeExplosionEffect();
-
+        ScoreReflection();
         Destroy(gameObject);
+    }
+
+    private void ScoreReflection()
+    {
+        if (ScoreManager.Instance == null)
+        {
+            return;
+        }
+        ScoreManager.Instance.AddScore(_score);
     }
 
     private void MakeExplosionEffect()
