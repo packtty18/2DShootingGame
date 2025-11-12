@@ -1,37 +1,18 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class EnemyObserver : MonoBehaviour
+public class EnemyObserver : SimpleSingleton<EnemyObserver>
 {
-    private static EnemyObserver instance;
-    public static EnemyObserver Instance
-    {
-        get
-        {
-            return instance;
-        }
-    }
-
     public int Id;
 
     //private 변경가능성 존재s
     private SortedDictionary<int, GameObject> _enemyList;
 
-    private void Awake()
+    private void Start()
     {
-        if (instance == null)
-        {
-            instance = this;
-            //DontDestroyOnLoad(this);
-
-            Id = 0;
-            _enemyList = new SortedDictionary<int, GameObject>();
-        }
-        else
-        {
-            return;
-        }
+        Id = 0;
+        _enemyList = new SortedDictionary<int, GameObject>();
     }
 
     public SortedDictionary<int, GameObject> GetDictionary()

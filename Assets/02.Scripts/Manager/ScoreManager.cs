@@ -1,33 +1,13 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ScoreManager : MonoBehaviour
+public class ScoreManager : SimpleSingleton<ScoreManager>
 {
     /*
      * 목표 : 적을 죽일때마다 점수 올리고 UI 반영
      */
-    private static ScoreManager instance;
-    public static ScoreManager Instance
-    {
-        get
-        {
-            return instance;
-        }
-    }
 
     private int _currentScore = 0;
 
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            //DontDestroyOnLoad(this);
-        }
-        else
-        {
-            return;
-        }
-    }
 
     private void Start()
     {
