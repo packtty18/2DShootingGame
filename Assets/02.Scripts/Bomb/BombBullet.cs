@@ -1,8 +1,8 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class BombBullet : MonoBehaviour
 {
-    //ÇöÀç À§Ä¡¿¡¼­ 0,0,0À¸·Î ÀÌµ¿
+    //í˜„ì¬ ìœ„ì¹˜ì—ì„œ 0,0,0ìœ¼ë¡œ ì´ë™
     [SerializeField]
     private GameObject _bombPrefab;
     [SerializeField]

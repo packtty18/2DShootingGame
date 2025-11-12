@@ -1,17 +1,15 @@
-﻿using System.Runtime.CompilerServices;
-using UnityEngine;
-using UnityEngine.UIElements;
+﻿using UnityEngine;
 
 public class SoundObject : MonoBehaviour
 {
-     private AudioSource audio;
-    [SerializeField] private AudioClip clip;
+     private AudioSource _audio;
+    [SerializeField] private AudioClip _clip;
 
     private void Start()
     {
-        audio = GetComponent<AudioSource>();
-        audio.clip = clip;
-        audio.Play();
-        Destroy(gameObject, clip.length);
+        _audio = GetComponent<AudioSource>();
+        _audio.clip = _clip;
+        _audio.Play();
+        Destroy(gameObject, _clip.length);
     }
 }
