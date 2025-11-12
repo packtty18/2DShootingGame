@@ -145,7 +145,14 @@ public class Enemy : MonoBehaviour
 
     private void MakeExplosionEffect()
     {
-        Instantiate(ExplosionPrefabs[Random.Range(0, ExplosionPrefabs.Length)], transform.position, Quaternion.identity);
+        GameObject effect = Instantiate(ExplosionPrefabs[Random.Range(0, ExplosionPrefabs.Length)], transform.position, Quaternion.identity);
+        CameraShake shaker = effect.GetComponent<CameraShake>();
+        if(shaker == null)
+        {
+            return;
+        }
+
+        shaker.StartShake();
     }
 
     private void SpawnItem()

@@ -18,6 +18,7 @@ public class CameraShake : MonoBehaviour
 
     private void Start()
     {
+        _camera = Camera.main;
         _initPosition = _camera.transform.position;
         _delayTimer = _shakeDelay;
     }
