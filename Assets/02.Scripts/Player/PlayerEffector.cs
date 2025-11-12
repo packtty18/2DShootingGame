@@ -1,14 +1,19 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
 public class PlayerEffector : MonoBehaviour
 {
-    [Header("Prefabs")]
+    [Header("Particle")]
     [SerializeField] private GameObject _moveSpeedUpEffectPrefab;
     [SerializeField] private GameObject _attackSpeedUpEffectPrefab;
     [SerializeField] private GameObject _healEffectPrefab;
 
     private Dictionary<EItemType, GameObject> _effectPrefabs;
+
+    [Header("Sound")]
+    [SerializeField] private GameObject _gameOverSoundPrefab;
+    [SerializeField] private AudioSource _hitSound;
+    [SerializeField] private AudioSource _fireSound;
 
     private void Awake()
     {
@@ -26,5 +31,20 @@ public class PlayerEffector : MonoBehaviour
         {
             Instantiate(prefab, transform);
         }
+    }
+
+    public void InstantiateGameOverSoundObject()
+    {
+        Instantiate(_gameOverSoundPrefab);
+    }
+
+    public void PlayFireSound()
+    {
+        _fireSound.Play();
+    }
+
+    public void PlayHitSound()
+    {
+        _hitSound.Play();
     }
 }

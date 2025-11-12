@@ -1,3 +1,5 @@
+﻿using CartoonFX;
+using NUnit.Framework.Internal;
 using UnityEngine;
 using UnityEngine.Windows;
 
@@ -5,6 +7,7 @@ public class PlayerFire : MonoBehaviour
 {
     private PlayerStat _stat;
     private PlayerInput _input;
+    private PlayerEffector _effect;
 
     [Header("Prefabs")] 
     public GameObject BulletPrefab;
@@ -18,10 +21,13 @@ public class PlayerFire : MonoBehaviour
 
     private float _coolTimer;
 
+
+
     private void Start()
     {
         _stat = GetComponent<PlayerStat>();
         _input = GetComponent<PlayerInput>();
+        _effect = GetComponent<PlayerEffector>();
         _coolTimer = _stat.CoolTime;
     }
 
@@ -45,6 +51,7 @@ public class PlayerFire : MonoBehaviour
             _coolTimer = _stat.CoolTime;
             MakeBullets();
             MakeSubBullets();
+            _effect.PlayFireSound();
         }
     }
 

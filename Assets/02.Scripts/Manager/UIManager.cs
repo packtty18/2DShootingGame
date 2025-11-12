@@ -30,10 +30,10 @@ public class UIManager : SimpleSingleton<UIManager>
         }
 
         //자체제작 클래스를 사용한 방법
-        //Tweening tweening = _scoreTextUI.GetComponent<Tweening>();
-        //tweening.StartTweening();
+        Tweening tweening = _scoreTextUI.GetComponent<Tweening>();
+        tweening.StartTweening();
 
         //Dotween을 사용한 방법
-        _scoreTextUI.transform.DOScale(_tweeningSize, _tweenDuration).SetLoops(2, LoopType.Yoyo);
+        //_scoreTextUI.transform.DOScale(_tweeningSize, _tweenDuration).SetLoops(2, LoopType.Yoyo);
     }
 }
