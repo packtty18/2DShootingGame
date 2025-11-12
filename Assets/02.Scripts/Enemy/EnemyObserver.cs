@@ -9,8 +9,9 @@ public class EnemyObserver : SimpleSingleton<EnemyObserver>
     //private 변경가능성 존재s
     private SortedDictionary<int, GameObject> _enemyList;
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
         Id = 0;
         _enemyList = new SortedDictionary<int, GameObject>();
     }
