@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 
 
@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _health = _maxHealth;
-        _playerTransform = GameObject.FindWithTag("Player").transform;
+        _playerTransform = GameObject.FindWithTag("Player")?.transform;
     }
 
     private void Update()
@@ -45,7 +45,14 @@ public class Enemy : MonoBehaviour
         }
         else if (_type == EEnemyType.Trace)
         {
-            MoveTrace();
+            if(_playerTransform == null)
+            {
+                MoveDirection();
+            }
+            else
+            {
+                MoveTrace();
+            }
         }
         else if (_type == EEnemyType.Teleport)
         {
