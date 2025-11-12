@@ -13,12 +13,24 @@ public class ScoreManager : SimpleSingleton<ScoreManager>
 
     private void Start()
     {
-        _highScore = PlayerPrefs.GetInt(_highScoreKey, 0);
+        GetHighScoreFromSaveData();
         _currentScore = 0;
 
         RefreshtextUI();
     }
 
+    private void GetHighScoreFromSaveData()
+    {
+        SaveManager save = SaveManager.Instance;
+        if (save == null)
+        {
+            Debug.LogError("There's No SaveManager");
+            return;
+        }
+
+        SaveData data = save.GetSaveData();
+        _highScore = data.HighScore;
+    }
 
     public void AddScore(int score)
     {
@@ -57,16 +69,31 @@ public class ScoreManager : SimpleSingleton<ScoreManager>
         return _highScore < _currentScore;
     }
 
-    //PlayerPrefs 모듈을 사용한 저장
+
     private void SaveHighScore(int score)
     {
-        PlayerPrefs.SetInt(_highScoreKey, score);
+        SaveManager save = SaveManager.Instance;
+        if (save == null)
+        {
+            Debug.LogError("There's No SaveManager");
+            return;
+        }
+
+        SaveData data = save.GetSaveData();
+        data.SetHIghScore(score);
+        save.Save();
     }
 
     [ContextMenu("ResetHighScore")]
     public void ResetScore()
     {
-        PlayerPrefs.SetInt(_highScoreKey, 0);
-        Debug.Log("HighScore is resetted");
+        SaveManager save = SaveManager.Instance;
+        if (save == null)
+        {
+            Debug.LogError("There's No SaveManager");
+            return;
+        }
+
+        save.DeleteSave();
     }
 }
