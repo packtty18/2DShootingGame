@@ -23,7 +23,7 @@ public class ScoreManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(this);
+            //DontDestroyOnLoad(this);
         }
         else
         {
@@ -43,7 +43,7 @@ public class ScoreManager : MonoBehaviour
     public void AddScore(int score)
     {
         _currentScore += score;
-        string changeText = "현재 점수 : " + _currentScore.ToString();
+        string changeText = "현재 점수 : " + _currentScore.ToString("N0");
 
         RefreshUI(changeText);
     }
