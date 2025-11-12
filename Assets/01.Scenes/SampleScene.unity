@@ -1144,8 +1144,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2513efcbce5107c4bae7bb881c055f17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeedUpEffectPrefab: {fileID: 5880797563127281583, guid: 5129b101630f1c945b6ffe931cb539e1, type: 3}
-  _attackSpeedUpEffectPrefab: {fileID: 4021103657954561961, guid: fa9c78db84a8e58439018308baff073e, type: 3}
+  _moveSpeedUpEffectPrefab: {fileID: 4021103657954561961, guid: fa9c78db84a8e58439018308baff073e, type: 3}
+  _attackSpeedUpEffectPrefab: {fileID: 5880797563127281583, guid: 5129b101630f1c945b6ffe931cb539e1, type: 3}
   _healEffectPrefab: {fileID: 8771972552311404799, guid: a6b53affea70b364ea72ace22976bc9d, type: 3}
 --- !u!1 &1786705169
 GameObject:
