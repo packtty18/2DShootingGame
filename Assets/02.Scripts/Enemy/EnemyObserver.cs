@@ -23,7 +23,7 @@ public class EnemyObserver : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(this);
 
             Id = 0;
             _enemyList = new SortedDictionary<int, GameObject>();
