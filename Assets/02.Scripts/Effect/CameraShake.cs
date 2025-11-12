@@ -1,14 +1,14 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.Rendering;
 
 public class CameraShake : MonoBehaviour
 {
-    private Camera _camera; //´ë»ó -> ¸ŞÀÎÄ«¸Ş¶ó
+    [SerializeField]  private Camera _camera; //ëŒ€ìƒ -> ë©”ì¸ì¹´ë©”ë¼
     private Vector3 _initPosition = Vector3.zero;
 
-    [SerializeField] private float _shakeTime =1; //Èçµé±â ½Ã°£
-    [SerializeField] private Vector3 _shakeStrength = Vector3.zero; //Èçµå´Â °­µµ
-    [SerializeField] private float _shakeDelay = 0.1f; //Ä«¸Ş¶ó ÀÌµ¿°ú ÀÌµ¿ »çÀÌÀÇ µô·¹ÀÌ
+    [SerializeField] private float _shakeTime =1; //í”ë“¤ê¸° ì‹œê°„
+    [SerializeField] private Vector3 _shakeStrength = Vector3.zero; //í”ë“œëŠ” ê°•ë„
+    [SerializeField] private float _shakeDelay = 0.1f; //ì¹´ë©”ë¼ ì´ë™ê³¼ ì´ë™ ì‚¬ì´ì˜ ë”œë ˆì´
     [SerializeField] private AnimationCurve _shakeCurve = AnimationCurve.Linear(0, 1, 1, 0);
 
     private float _time;
@@ -18,7 +18,6 @@ public class CameraShake : MonoBehaviour
 
     private void Start()
     {
-        _camera = Camera.main;
         _initPosition = _camera.transform.position;
         _delayTimer = _shakeDelay;
     }
@@ -67,7 +66,7 @@ public class CameraShake : MonoBehaviour
         Vector3 randomPosition = new Vector3(Random.Range(-_shakeStrength.x, _shakeStrength.x), 
             Random.Range(-_shakeStrength.y, _shakeStrength.y), 
             Random.Range(-_shakeStrength.z, _shakeStrength.z));
-        _camera.transform.position = _initPosition + randomPosition * _shakeCurve.Evaluate(time);
+        _camera.transform.position = _initPosition + randomPosition * _shakeCurve.Evaluate(time/_shakeTime);
     }
 
     private void EndShake()

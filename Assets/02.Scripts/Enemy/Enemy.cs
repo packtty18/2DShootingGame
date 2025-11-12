@@ -130,11 +130,11 @@ public class Enemy : MonoBehaviour
         }
 
         MakeExplosionEffect();
-        ScoreReflection();
+        ReportScoreOnDead();
         Destroy(gameObject);
     }
 
-    private void ScoreReflection()
+    private void ReportScoreOnDead()
     {
         if (ScoreManager.Instance == null)
         {

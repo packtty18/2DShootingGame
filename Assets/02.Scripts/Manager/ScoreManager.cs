@@ -57,10 +57,10 @@ public class ScoreManager : SimpleSingleton<ScoreManager>
 
         }
 
-        string changeHighText = "최고 점수 : " + _highScore.ToString("N0");
+        string changeHighText = $"최고 점수 : {_highScore.ToString("N0")}";
         ui.ChangeHighScoreText(changeHighText);
 
-        string changeText = "현재 점수 : " + _currentScore.ToString("N0");
+        string changeText = $"현재 점수 : {_currentScore.ToString("N0")}";
         ui.ChangeScoreText(changeText);
     }
 

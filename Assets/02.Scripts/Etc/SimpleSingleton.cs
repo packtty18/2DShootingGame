@@ -17,11 +17,11 @@ public class SimpleSingleton<T> : MonoBehaviour where T : MonoBehaviour
         if (instance == null)
         {
             instance = this as T;
-            //DontDestroyOnLoad(this);
+            DontDestroyOnLoad(this);
         }
         else
         {
-            return;
+            Destroy(gameObject);
         }
     }
 }
