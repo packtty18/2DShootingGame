@@ -5,13 +5,16 @@ public class ScoreManager : SimpleSingleton<ScoreManager>
     /*
      * 목표 : 적을 죽일때마다 점수 올리고 UI 반영
      */
-    private const string saveKey = "Score";
+    private const string _highScoreKey = "HighScore";
+
+    private int _highScore = 0;
     private int _currentScore = 0;
 
 
     private void Start()
     {
-        _currentScore = PlayerPrefs.GetInt(saveKey, 0);
+        _highScore = PlayerPrefs.GetInt(_highScoreKey, 0);
+        _currentScore = 0;
 
         RefreshtextUI();
     }
@@ -21,9 +24,16 @@ public class ScoreManager : SimpleSingleton<ScoreManager>
     {
         _currentScore += score;
 
-        SaveScore(_currentScore);
+        if (IsHighScore())
+        {
+            _highScore = _currentScore;
+            SaveHighScore(_highScore);
+        }
+
         RefreshtextUI();
     }
+
+    
 
     private void RefreshtextUI()
     {
@@ -35,21 +45,28 @@ public class ScoreManager : SimpleSingleton<ScoreManager>
 
         }
 
+        string changeHighText = "최고 점수 : " + _highScore.ToString("N0");
+        ui.ChangeHighScoreText(changeHighText);
+
         string changeText = "현재 점수 : " + _currentScore.ToString("N0");
         ui.ChangeScoreText(changeText);
     }
 
-
-    //PlayerPrefs 모듈을 사용한 저장
-    private void SaveScore(int score)
+    private bool IsHighScore()
     {
-        PlayerPrefs.SetInt(saveKey, score);
+        return _highScore < _currentScore;
     }
 
-    [ContextMenu("ResetScore")]
+    //PlayerPrefs 모듈을 사용한 저장
+    private void SaveHighScore(int score)
+    {
+        PlayerPrefs.SetInt(_highScoreKey, score);
+    }
+
+    [ContextMenu("ResetHighScore")]
     public void ResetScore()
     {
-        PlayerPrefs.SetInt(saveKey, 0);
-        Debug.Log("Score is resetted");
+        PlayerPrefs.SetInt(_highScoreKey, 0);
+        Debug.Log("HighScore is resetted");
     }
 }
