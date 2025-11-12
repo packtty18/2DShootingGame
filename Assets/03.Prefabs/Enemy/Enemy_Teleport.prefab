@@ -331,6 +331,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 2
   id: 0
+  _score: 150
   _maxHealth: 150
   _speed: 3
   _damage: 1
@@ -343,8 +344,8 @@ MonoBehaviour:
   - 20
   - 10
   ExplosionPrefabs:
-  - {fileID: 2433282508537954060, guid: 3ef3ae421f71c5c4e97fe12dc2fc6312, type: 3}
-  - {fileID: 725748389856807714, guid: 4bda94453d2ca7444a0fff05b2d425f5, type: 3}
+  - {fileID: 2433282508537954060, guid: 604efbd689d7de84ba9bee42f2f5a7b3, type: 3}
+  - {fileID: 725748389856807714, guid: cc0c05edc9bf38943b1f48df8eaae71a, type: 3}
 --- !u!1 &6059474399116903969
 GameObject:
   m_ObjectHideFlags: 0

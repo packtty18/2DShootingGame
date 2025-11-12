@@ -1,4 +1,4 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 
 
 
@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour
     public int id;
 
     [Header("Stat")]
-
+    [SerializeField] private int _score = 100;
     [SerializeField] private float _maxHealth = 100;
     [SerializeField] private float _speed = 3;
     [SerializeField] private float _damage = 1;
@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _health = _maxHealth;
-        _playerTransform = GameObject.FindWithTag("Player").transform;
+        _playerTransform = GameObject.FindWithTag("Player")?.transform;
     }
 
     private void Update()
@@ -45,7 +45,14 @@ public class Enemy : MonoBehaviour
         }
         else if (_type == EEnemyType.Trace)
         {
-            MoveTrace();
+            if(_playerTransform == null)
+            {
+                MoveDirection();
+            }
+            else
+            {
+                MoveTrace();
+            }
         }
         else if (_type == EEnemyType.Teleport)
         {
@@ -115,16 +122,25 @@ public class Enemy : MonoBehaviour
 
     private void OnDead()
     {
-        //70%»Æ∑¸∑Œ æ∆¿Ã≈€ µÂ∑”
+        //70%ÌôïÎ•†Î°ú ÏïÑÏù¥ÌÖú ÎìúÎ°≠
         float dropCheckIndex = Random.Range(0f, 1f);
-        if(dropCheckIndex < 0.7f)
+        if (dropCheckIndex < 0.7f)
         {
             SpawnItem();
         }
 
         MakeExplosionEffect();
-
+        ScoreReflection();
         Destroy(gameObject);
+    }
+
+    private void ScoreReflection()
+    {
+        if (ScoreManager.Instance == null)
+        {
+            return;
+        }
+        ScoreManager.Instance.AddScore(_score);
     }
 
     private void MakeExplosionEffect()
@@ -146,8 +162,8 @@ public class Enemy : MonoBehaviour
 
         float randomValue = Random.Range(0f, totalWeight);
 
-        float cumulateSum= 0f; //¥©¿˚«’∞Ë
-        int selectedIndex = 0; //º±≈√µ» æ∆¿Ã≈€
+        float cumulateSum= 0f; //ÎàÑÏ†ÅÌï©Í≥Ñ
+        int selectedIndex = 0; //ÏÑ†ÌÉùÎêú ÏïÑÏù¥ÌÖú
 
         for (int i = 0; i < ItemWeight.Length; i++)
         {
@@ -159,7 +175,7 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        // æ∆¿Ã≈€ Ω∫∆˘
+        // ÏïÑÏù¥ÌÖú Ïä§Ìè∞
         GameObject spawnedItem = Instantiate(ItemPrefabs[selectedIndex]);
         spawnedItem.transform.position = transform.position;
     }
