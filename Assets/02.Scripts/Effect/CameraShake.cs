@@ -60,15 +60,17 @@ public class CameraShake : MonoBehaviour
     {
         if (_time > _shakeTime)
         {
-            EnnShake();
+            EndShake();
             return;
         }
 
-        Vector3 randomPosition = new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f), 0);
+        Vector3 randomPosition = new Vector3(Random.Range(-_shakeStrength.x, _shakeStrength.x), 
+            Random.Range(-_shakeStrength.y, _shakeStrength.y), 
+            Random.Range(-_shakeStrength.z, _shakeStrength.z));
         _camera.transform.position = _initPosition + randomPosition * _shakeCurve.Evaluate(time);
     }
 
-    private void EnnShake()
+    private void EndShake()
     {
         _isPlaying = false;
         _camera.transform.position = _initPosition;
