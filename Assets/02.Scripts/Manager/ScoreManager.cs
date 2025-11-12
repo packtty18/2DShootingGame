@@ -16,7 +16,7 @@ public class ScoreManager : SimpleSingleton<ScoreManager>
         GetHighScoreFromSaveData();
         _currentScore = 0;
 
-        RefreshtextUI();
+        RefreshtextUI(false);
     }
 
     private void GetHighScoreFromSaveData()
@@ -47,7 +47,7 @@ public class ScoreManager : SimpleSingleton<ScoreManager>
 
     
 
-    private void RefreshtextUI()
+    private void RefreshtextUI(bool tween = true)
     {
         UIManager ui = UIManager.Instance;
         if (ui == null)
@@ -61,7 +61,7 @@ public class ScoreManager : SimpleSingleton<ScoreManager>
         ui.ChangeHighScoreText(changeHighText);
 
         string changeText = $"현재 점수 : {_currentScore.ToString("N0")}";
-        ui.ChangeScoreText(changeText);
+        ui.ChangeScoreText(changeText, tween);
     }
 
     private bool IsHighScore()
