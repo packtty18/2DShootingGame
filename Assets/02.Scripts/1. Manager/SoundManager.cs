@@ -105,47 +105,59 @@ public class SoundManager : SimpleSingleton<SoundManager>
 
     public GameObject CreateSFX(ESFXType sfx, Vector3 position, Transform parent = null)
     {
-        Transform targetParent = parent == null ? _soundParent : parent;
-        SoundObject soundObject = null;
+        AudioClip clipToPlay = null;
+        bool autoDestroy = true;
+
         switch (sfx)
         {
             case ESFXType.GameOver:
                 {
-                    soundObject = InstantiateSoundObject(_gameOverSound, position, parent).GetComponent<SoundObject>();
+                    clipToPlay = _gameOverSound;
                     break;
                 }
             case ESFXType.ItemHeal:
                 {
-                    soundObject = InstantiateSoundObject(_healSound, position, parent).GetComponent<SoundObject>();
+                    clipToPlay = _healSound;
                     break;
                 }
             case ESFXType.ItemAttackUp:
                 {
-                    soundObject = InstantiateSoundObject(_attackSpeedSound, position, parent).GetComponent<SoundObject>();
+                    clipToPlay = _attackSpeedSound;
                     break;
                 }
             case ESFXType.ItemMoveUp:
                 {
-                    soundObject = InstantiateSoundObject(_moveSpeedSound, position, parent).GetComponent<SoundObject>();
+                    clipToPlay = _moveSpeedSound;
                     break;
                 }
+                
             case ESFXType.Bomb:
                 {
-                    soundObject = InstantiateSoundObject(_bombExplosion, position, parent).GetComponent<SoundObject>();
+                    clipToPlay = _bombExplosion;
                     break;
                 }
             case ESFXType.BombLoop:
                 {
-                    soundObject = InstantiateSoundObject(_bombLoop, position, parent, false).GetComponent<SoundObject>();
-                    break;
+                    clipToPlay = _bombLoop;
+                    autoDestroy = false;
                 }
+                break;
             case ESFXType.Explosion:
                 {
-                    soundObject = InstantiateSoundObject(_explosionSound[Random.Range(0, _explosionSound.Length)], position, parent).GetComponent<SoundObject>();
+                    clipToPlay = _explosionSound[Random.Range(0, _explosionSound.Length)];
                     break;
                 }
+            default:
+                {
+                    Debug.LogWarning($"Unhandled SFX type: {sfx}");
+                    return null;
+                }
         }
+
+        GameObject soundGameObject = InstantiateSoundObject(clipToPlay, position, parent, autoDestroy);
+        SoundObject soundObject = soundGameObject.GetComponent<SoundObject>();
         soundObject.OnPlay();
-        return soundObject.gameObject;
+
+        return soundGameObject;
     }
 }

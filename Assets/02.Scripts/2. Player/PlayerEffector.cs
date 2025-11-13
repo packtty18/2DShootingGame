@@ -37,7 +37,6 @@ public class PlayerEffector : MonoBehaviour
     {
         if (!SoundManager.IsManagerExist())
         {
-            Debug.LogError("There's No SoundManager");
             return;
         }
         _soundManager.CreateSFX(ESFXType.GameOver, transform.position);
@@ -47,7 +46,6 @@ public class PlayerEffector : MonoBehaviour
     {
         if (!SoundManager.IsManagerExist())
         {
-            Debug.LogError("There's No SoundManager");
             return;
         }
         _soundManager.PlayerSFX(ESFXType.PlayerFire);
@@ -57,7 +55,6 @@ public class PlayerEffector : MonoBehaviour
     {
         if (!SoundManager.IsManagerExist())
         {
-            Debug.LogError("There's No SoundManager");
             return;
         }
         _soundManager.PlayerSFX(ESFXType.PlayerHit);

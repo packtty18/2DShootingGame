@@ -1,5 +1,4 @@
-﻿using UnityEditor.Rendering.Universal;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SoundObject : MonoBehaviour
 {
@@ -7,14 +6,13 @@ public class SoundObject : MonoBehaviour
     private bool _autoDestroy;
 
 
-    private void Start()
+    private void Awake()
     {
-        
+        _audio = GetComponent<AudioSource>();
     }
 
     public void SetSound(AudioClip clip, bool autoDestroy = true)
     {
-        _audio = GetComponent<AudioSource>();
         _audio.clip = clip;
         _autoDestroy = autoDestroy;
     }
