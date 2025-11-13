@@ -38,3 +38,14 @@ public enum ESFXType
     ItemMoveUp,
     PlayerHit
 }
+
+public enum EBulletType
+{
+    PlayerDefualt,
+    PlayerCurve,
+    PlayerSub,
+    PlayerBezier,
+    PlayerSpiral,
+    PlayerBomb,
+    EnemyDefault,
+}
