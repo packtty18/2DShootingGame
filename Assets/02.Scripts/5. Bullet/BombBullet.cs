@@ -15,7 +15,11 @@ public class BombBullet : BulletBase
     protected override void Start()
     {
         base.Start();
+    }
 
+    public override void InitBullet()
+    {
+        base.InitBullet();
         //목표지점의 방향 도출
         _direction = (_targetPos - (Vector2)transform.position).normalized;
         float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
@@ -24,7 +28,6 @@ public class BombBullet : BulletBase
         Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
         transform.rotation = targetRotation;
     }
-
 
     protected override void Update()
     {
@@ -44,7 +47,7 @@ public class BombBullet : BulletBase
     {
         CreateEffect();
         CreateBombExplosion();
-        Destroy(gameObject);
+        OnHitTarget();
     }
 
     private void CreateBombExplosion()

@@ -9,32 +9,38 @@ public class SpiralBullet : BulletBase
     [Tooltip("각도 변화량 정도")]
     [SerializeField] private float _angularSpeed = 10f;
 
-    private Vector2 center; // 궤적의 중심
-    private float angle;    // 현재 각도
-    private float time;
+    private Vector2 _center; // 궤적의 중심
+    private float _angle;    // 현재 각도
+    private float _timer;
 
     protected override void Start()
     {
         base.Start();
-        center = transform.position;
-        angle = 0f;
-        time = 0f;
+        
+    }
+
+    public override void InitBullet()
+    {
+        base.InitBullet();
+        _center = transform.position;
+        _angle = 0f;
+        _timer = 0f;
     }
 
     protected override Vector2 GetNewPosition()
     {
         float dt = Time.deltaTime;
-        time += dt;
+        _timer += dt;
 
         //중심점. 이점을 중심으로 회전
-        center += Vector2.up * _speed * dt;
-        angle += _angularSpeed * dt; //시간별 각도의 변화 적용
+        _center += Vector2.up * _speed * dt;
+        _angle += _angularSpeed * dt; //시간별 각도의 변화 적용
         
         //코사인과 사인을 활용해 나선궤적 형성
-        float offsetX = Mathf.Cos(angle) ;
-        float offsetY = Mathf.Sin(angle) ;
+        float offsetX = Mathf.Cos(_angle) ;
+        float offsetY = Mathf.Sin(_angle) ;
         Vector2 offset = new Vector2(offsetX, offsetY);
 
-        return center + offset;
+        return _center + offset;
     }
 }

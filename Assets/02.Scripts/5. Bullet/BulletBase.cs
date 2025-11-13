@@ -22,6 +22,11 @@ public abstract class BulletBase : MonoBehaviour
 
     protected virtual void Start()
     {
+        InitBullet();
+    }
+
+    public virtual void InitBullet()
+    {
         _speed = _startSpeed;
         _damage = _statDamage;
     }
@@ -69,10 +74,15 @@ public abstract class BulletBase : MonoBehaviour
     }
 
     /// <summary>
-    /// 총알이 적중했을 때의 효과(파티클, 소리 등)
+    /// 총알이 적중했을 때의 효과
     /// </summary>
     protected virtual void OnHitTarget()
     {
-        Destroy(gameObject);
+        DeActiveBullet();
+    }
+
+    public void DeActiveBullet()
+    {
+        gameObject.SetActive(false);
     }
 }

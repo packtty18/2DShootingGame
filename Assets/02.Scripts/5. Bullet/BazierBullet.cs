@@ -24,23 +24,30 @@ public class BazierBullet : BulletBase
     protected override void Start()
     {
         base.Start();
-        //베지어 제어점 설정
-        _startPos = transform.position;
+    }
 
+    public override void InitBullet()
+    {
+        base.InitBullet();
+        //베지어 제어점 설정
+        _isBezierDone = false;
+        _startPos = transform.position;
+        
         //왼쪽이냐 오른쪽이냐에 따라 다름
-        if(IsLeft)
+        if (IsLeft)
         {
-            _p1 = _startPos + new Vector2(-_sideOffset/2, -_downOffset);
+            _p1 = _startPos + new Vector2(-_sideOffset / 2, -_downOffset);
             _p2 = _startPos + new Vector2(-_sideOffset, 0f);
         }
         else
         {
-            _p1 = _startPos + new Vector2(_sideOffset/2, -_downOffset);
+            _p1 = _startPos + new Vector2(_sideOffset / 2, -_downOffset);
             _p2 = _startPos + new Vector2(_sideOffset, 0f);
         }
-        
+
         _endPos = _startPos + new Vector2(0f, _destinationOffset);
 
+        _lastDir = Vector2.zero;
         _bezierProgress = 0f;
     }
 

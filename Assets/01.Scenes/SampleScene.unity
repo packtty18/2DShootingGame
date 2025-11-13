@@ -926,7 +926,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1126172150
 Transform:
   m_ObjectHideFlags: 0
@@ -1187,6 +1187,7 @@ MonoBehaviour:
   _playerSpiralPrefab: {fileID: 7345385120107522581, guid: 744be28f324d98441aaf951e33717c25, type: 3}
   _playerBombPrefab: {fileID: 8657631675410667922, guid: 6925e959720ab394bb6bd972fbe430d1, type: 3}
   _enemyDefaultPrefab: {fileID: 0}
+  _poolSize: 10
 --- !u!4 &1266830905
 Transform:
   m_ObjectHideFlags: 0
