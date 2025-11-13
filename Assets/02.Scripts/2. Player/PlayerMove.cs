@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Windows;
 
@@ -34,8 +34,12 @@ public class PlayerMove : MonoBehaviour
         }
 
     }
-    
-    
+    public float GetPlayerSpeed()
+    {
+        return _speed;
+    }
+
+
     private void Update()
     {
         if (_input.IsInputSpeedUp)
