@@ -8,7 +8,7 @@ using UnityEngine;
 /// </summary>
 public abstract class BulletBase : MonoBehaviour
 {
-    [Header("Debug Stat")]
+    [Header("BulletBase")]
     [SerializeField] private float _startSpeed = 1f;
     [SerializeField] private float _endSpeed = 7f;
     [SerializeField] private float _duration = 1.2f;
@@ -17,8 +17,7 @@ public abstract class BulletBase : MonoBehaviour
     protected float _speed;
     protected float _damage;
 
-    [Header("OnLeft")]
-    [Tooltip("발사자의 중앙 기준 왼쪽에서 발사된 총알인지 여부")]
+    [HideInInspector]
     public bool IsLeft;
 
     protected virtual void Start()
@@ -27,7 +26,7 @@ public abstract class BulletBase : MonoBehaviour
         _damage = _statDamage;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         float acceleration = (_endSpeed - _startSpeed) / _duration;
         _speed += Time.deltaTime * acceleration;

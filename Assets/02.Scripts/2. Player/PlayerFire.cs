@@ -5,19 +5,19 @@ using UnityEngine.Windows;
 
 public class PlayerFire : MonoBehaviour
 {
-    private PlayerStat _stat;
-    private PlayerInput _input;
-    private PlayerEffector _effect;
-
-    [Header("Prefabs")] 
-    [SerializeField] private GameObject _bulletPrefab;
-    [SerializeField] private GameObject _subBulletPrefab;
-    [SerializeField] private GameObject _bombBulletPrefab;
-    
     [Header("FirePos")]
     [SerializeField] private Transform _firePosition;
     [SerializeField] private Transform _subFirePositionLeft;
     [SerializeField] private Transform _subFirePositionRight;
+
+    [Header("Bullet Type")]
+    [SerializeField] private EBulletType _mainBulletType = EBulletType.PlayerDefualt;
+    [SerializeField] private EBulletType _subBulletType = EBulletType.PlayerCurve;
+    
+    private PlayerStat _stat;
+    private PlayerInput _input;
+    private PlayerEffector _effect;
+    private BulletFactory _bulletFactory;
 
     private float _coolTimer;
 
@@ -30,6 +30,7 @@ public class PlayerFire : MonoBehaviour
 
     private void Start()
     {
+        _bulletFactory = GameObject.Find("BulletFactory").GetComponent<BulletFactory>();
         _coolTimer = _stat.CoolTime;
     }
 
@@ -60,31 +61,19 @@ public class PlayerFire : MonoBehaviour
 
     private void MakeBullets()
     {
-        BasicBullet bullet1 = Instantiate(_bulletPrefab).GetComponent<BasicBullet>();
-        BasicBullet bullet2 = Instantiate(_bulletPrefab).GetComponent<BasicBullet>(); ;
-        
-        bullet1.IsLeft = true;
-        bullet2.IsLeft = false;
-
-        bullet1.transform.position = _firePosition.position + new Vector3(-_stat.FireOffset, 0, 0);
-        bullet2.transform.position = _firePosition.position + new Vector3(_stat.FireOffset, 0, 0);
+        _bulletFactory.MakeBullets(_mainBulletType, _firePosition.position + new Vector3(-_stat.FireOffset, 0, 0), true);
+        _bulletFactory.MakeBullets(_mainBulletType, _firePosition.position + new Vector3(_stat.FireOffset, 0, 0), false);
     }
 
     private void MakeSubBullets()
     {
-        BulletBase bullet1 = Instantiate(_subBulletPrefab).GetComponent<BulletBase>();
-        BulletBase bullet2 = Instantiate(_subBulletPrefab).GetComponent<BulletBase>();
-
-        bullet1.IsLeft = true;
-        bullet2.IsLeft = false;
-
-        bullet1.transform.position = _subFirePositionLeft.position;
-        bullet2.transform.position = _subFirePositionRight.position;
+        _bulletFactory.MakeBullets(_subBulletType, _subFirePositionLeft.position, true);
+        _bulletFactory.MakeBullets(_subBulletType, _subFirePositionRight.position, false);
     }
 
     private void MakeBomb()
     {
-        Instantiate(_bombBulletPrefab, transform.position, Quaternion.identity);
+        _bulletFactory.MakeBullets(EBulletType.PlayerBomb, _firePosition.position, true);
     }
 
     public void SpeedUp(float value)

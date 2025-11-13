@@ -5,10 +5,11 @@ using UnityEngine;
 public class Pet : MonoBehaviour
 {
     [Header("Stat")]
-    [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _fireTransform;
     [SerializeField] private int _followDelay = 30;
     [SerializeField] private float _attackTime =1;
+
+    private BulletFactory _bulletFactory;
 
     private Transform _parent;
     private Queue<Vector3> _parentPos;
@@ -18,6 +19,11 @@ public class Pet : MonoBehaviour
     private void Awake()
     {
         _parentPos = new Queue<Vector3>();
+        
+    }
+    private void Start()
+    {
+        _bulletFactory = GameObject.Find("BulletFactory").GetComponent<BulletFactory>();
         _attackTimer = _attackTime;
     }
 
@@ -41,8 +47,7 @@ public class Pet : MonoBehaviour
 
     private void CreateBullet()
     {
-        GameObject bullet = Instantiate(_bulletPrefab);
-        bullet.transform.position = _fireTransform.position;
+        _bulletFactory.MakeBullets(EBulletType.PlayerSub, _fireTransform.position, true);
     }
 
     public void SetInit(Transform parent)
