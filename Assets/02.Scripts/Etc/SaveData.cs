@@ -7,7 +7,7 @@ public class SaveData
 {
     [SerializeField] private int _highScore;
     public int HighScore => _highScore; 
-    public void SetHIghScore(int score)
+    public void SetHighScore(int score)
     {
         _highScore = score;
     }

@@ -21,14 +21,12 @@ public class ScoreManager : SimpleSingleton<ScoreManager>
 
     private void GetHighScoreFromSaveData()
     {
-        SaveManager save = SaveManager.Instance;
-        if (save == null)
+        if (!SaveManager.IsManagerExist())
         {
-            Debug.LogError("There's No SaveManager");
             return;
         }
 
-        SaveData data = save.GetSaveData();
+        SaveData data = SaveManager.Instance.GetSaveData();
         _highScore = data.HighScore;
     }
 
@@ -49,14 +47,14 @@ public class ScoreManager : SimpleSingleton<ScoreManager>
 
     private void RefreshtextUI(bool tween = true)
     {
-        UIManager ui = UIManager.Instance;
-        if (ui == null)
+        
+        if (!UIManager.IsManagerExist())
         {
-            Debug.LogError("There's No UIManager");
             return;
 
         }
 
+        UIManager ui = UIManager.Instance;
         string changeHighText = $"최고 점수 : {_highScore.ToString("N0")}";
         ui.ChangeHighScoreText(changeHighText);
 
@@ -72,15 +70,14 @@ public class ScoreManager : SimpleSingleton<ScoreManager>
 
     private void SaveHighScore(int score)
     {
-        SaveManager save = SaveManager.Instance;
-        if (save == null)
+        if (!SaveManager.IsManagerExist())
         {
-            Debug.LogError("There's No SaveManager");
             return;
         }
 
+        SaveManager save = SaveManager.Instance;
         SaveData data = save.GetSaveData();
-        data.SetHIghScore(score);
+        data.SetHighScore(score);
         save.Save();
     }
 

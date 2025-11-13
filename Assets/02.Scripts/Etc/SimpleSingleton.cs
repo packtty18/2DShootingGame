@@ -26,6 +26,11 @@ public class SimpleSingleton<T> : MonoBehaviour where T : MonoBehaviour
 
     public static bool IsManagerExist()
     {
+        if(instance == null)
+        {
+            Debug.LogWarning($"{nameof(T)} is not Exist");
+        }
+
         return instance != null;
     }
 }
