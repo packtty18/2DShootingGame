@@ -17,6 +17,8 @@ public class BackgroundScroll : MonoBehaviour
 
         _tiling = material.mainTextureScale;
         _offset = material.mainTextureOffset;
+        mpb.SetVector("_MainTex_ST", new Vector4(_tiling.x, _tiling.y, _offset.x, _offset.y));
+        renderer.SetPropertyBlock(mpb);
     }
 
     private void Update()
