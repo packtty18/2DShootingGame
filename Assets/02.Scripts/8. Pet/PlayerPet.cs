@@ -56,7 +56,5 @@ public class PlayerPet : MonoBehaviour
             pet.SetInit(_spawnedPet[_spawnedPet.Count - 2].transform);
 
         _spawnedPet.Add(pet);
-
-        
     }
 }

@@ -138,10 +138,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a51a261a7608aee42a6a1b1f0d637040, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartSpeed: 1
-  EndSpeed: 7
-  Duration: 1.2
-  Damage: 70
+  _startSpeed: 1
+  _endSpeed: 7
+  _duration: 1.2
+  _statDamage: 60
   IsLeft: 0
 --- !u!95 &7791486140597286332
 Animator:

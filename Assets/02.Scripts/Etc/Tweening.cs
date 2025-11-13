@@ -3,8 +3,8 @@
 
 public class Tweening : MonoBehaviour
 {
-    [SerializeField] private float tweenTime = 1f;
-    [SerializeField] private Vector3 targetScale = Vector3.one;
+    [SerializeField] private float _tweenTime = 1f;
+    [SerializeField] private Vector3 _targetScale = Vector3.one;
 
     private bool _isPlaying = false;
     private float _timer = 0f;
@@ -22,19 +22,19 @@ public class Tweening : MonoBehaviour
 
         _timer += Time.deltaTime;
 
-        float halfTime = tweenTime / 2f;
+        float halfTime = _tweenTime / 2f;
         float t;
 
         //절반의 시간동안 커지고 작아짐
         if (_timer < halfTime)
         {
             t = _timer / halfTime;
-            transform.localScale = Vector3.Lerp(_originScale, targetScale, t);
+            transform.localScale = Vector3.Lerp(_originScale, _targetScale, t);
         }
-        else if (_timer < tweenTime)
+        else if (_timer < _tweenTime)
         {
             t = (_timer - halfTime) / halfTime;
-            transform.localScale = Vector3.Lerp(targetScale, _originScale, t);
+            transform.localScale = Vector3.Lerp(_targetScale, _originScale, t);
         }
         else
         {

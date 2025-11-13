@@ -89,9 +89,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a81f808d53c6854b90abadf58fff55b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
-  Value: 0.2
-  DelayTime: 2
-  Speed: 10
-  BackPointY: 3
-  SideMaxPointX: 2
+  _type: 0
+  _value: 0.1

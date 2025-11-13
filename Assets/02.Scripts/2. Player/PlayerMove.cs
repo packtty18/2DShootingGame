@@ -17,13 +17,15 @@ public class PlayerMove : MonoBehaviour
     private EPlayerMoveState _state;
     private GameObject _targetEnemy = null;
 
-
-    private void Start()
+    private void Awake()
     {
         _stat = GetComponent<PlayerStat>();
         _input = GetComponent<PlayerInput>();
         _animator = GetComponent<Animator>();
+    }
 
+    private void Start()
+    {
         _originPosition = transform.position;
         _speed = _stat.Speed;
         //자동

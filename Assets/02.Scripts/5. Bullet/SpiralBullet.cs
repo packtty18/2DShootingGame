@@ -1,16 +1,16 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ³ª¼±ÇüÀ¸·Î È¸ÀüÇÏ¸ç ÀÌµ¿ÇÏ´Â ÃÑ¾Ë
+/// ë‚˜ì„ í˜•ìœ¼ë¡œ íšŒì „í•˜ë©° ì´ë™í•˜ëŠ” ì´ì•Œ
 /// </summary>
 public class SpiralBullet : BulletBase
 {
     [Header("Debug Sprial")]
-    [Tooltip("°¢µµ º¯È­·® Á¤µµ")]
-    public float AngularSpeed = 10f;
+    [Tooltip("ê°ë„ ë³€í™”ëŸ‰ ì •ë„")]
+    [SerializeField] private float _angularSpeed = 10f;
 
-    private Vector2 center; // ±ËÀûÀÇ Áß½É
-    private float angle;    // ÇöÀç °¢µµ
+    private Vector2 center; // ê¶¤ì ì˜ ì¤‘ì‹¬
+    private float angle;    // í˜„ì¬ ê°ë„
     private float time;
 
     protected override void Start()
@@ -26,11 +26,11 @@ public class SpiralBullet : BulletBase
         float dt = Time.deltaTime;
         time += dt;
 
-        //Áß½ÉÁ¡. ÀÌÁ¡À» Áß½ÉÀ¸·Î È¸Àü
+        //ì¤‘ì‹¬ì . ì´ì ì„ ì¤‘ì‹¬ìœ¼ë¡œ íšŒì „
         center += Vector2.up * _speed * dt;
-        angle += AngularSpeed * dt; //½Ã°£º° °¢µµÀÇ º¯È­ Àû¿ë
+        angle += _angularSpeed * dt; //ì‹œê°„ë³„ ê°ë„ì˜ ë³€í™” ì ìš©
         
-        //ÄÚ»çÀÎ°ú »çÀÎÀ» È°¿ëÇØ ³ª¼±±ËÀû Çü¼º
+        //ì½”ì‚¬ì¸ê³¼ ì‚¬ì¸ì„ í™œìš©í•´ ë‚˜ì„ ê¶¤ì  í˜•ì„±
         float offsetX = Mathf.Cos(angle) ;
         float offsetY = Mathf.Sin(angle) ;
         Vector2 offset = new Vector2(offsetX, offsetY);

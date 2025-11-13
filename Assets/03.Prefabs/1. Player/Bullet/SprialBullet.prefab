@@ -160,9 +160,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4fde8ed842a65843b21730ed49f2205, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartSpeed: 1
-  EndSpeed: 7
-  Duration: 1.2
-  Damage: 50
+  _startSpeed: 1
+  _endSpeed: 7
+  _duration: 1.2
+  _statDamage: 50
   IsLeft: 0
-  AngularSpeed: 10
+  _angularSpeed: 10

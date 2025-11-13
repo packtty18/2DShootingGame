@@ -1,45 +1,45 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// º£Áö¾î °î¼±À» ÅëÇØ µÚ·Î ÀÌµ¿Çß´Ù°¡ À¯ÅÏÇÏ´Â ÃÑ¾Ë
+/// ë² ì§€ì–´ ê³¡ì„ ì„ í†µí•´ ë’¤ë¡œ ì´ë™í–ˆë‹¤ê°€ ìœ í„´í•˜ëŠ” ì´ì•Œ
 /// </summary>
 public class BazierBullet : BulletBase
 {
     [Header("Debug Bezier")]
-    [Header("º£Áö¾î °î¼±ÀÇ Á¦¾îÁ¡ º¯¼ö")]
-    public float DownOffset = 4f;
-    public float SideOffset = 2f;
-    public float DestinationOffset = 5f;
+    [Header("ë² ì§€ì–´ ê³¡ì„ ì˜ ì œì–´ì  ë³€ìˆ˜")]
+    [SerializeField] private float _downOffset = 4f;
+    [SerializeField] private float _sideOffset = 2f;
+    [SerializeField] private float _destinationOffset = 5f;
 
     private Vector2 _startPos;
     private Vector2 _p1;
     private Vector2 _p2;
     private Vector2 _endPos;
 
-    private float _bezierProgress;                  // ÁøÇà Á¤µµ (0~1)
+    private float _bezierProgress;                  // ì§„í–‰ ì •ë„ (0~1)
     private bool _isBezierDone = false;
-    private Vector2 _lastDir;                       // ¸¶Áö¸· ÀÌµ¿ ¹æÇâ
+    private Vector2 _lastDir;                       // ë§ˆì§€ë§‰ ì´ë™ ë°©í–¥
     private float _bezierDuration = 1f;
 
     protected override void Start()
     {
         base.Start();
-        //º£Áö¾î Á¦¾îÁ¡ ¼³Á¤
+        //ë² ì§€ì–´ ì œì–´ì  ì„¤ì •
         _startPos = transform.position;
 
-        //¿ÞÂÊÀÌ³Ä ¿À¸¥ÂÊÀÌ³Ä¿¡ µû¶ó ´Ù¸§
+        //ì™¼ìª½ì´ëƒ ì˜¤ë¥¸ìª½ì´ëƒì— ë”°ë¼ ë‹¤ë¦„
         if(IsLeft)
         {
-            _p1 = _startPos + new Vector2(-SideOffset/2, -DownOffset);
-            _p2 = _startPos + new Vector2(-SideOffset, 0f);
+            _p1 = _startPos + new Vector2(-_sideOffset/2, -_downOffset);
+            _p2 = _startPos + new Vector2(-_sideOffset, 0f);
         }
         else
         {
-            _p1 = _startPos + new Vector2(SideOffset/2, -DownOffset);
-            _p2 = _startPos + new Vector2(SideOffset, 0f);
+            _p1 = _startPos + new Vector2(_sideOffset/2, -_downOffset);
+            _p2 = _startPos + new Vector2(_sideOffset, 0f);
         }
         
-        _endPos = _startPos + new Vector2(0f, DestinationOffset);
+        _endPos = _startPos + new Vector2(0f, _destinationOffset);
 
         _bezierProgress = 0f;
     }
@@ -68,25 +68,25 @@ public class BazierBullet : BulletBase
     }
 
 
-    //Á÷°üÀû ÀýÂ÷Àû º¸°£¹ý
+    //ì§ê´€ì  ì ˆì°¨ì  ë³´ê°„ë²•
     Vector2 GetCubicBezier(Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, float progress)
     {
-        //1Â÷ º¸°£
-        //ÇöÀç ÁøÇàµµ¿¡ µû¸¥ p0->p1, p1->p2, p2->p3·ÎÀÇ º¸°£
-        //¿ø·¡ °î¼±À» 1Â÷ º¸°£ÇÑ ÀÓ½Ã °æ·Î
+        //1ì°¨ ë³´ê°„
+        //í˜„ìž¬ ì§„í–‰ë„ì— ë”°ë¥¸ p0->p1, p1->p2, p2->p3ë¡œì˜ ë³´ê°„
+        //ì›ëž˜ ê³¡ì„ ì„ 1ì°¨ ë³´ê°„í•œ ìž„ì‹œ ê²½ë¡œ
         Vector2 a = Vector2.Lerp(p0, p1, progress);
         Vector2 b = Vector2.Lerp(p1, p2, progress);
         Vector2 c = Vector2.Lerp(p2, p3, progress);
 
-        //2Â÷ º¸°£
-        //ÇöÀç ÁøÇàµµ¿¡ µû¶ó a->b, b->c·ÎÀÇ º¸°£
-        //ÀÓ½Ã°æ·Î¸¦ ´Ù½Ã º¸°£ÇÑ ºÎµå·¯¿î ¿¬°á¼±
+        //2ì°¨ ë³´ê°„
+        //í˜„ìž¬ ì§„í–‰ë„ì— ë”°ë¼ a->b, b->cë¡œì˜ ë³´ê°„
+        //ìž„ì‹œê²½ë¡œë¥¼ ë‹¤ì‹œ ë³´ê°„í•œ ë¶€ë“œëŸ¬ìš´ ì—°ê²°ì„ 
         Vector2 d = Vector2.Lerp(a, b, progress);
         Vector2 e = Vector2.Lerp(b, c, progress);
 
-        //3Â÷º¸°£
-        //ÇöÀç ÁøÇàµµ¿¡ µû¶ó d->e·ÎÀÇ º¸°£.
-        //ºÎµå·¯¿î ¿¬°á¼± À§ÀÇ ÇöÀç ÁøÇàµµÀÇ ÇÑ Á¡
+        //3ì°¨ë³´ê°„
+        //í˜„ìž¬ ì§„í–‰ë„ì— ë”°ë¼ d->eë¡œì˜ ë³´ê°„.
+        //ë¶€ë“œëŸ¬ìš´ ì—°ê²°ì„  ìœ„ì˜ í˜„ìž¬ ì§„í–‰ë„ì˜ í•œ ì 
         return Vector2.Lerp(d, e, progress);
     }
 }

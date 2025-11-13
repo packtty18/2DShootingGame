@@ -1,45 +1,45 @@
-using System;
+ï»¿using System;
 using System.Buffers;
 using UnityEngine;
 
 
 /// <summary>
-/// ÃÑ¾ËÀÇ ±âº» Å¬·¡½º
+/// ì´ì•Œì˜ ê¸°ë³¸ í´ë˜ìŠ¤
 /// </summary>
 public abstract class BulletBase : MonoBehaviour
 {
     [Header("Debug Stat")]
-    public float StartSpeed = 1f;
-    public float EndSpeed = 7f;
-    public float Duration = 1.2f;
-    public float Damage =1;
+    [SerializeField] private float _startSpeed = 1f;
+    [SerializeField] private float _endSpeed = 7f;
+    [SerializeField] private float _duration = 1.2f;
+    [SerializeField] private float _statDamage =1;
 
     protected float _speed;
     protected float _damage;
 
     [Header("OnLeft")]
-    [Tooltip("¹ß»çÀÚÀÇ Áß¾Ó ±âÁØ ¿ŞÂÊ¿¡¼­ ¹ß»çµÈ ÃÑ¾ËÀÎÁö ¿©ºÎ")]
+    [Tooltip("ë°œì‚¬ìì˜ ì¤‘ì•™ ê¸°ì¤€ ì™¼ìª½ì—ì„œ ë°œì‚¬ëœ ì´ì•Œì¸ì§€ ì—¬ë¶€")]
     public bool IsLeft;
 
     protected virtual void Start()
     {
-        _speed = StartSpeed;
-        _damage = Damage;
+        _speed = _startSpeed;
+        _damage = _statDamage;
     }
 
     private void Update()
     {
-        float acceleration = (EndSpeed - StartSpeed) / Duration;
+        float acceleration = (_endSpeed - _startSpeed) / _duration;
         _speed += Time.deltaTime * acceleration;
 
-        //¼Óµµ°¡ endspeed¸¦ ³Ñ¾î°¡´Â °ÍÀ» ¹æÁö
-        _speed = Mathf.Min(_speed, EndSpeed);
+        //ì†ë„ê°€ endspeedë¥¼ ë„˜ì–´ê°€ëŠ” ê²ƒì„ ë°©ì§€
+        _speed = Mathf.Min(_speed, _endSpeed);
 
         transform.position = GetNewPosition();
     }
 
     /// <summary>
-    /// ÃÑ¾Ë º° ¿òÁ÷ÀÌ´Â ¹æ¹ı Á¤ÀÇ
+    /// ì´ì•Œ ë³„ ì›€ì§ì´ëŠ” ë°©ë²• ì •ì˜
     /// </summary>
     protected virtual Vector2 GetNewPosition()
     {
@@ -59,7 +59,7 @@ public abstract class BulletBase : MonoBehaviour
     }
 
     /// <summary>
-    /// È÷Æ®¹Ú½º¸¦ °¡Áø Àû¿¡°Ô µ¥¹ÌÁö Àû¿ë
+    /// íˆíŠ¸ë°•ìŠ¤ë¥¼ ê°€ì§„ ì ì—ê²Œ ë°ë¯¸ì§€ ì ìš©
     /// </summary>
     private void ApplyDamage(EnemyHitBox hitBox)
     {
@@ -70,7 +70,7 @@ public abstract class BulletBase : MonoBehaviour
     }
 
     /// <summary>
-    /// ÃÑ¾ËÀÌ ÀûÁßÇßÀ» ¶§ÀÇ È¿°ú(ÆÄÆ¼Å¬, ¼Ò¸® µî)
+    /// ì´ì•Œì´ ì ì¤‘í–ˆì„ ë•Œì˜ íš¨ê³¼(íŒŒí‹°í´, ì†Œë¦¬ ë“±)
     /// </summary>
     protected virtual void OnHitTarget()
     {

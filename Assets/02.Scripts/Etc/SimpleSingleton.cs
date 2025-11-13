@@ -2,20 +2,20 @@
 
 public class SimpleSingleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    private static T instance;
+    private static T _instance;
     public static T Instance
     {
         get
         {
-            return instance;
+            return _instance;
         }
     }
 
     protected virtual void Awake()
     {
-        if (instance == null)
+        if (_instance == null)
         {
-            instance = this as T;
+            _instance = this as T;
             DontDestroyOnLoad(this);
         }
         else
@@ -26,11 +26,11 @@ public class SimpleSingleton<T> : MonoBehaviour where T : MonoBehaviour
 
     public static bool IsManagerExist()
     {
-        if(instance == null)
+        if(_instance == null)
         {
             Debug.LogWarning($"{nameof(T)} is not Exist");
         }
 
-        return instance != null;
+        return _instance != null;
     }
 }

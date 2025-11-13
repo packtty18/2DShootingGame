@@ -2,30 +2,37 @@
 
 public class BackgroundScroll : MonoBehaviour
 {
-    public Renderer renderer;
-    private MaterialPropertyBlock mpb;
-    public float ScrollSpeed = 0.1f;
+    [SerializeField] private float _scrollSpeed = 0.1f;
 
-    public Vector2 _tiling;
-    public Vector2 _offset;
+
+    private Renderer _renderer;
+    private MaterialPropertyBlock _mpb;
+
+    private Vector2 _tiling;
+    private Vector2 _offset;
+
+    private void Awake()
+    {
+        _renderer = GetComponent<Renderer>();
+        _mpb = new MaterialPropertyBlock();
+    }
 
     private void Start()
     {
-        renderer = GetComponent<Renderer>();
-        mpb = new MaterialPropertyBlock();
-        Material material = renderer.material;
+        Material material = _renderer.material;
 
         _tiling = material.mainTextureScale;
         _offset = material.mainTextureOffset;
-        mpb.SetVector("_MainTex_ST", new Vector4(_tiling.x, _tiling.y, _offset.x, _offset.y));
-        renderer.SetPropertyBlock(mpb);
+        _mpb.SetVector("_MainTex_ST", new Vector4(_tiling.x, _tiling.y, _offset.x, _offset.y));
+        _renderer.SetPropertyBlock(_mpb);
     }
+
 
     private void Update()
     {
         Vector2 direction = Vector2.up;
-        _offset += direction * ScrollSpeed * Time.deltaTime;
-        mpb.SetVector("_MainTex_ST", new Vector4(_tiling.x, _tiling.y, _offset.x,_offset.y));
-        renderer.SetPropertyBlock(mpb);
+        _offset += direction * _scrollSpeed * Time.deltaTime;
+        _mpb.SetVector("_MainTex_ST", new Vector4(_tiling.x, _tiling.y, _offset.x,_offset.y));
+        _renderer.SetPropertyBlock(_mpb);
     }
 }

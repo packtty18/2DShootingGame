@@ -8,10 +8,15 @@ public class PlayerHealth : MonoBehaviour
 
     private float _health;
 
-    private void Start()
+    private void Awake()
     {
         _stat = GetComponent<PlayerStat>();
         _effect = GetComponent<PlayerEffector>();
+    }
+
+    private void Start()
+    {
+        
         _health = _stat.Health;
     }
 

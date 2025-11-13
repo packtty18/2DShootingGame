@@ -1,9 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-    [SerializeField]
-    private float _lifeTime = 3;
+    [SerializeField]private float _lifeTime = 3;
     private float _timer;
 
     private void Start()

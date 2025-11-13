@@ -69,6 +69,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3666479390104451095, guid: d9947bcc4b6c79d4b9070d983b19566c, type: 3}
+      propertyPath: _type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3666479390104451095, guid: d9947bcc4b6c79d4b9070d983b19566c, type: 3}
+      propertyPath: _value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3666479390104451095, guid: d9947bcc4b6c79d4b9070d983b19566c, type: 3}
       propertyPath: BackPointY
       value: 3
       objectReference: {fileID: 0}

@@ -10,22 +10,26 @@ public class PlayerFire : MonoBehaviour
     private PlayerEffector _effect;
 
     [Header("Prefabs")] 
-    public GameObject BulletPrefab;
-    public GameObject SubBulletPrefab;
-    public GameObject BombBulletPrefab;
+    [SerializeField] private GameObject _bulletPrefab;
+    [SerializeField] private GameObject _subBulletPrefab;
+    [SerializeField] private GameObject _bombBulletPrefab;
     
     [Header("FirePos")]
-    public Transform FirePosition;
-    public Transform SubFirePositionLeft;
-    public Transform SubFirePositionRight;
+    [SerializeField] private Transform _firePosition;
+    [SerializeField] private Transform _subFirePositionLeft;
+    [SerializeField] private Transform _subFirePositionRight;
 
     private float _coolTimer;
 
-    private void Start()
+    private void Awake()
     {
         _stat = GetComponent<PlayerStat>();
         _input = GetComponent<PlayerInput>();
         _effect = GetComponent<PlayerEffector>();
+    }
+
+    private void Start()
+    {
         _coolTimer = _stat.CoolTime;
     }
 
@@ -56,31 +60,31 @@ public class PlayerFire : MonoBehaviour
 
     private void MakeBullets()
     {
-        BasicBullet bullet1 = Instantiate(BulletPrefab).GetComponent<BasicBullet>();
-        BasicBullet bullet2 = Instantiate(BulletPrefab).GetComponent<BasicBullet>(); ;
+        BasicBullet bullet1 = Instantiate(_bulletPrefab).GetComponent<BasicBullet>();
+        BasicBullet bullet2 = Instantiate(_bulletPrefab).GetComponent<BasicBullet>(); ;
         
         bullet1.IsLeft = true;
         bullet2.IsLeft = false;
 
-        bullet1.transform.position = FirePosition.position + new Vector3(-_stat.FireOffset, 0, 0);
-        bullet2.transform.position = FirePosition.position + new Vector3(_stat.FireOffset, 0, 0);
+        bullet1.transform.position = _firePosition.position + new Vector3(-_stat.FireOffset, 0, 0);
+        bullet2.transform.position = _firePosition.position + new Vector3(_stat.FireOffset, 0, 0);
     }
 
     private void MakeSubBullets()
     {
-        BulletBase bullet1 = Instantiate(SubBulletPrefab).GetComponent<BulletBase>();
-        BulletBase bullet2 = Instantiate(SubBulletPrefab).GetComponent<BulletBase>();
+        BulletBase bullet1 = Instantiate(_subBulletPrefab).GetComponent<BulletBase>();
+        BulletBase bullet2 = Instantiate(_subBulletPrefab).GetComponent<BulletBase>();
 
         bullet1.IsLeft = true;
         bullet2.IsLeft = false;
 
-        bullet1.transform.position = SubFirePositionLeft.position;
-        bullet2.transform.position = SubFirePositionRight.position;
+        bullet1.transform.position = _subFirePositionLeft.position;
+        bullet2.transform.position = _subFirePositionRight.position;
     }
 
     private void MakeBomb()
     {
-        Instantiate(BombBulletPrefab, transform.position, Quaternion.identity);
+        Instantiate(_bombBulletPrefab, transform.position, Quaternion.identity);
     }
 
     public void SpeedUp(float value)

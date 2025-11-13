@@ -3,16 +3,11 @@
 public class BombBullet : MonoBehaviour
 {
     //현재 위치에서 0,0,0으로 이동
-    [SerializeField]
-    private GameObject _bombPrefab;
-    [SerializeField]
-    private GameObject _effect;
-    [SerializeField]
-    private Vector2 _targetPos = Vector2.zero;
-    [SerializeField]
-    private float _moveSpeed = 5f;
-    [SerializeField]
-    private float _threshold = 0.1f;
+    [SerializeField] private GameObject _bombPrefab;
+    [SerializeField] private GameObject _effect;
+    [SerializeField] private Vector2 _targetPos = Vector2.zero;
+    [SerializeField] private float _moveSpeed = 5f;
+    [SerializeField] private float _threshold = 0.1f;
     private Vector2 _direction;
 
 

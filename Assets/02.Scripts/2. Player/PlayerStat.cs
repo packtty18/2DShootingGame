@@ -1,8 +1,8 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class PlayerStat : MonoBehaviour
 {
-    //start½Ã ÃÊ±âÈ­ÇÒ ÇÃ·¹ÀÌ¾îÀÇ µğ¹ö±× ½ºÅİ
+    //startì‹œ ì´ˆê¸°í™”í•  í”Œë ˆì´ì–´ì˜ ë””ë²„ê·¸ ìŠ¤í…Ÿ
     [Header("Health")]
     public float Health = 3;
 

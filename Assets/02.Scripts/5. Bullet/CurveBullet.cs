@@ -1,15 +1,15 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ¿·À¸·Î ÈÖ´Â ÃÑ¾Ë
+/// ì˜†ìœ¼ë¡œ íœ˜ëŠ” ì´ì•Œ
 /// </summary>
 public class CurveBullet : BulletBase
 {
     [Header("Debug Curve")]
-    [Tooltip("ÈÖ´Â Å©±â")]
-    public float Amplitude = 3f;  
-    [Tooltip("ÈÖ´Â ÁÖ±â")]
-    public float Frequency = 1f;  
+    [Tooltip("íœ˜ëŠ” í¬ê¸°")]
+    [SerializeField] private float _amplitude = 3f;  
+    [Tooltip("íœ˜ëŠ” ì£¼ê¸°")]
+    [SerializeField] private float _frequency = 1f;  
 
     private float _time;
 
@@ -26,8 +26,8 @@ public class CurveBullet : BulletBase
         float newY = transform.position.y + _speed * Time.deltaTime;
         float directionMultiplier = IsLeft ? -1f : 1f;
 
-        // ÁÂ¿ì·Î SÀÚ ÀÌµ¿ (sin ÇÔ¼ö »ç¿ë)
-        float newX = transform.position.x + Mathf.Sin(_time * Frequency) * Amplitude * Time.deltaTime * directionMultiplier;
+        // ì¢Œìš°ë¡œ Sì ì´ë™ (sin í•¨ìˆ˜ ì‚¬ìš©)
+        float newX = transform.position.x + Mathf.Sin(_time * _frequency) * _amplitude * Time.deltaTime * directionMultiplier;
         
         return new Vector2(newX, newY);
     }

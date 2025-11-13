@@ -1,24 +1,24 @@
-
+ï»¿
 using System.Xml.Serialization;
 using UnityEngine;
 
 public class ItemMove : MonoBehaviour
 {
     [Header("Delay")]
-    public float DelayTime = 2f;    //¾ÆÀÌÅÛÀÌ »ı¼ºµÇ°í ³ª¼­ ¿òÁ÷ÀÌ±â ½ÃÀÛÇÏ´Â ½Ã°£
+    [SerializeField] private float _delayTime = 2f;    //ì•„ì´í…œì´ ìƒì„±ë˜ê³  ë‚˜ì„œ ì›€ì§ì´ê¸° ì‹œì‘í•˜ëŠ” ì‹œê°„
     private float _delayTimer;
 
     [Header("Bezier Control")]
-    public float Speed = 8f;        //¾ÆÀÌÅÛ ÀÌµ¿ ¼Óµµ
-    public float BackPointY = 3f;
-    public float SideMaxPointX = 2f;
-    public float DestinationPointY = 3f;
+    [SerializeField] private float _speed = 8f;        //ì•„ì´í…œ ì´ë™ ì†ë„
+    [SerializeField] private float _backPointY = 3f;
+    [SerializeField] private float _sideMaxPointX = 2f;
+    [SerializeField] private float _destinationPointY = 3f;
 
     private Vector2 _startPos;
     private Vector2 _p1;
     private Vector2 _p2;
     private Vector2 _endPos;
-    private float _bezierProgress;                  // ÁøÇà Á¤µµ (0~1)
+    private float _bezierProgress;                  // ì§„í–‰ ì •ë„ (0~1)
 
     private GameObject _player;
 
@@ -31,28 +31,28 @@ public class ItemMove : MonoBehaviour
         _startPos = transform.position;
         Vector2 directionFromPlayer = (_startPos - (Vector2)_player.transform.position).normalized;
         
-        _p1 = _startPos + (directionFromPlayer * BackPointY);
-        float sideMoveRate = Random.Range(-SideMaxPointX, SideMaxPointX);
+        _p1 = _startPos + (directionFromPlayer * _backPointY);
+        float sideMoveRate = Random.Range(-_sideMaxPointX, _sideMaxPointX);
         _p2 = _startPos + new Vector2(sideMoveRate, 0f);
 
-        _endPos = _startPos + (-directionFromPlayer * DestinationPointY);
+        _endPos = _startPos + (-directionFromPlayer * _destinationPointY);
         _bezierProgress = 0f;
     }
 
     private void Update()
     {
-        //µô·¹ÀÌ
-        if (_delayTimer < DelayTime)
+        //ë”œë ˆì´
+        if (_delayTimer < _delayTime)
         {
             _delayTimer += Time.deltaTime;
             return;
         }
 
         Vector2 directionFromPlayer = ((Vector2)transform.position - (Vector2)_player.transform.position).normalized;
-        Vector2 _newEndPos = (Vector2)transform.position + (-directionFromPlayer * DestinationPointY);
+        Vector2 _newEndPos = (Vector2)transform.position + (-directionFromPlayer * _destinationPointY);
         _endPos = Vector2.Lerp(_endPos, _newEndPos, Time.deltaTime);
 
-        //º£Áö¾î °î¼± ÀÌµ¿
+        //ë² ì§€ì–´ ê³¡ì„  ì´ë™
         if (_bezierProgress <= 0.9f)
         {
             _bezierProgress += Time.deltaTime;
@@ -62,11 +62,11 @@ public class ItemMove : MonoBehaviour
 
             transform.position =  bezierPos;
         }
-        //º£Áö¾î °î¼± ÀÌµ¿ Á¾·á ÈÄ
+        //ë² ì§€ì–´ ê³¡ì„  ì´ë™ ì¢…ë£Œ í›„
         else
         {
             Vector2 directionToPlayer = ((Vector2)_player.transform.position - (Vector2)transform.position).normalized;
-            transform.position = (Vector2)transform.position + directionToPlayer * Speed * Time.deltaTime;
+            transform.position = (Vector2)transform.position + directionToPlayer * _speed * Time.deltaTime;
         }
     }
 

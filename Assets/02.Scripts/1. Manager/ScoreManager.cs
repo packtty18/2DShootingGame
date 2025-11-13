@@ -5,8 +5,6 @@ public class ScoreManager : SimpleSingleton<ScoreManager>
     /*
      * 목표 : 적을 죽일때마다 점수 올리고 UI 반영
      */
-    private const string _highScoreKey = "HighScore";
-
     private int _highScore = 0;
     private int _currentScore = 0;
 
@@ -84,13 +82,11 @@ public class ScoreManager : SimpleSingleton<ScoreManager>
     [ContextMenu("ResetHighScore")]
     public void ResetScore()
     {
-        SaveManager save = SaveManager.Instance;
-        if (save == null)
+        if (!SaveManager.IsManagerExist())
         {
-            Debug.LogError("There's No SaveManager");
             return;
         }
 
-        save.DeleteSave();
+        SaveManager.Instance.DeleteSave();
     }
 }

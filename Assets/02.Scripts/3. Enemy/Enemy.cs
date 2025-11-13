@@ -9,9 +9,9 @@ public class Enemy : MonoBehaviour
     private Animator _animator;
 
     [Header("Type")]
-    [SerializeField] private EEnemyType _type;
     public int id;
-
+    [SerializeField] private EEnemyType _type;
+    
     [Header("Stat")]
     [SerializeField] private int _score = 100;
     [SerializeField] private float _maxHealth = 100;
@@ -30,9 +30,13 @@ public class Enemy : MonoBehaviour
     [Header("ExplosionPrefab")]
     public GameObject[] ExplosionPrefabs;
 
-    private void Start()
+    private void Awake()
     {
         _animator = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
         _health = _maxHealth;
         _playerTransform = GameObject.FindWithTag("Player")?.transform;
     }
@@ -62,7 +66,7 @@ public class Enemy : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (EnemyObserver.Instance != null)
+        if (!EnemyObserver.IsManagerExist())
         {
             EnemyObserver.Instance.RemoveEnemy(id);
         }
@@ -75,15 +79,13 @@ public class Enemy : MonoBehaviour
 
     public void OnInstantiated()
     {
-        EnemyObserver enemyObserver = EnemyObserver.Instance;
-
-        if(enemyObserver == null) 
+        if(!EnemyObserver.IsManagerExist()) 
         {
             Debug.LogError("There's no Observer");
             return;
         }
 
-        id = enemyObserver.InsertEnemy(gameObject);
+        id = EnemyObserver.Instance.InsertEnemy(gameObject);
     }
 
     private void MoveDirection()

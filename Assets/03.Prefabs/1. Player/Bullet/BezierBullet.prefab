@@ -160,11 +160,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f8e63844d900064aad82ffec9863fed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartSpeed: 1
-  EndSpeed: 7
-  Duration: 1.2
-  Damage: 40
+  _startSpeed: 1
+  _endSpeed: 7
+  _duration: 1.2
+  _statDamage: 40
   IsLeft: 0
-  DownOffset: 4
-  SideOffset: 1.5
-  DestinationOffset: 5
+  _downOffset: 4
+  _sideOffset: 2
+  _destinationOffset: 5
