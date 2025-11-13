@@ -219,7 +219,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: af809c217b41eaa44b28621d7488b896, type: 2}
+  - {fileID: 2100000, guid: c80cb2fddcf1283498ac5592bc4f3c1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -263,8 +263,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 572e4d384eba2dc43a4f3502a835eb61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BackgroundMaterial: {fileID: 2100000, guid: af809c217b41eaa44b28621d7488b896, type: 2}
-  ScrollSpeed: 1.2
+  renderer: {fileID: 0}
+  ScrollSpeed: 0.5
+  _tiling: {x: 0, y: 0}
+  _offset: {x: 0, y: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2162,8 +2164,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 572e4d384eba2dc43a4f3502a835eb61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BackgroundMaterial: {fileID: 2100000, guid: c80cb2fddcf1283498ac5592bc4f3c1d, type: 2}
+  renderer: {fileID: 0}
   ScrollSpeed: 1.5
+  _tiling: {x: 0, y: 0}
+  _offset: {x: 0, y: 0}
 --- !u!1 &1951403611
 GameObject:
   m_ObjectHideFlags: 0
@@ -2403,7 +2407,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9c5c4450d9b23534cba723adecdcd104, type: 2}
+  - {fileID: 2100000, guid: c80cb2fddcf1283498ac5592bc4f3c1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2447,8 +2451,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 572e4d384eba2dc43a4f3502a835eb61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BackgroundMaterial: {fileID: 2100000, guid: 9c5c4450d9b23534cba723adecdcd104, type: 2}
-  ScrollSpeed: 0.8
+  renderer: {fileID: 0}
+  ScrollSpeed: 0.2
+  _tiling: {x: 0, y: 0}
+  _offset: {x: 0, y: 0}
 --- !u!1 &2130771317
 GameObject:
   m_ObjectHideFlags: 0

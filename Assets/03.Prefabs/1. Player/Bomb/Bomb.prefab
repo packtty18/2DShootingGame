@@ -172,7 +172,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 309908454665629572, guid: 0e3de2fd5c80153439847908af7a1cc9, type: 3}
       propertyPath: m_Intensity
-      value: 0
+      value: 4.804387
       objectReference: {fileID: 0}
     - target: {fileID: 496487244642044110, guid: 0e3de2fd5c80153439847908af7a1cc9, type: 3}
       propertyPath: m_Materials.Array.size
@@ -184,11 +184,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9027514048236820042, guid: 0e3de2fd5c80153439847908af7a1cc9, type: 3}
       propertyPath: m_LocalScale.x
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9027514048236820042, guid: 0e3de2fd5c80153439847908af7a1cc9, type: 3}
       propertyPath: m_LocalScale.y
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9027514048236820042, guid: 0e3de2fd5c80153439847908af7a1cc9, type: 3}
       propertyPath: m_LocalPosition.x
