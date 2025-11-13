@@ -62,10 +62,6 @@ public class Pet : MonoBehaviour
         {
             _followPos = _parentPos.Dequeue();
         }
-        //else if( _parentPos.Count < _followDelay)
-        //{
-        //    _followPos = _parent.position;
-        //}
     }
 
 

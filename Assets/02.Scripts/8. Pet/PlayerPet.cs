@@ -49,11 +49,14 @@ public class PlayerPet : MonoBehaviour
 
         Pet pet = Instantiate(_petPrefab, transform.position, Quaternion.identity)
             .GetComponent<Pet>();
-        _spawnedPet.Add(pet);
 
-        if (_spawnedPet.Count - 2 < 0)
+        if (_spawnedPet.Count - 1 < 0)
             pet.SetInit(transform);
         else
             pet.SetInit(_spawnedPet[_spawnedPet.Count - 2].transform);
+
+        _spawnedPet.Add(pet);
+
+        
     }
 }
