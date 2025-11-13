@@ -927,7 +927,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1126172150
 Transform:
   m_ObjectHideFlags: 0
@@ -1700,6 +1700,7 @@ GameObject:
   - component: {fileID: 1667411930}
   - component: {fileID: 1667411931}
   - component: {fileID: 1667411940}
+  - component: {fileID: 1667411941}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1978,9 +1979,21 @@ MonoBehaviour:
   _moveSpeedUpEffectPrefab: {fileID: 4021103657954561961, guid: fa9c78db84a8e58439018308baff073e, type: 3}
   _attackSpeedUpEffectPrefab: {fileID: 5880797563127281583, guid: 5129b101630f1c945b6ffe931cb539e1, type: 3}
   _healEffectPrefab: {fileID: 8771972552311404799, guid: a6b53affea70b364ea72ace22976bc9d, type: 3}
-  _gameOverSoundPrefab: {fileID: 1640452695085905741, guid: cebd05baa75ee0446809452617304c4b, type: 3}
-  _hitSound: {fileID: 1281345334}
-  _fireSound: {fileID: 797578160}
+--- !u!114 &1667411941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667411927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 190e6dcf346265a4c8737406aff2dde2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnedPet: []
+  _petPrefab: {fileID: 4147830565502427031, guid: 8df5b2ddb0677d04692553f33fb55316, type: 3}
+  _maxSpawnCount: 5
 --- !u!1 &1692583977
 GameObject:
   m_ObjectHideFlags: 0

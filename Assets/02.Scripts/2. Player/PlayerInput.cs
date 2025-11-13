@@ -1,19 +1,21 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-    // ÀÌµ¿ ÀÔ·Â
+    // ì´ë™ ì…ë ¥
     public Vector2 MoveDirection { get; private set; } = Vector2.zero;
 
-    // ´ë½¬
+    // ëŒ€ì‰¬
     public bool IsInputDash { get; private set; } = false;
 
-    // ±âÅ¸ ¾×¼Ç ÀÔ·Â
+    // ê¸°íƒ€ ì•¡ì…˜ ì…ë ¥
     public bool IsinputFire { get; private set; } = false;
     public bool IsInputOrigin { get; private set; } = false;
     public bool IsInputAutoMode { get; private set; } = false;
+    
     public bool IsInputSpecialAttack { get; private set; } = false;
-
+    public bool IsInputSpawnPet { get; private set; } = false;
+    public bool IsInputDestroyPet { get; private set; } = false;
     public bool IsInputSpeedUp { get; private set; } = false;
     public bool IsInputSpeedDown { get; private set; } = false;
     
@@ -27,8 +29,10 @@ public class PlayerInput : MonoBehaviour
         IsinputFire = Input.GetKey(KeyCode.Space);
         IsInputOrigin = Input.GetKey(KeyCode.R);
         IsInputAutoMode = Input.GetKeyDown(KeyCode.Alpha1);
+        
         IsInputSpecialAttack = Input.GetKeyDown(KeyCode.Alpha3);
-
+        IsInputSpawnPet = Input.GetKeyDown(KeyCode.Alpha4);
+        IsInputDestroyPet = Input.GetKeyDown(KeyCode.Alpha5);
         IsInputSpeedUp = Input.GetKeyDown(KeyCode.Q);
         IsInputSpeedDown = Input.GetKeyDown(KeyCode.E);
     }
