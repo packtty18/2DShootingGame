@@ -53,7 +53,7 @@ public class PlayerPet : MonoBehaviour
         if (_spawnedPet.Count - 1 < 0)
             pet.SetInit(transform);
         else
-            pet.SetInit(_spawnedPet[_spawnedPet.Count - 2].transform);
+            pet.SetInit(_spawnedPet[_spawnedPet.Count - 1].transform);
 
         _spawnedPet.Add(pet);
     }
