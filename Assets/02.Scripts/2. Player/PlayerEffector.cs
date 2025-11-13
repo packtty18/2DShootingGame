@@ -11,9 +11,7 @@ public class PlayerEffector : MonoBehaviour
     private Dictionary<EItemType, GameObject> _effectPrefabs;
 
     [Header("Sound")]
-    [SerializeField] private GameObject _gameOverSoundPrefab;
-    [SerializeField] private AudioSource _hitSound;
-    [SerializeField] private AudioSource _fireSound;
+    private SoundManager _soundManager => SoundManager.Instance;
 
     private void Awake()
     {
@@ -33,18 +31,35 @@ public class PlayerEffector : MonoBehaviour
         }
     }
 
+    
+
     public void InstantiateGameOverSoundObject()
     {
-        Instantiate(_gameOverSoundPrefab);
+        if (!SoundManager.IsManagerExist())
+        {
+            Debug.LogError("There's No SoundManager");
+            return;
+        }
+        _soundManager.CreateSFX(ESFXType.GameOver, transform.position);
     }
 
     public void PlayFireSound()
     {
-        _fireSound.Play();
+        if (!SoundManager.IsManagerExist())
+        {
+            Debug.LogError("There's No SoundManager");
+            return;
+        }
+        _soundManager.PlayerSFX(ESFXType.PlayerFire);
     }
 
     public void PlayHitSound()
     {
-        _hitSound.Play();
+        if (!SoundManager.IsManagerExist())
+        {
+            Debug.LogError("There's No SoundManager");
+            return;
+        }
+        _soundManager.PlayerSFX(ESFXType.PlayerHit);
     }
 }

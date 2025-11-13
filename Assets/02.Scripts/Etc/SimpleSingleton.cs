@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SimpleSingleton<T> : MonoBehaviour where T : MonoBehaviour
 {
@@ -23,5 +22,10 @@ public class SimpleSingleton<T> : MonoBehaviour where T : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public static bool IsManagerExist()
+    {
+        return instance != null;
     }
 }

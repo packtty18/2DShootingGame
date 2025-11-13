@@ -136,23 +136,28 @@ public class Enemy : MonoBehaviour
 
     private void ReportScoreOnDead()
     {
-        if (ScoreManager.Instance == null)
+        if (!ScoreManager.IsManagerExist())
         {
             return;
         }
+
         ScoreManager.Instance.AddScore(_score);
     }
 
     private void MakeExplosionEffect()
     {
         GameObject effect = Instantiate(ExplosionPrefabs[Random.Range(0, ExplosionPrefabs.Length)], transform.position, Quaternion.identity);
-        CameraShake shaker = effect.GetComponent<CameraShake>();
-        if(shaker == null)
+
+        if(effect.TryGetComponent<CameraShake>(out CameraShake shaker))
         {
-            return;
+            shaker.StartShake();
         }
 
-        shaker.StartShake();
+        if (SoundManager.IsManagerExist())
+        {
+            SoundManager.Instance.CreateSFX(ESFXType.Explosion, transform.position, effect.transform);
+        }
+        
     }
 
     private void SpawnItem()

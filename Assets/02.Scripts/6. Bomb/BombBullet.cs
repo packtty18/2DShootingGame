@@ -29,10 +29,34 @@ public class BombBullet : MonoBehaviour
     {
         if(Vector2.Distance(_targetPos, transform.position) < _threshold)
         {
-            Instantiate(_effect, _targetPos, Quaternion.identity);
-            Instantiate(_bombPrefab, _targetPos, Quaternion.identity);
-            Destroy(gameObject);
+            Explosion();
         }
         transform.position = (Vector2)transform.position + _direction * _moveSpeed*Time.deltaTime;
+    }
+
+    private void Explosion()
+    {
+        CreateEffect();
+        CreateBombExplosion();
+        Destroy(gameObject);
+    }
+
+    private void CreateBombExplosion()
+    {
+        GameObject explosion = Instantiate(_bombPrefab, _targetPos, Quaternion.identity);
+        if (SoundManager.IsManagerExist())
+        {
+            SoundManager.Instance.CreateSFX(ESFXType.BombLoop, explosion.transform.position, explosion.transform);
+        }
+    }
+
+    private void CreateEffect()
+    {
+        GameObject effect = Instantiate(_effect, _targetPos, Quaternion.identity);
+
+        if(SoundManager.IsManagerExist())
+        {
+            SoundManager.Instance.CreateSFX(ESFXType.Bomb, effect.transform.position, effect.transform);
+        }
     }
 }
