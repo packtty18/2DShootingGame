@@ -1,4 +1,4 @@
-public enum EItemType
+﻿public enum EItemType
 {
     MoveSpeedUp,
     HealthUp,
@@ -24,4 +24,17 @@ public enum EPlayerMoveState
     Idle,
     Chase,
     Retreat
+}
+
+public enum ESFXType
+{ 
+    GameOver,
+    PlayerFire,
+    Bomb,
+    BombLoop,
+    Explosion,
+    ItemHeal,
+    ItemAttackUp,
+    ItemMoveUp,
+    PlayerHit
 }

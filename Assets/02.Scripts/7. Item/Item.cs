@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 public class Item : MonoBehaviour
 {
     [Header("Item type")]
@@ -43,5 +43,12 @@ public class Item : MonoBehaviour
 
         PlayerEffector playerEffector = collision.GetComponent<PlayerEffector>();
         playerEffector.InstantiateEffect(Type);
+        
+        if(SoundManager.IsManagerExist())
+        {
+            SoundManager.Instance.PlayItemSound(Type,playerEffector.transform);
+        }
     }
+
+    
 }

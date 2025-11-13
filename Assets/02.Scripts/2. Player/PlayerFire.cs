@@ -21,8 +21,6 @@ public class PlayerFire : MonoBehaviour
 
     private float _coolTimer;
 
-
-
     private void Start()
     {
         _stat = GetComponent<PlayerStat>();
@@ -51,6 +49,7 @@ public class PlayerFire : MonoBehaviour
             _coolTimer = _stat.CoolTime;
             MakeBullets();
             MakeSubBullets();
+
             _effect.PlayFireSound();
         }
     }
