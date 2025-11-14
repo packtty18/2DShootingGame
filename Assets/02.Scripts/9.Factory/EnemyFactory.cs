@@ -21,7 +21,7 @@ public class EnemyFactory : FactoryBase<EEnemyType>
 
     public GameObject MakeEnemy(EEnemyType type, Vector3 position)
     {
-        Enemy enemy = CreateObject(type).GetComponent<Enemy>();
+        EnemyBase enemy = CreateObject(type).GetComponent<EnemyBase>();
 
         enemy.transform.position = position;
         enemy.gameObject.SetActive(true);

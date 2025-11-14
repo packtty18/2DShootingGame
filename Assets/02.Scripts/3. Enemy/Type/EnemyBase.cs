@@ -1,23 +1,21 @@
 ﻿using UnityEngine;
 
-public class Enemy : MonoBehaviour, IPoolable
+public class EnemyBase : MonoBehaviour, IPoolable
 {
-    private const float SPRITE_ROTATION_OFFSET = 90f;
-    private Transform _playerTransform;
-    private Animator _animator;
-
-    [Header("Type")]
-    public int id;
-    [SerializeField] private EEnemyType _type;
+    private const float ITEM_DROP_RATE = 0.7f;
+    [Header("Stat")] //적의 공통 스텟
     
-    [Header("Stat")]
     [SerializeField] private int _score = 100;
     [SerializeField] private float _maxHealth = 100;
-    [SerializeField] private float _speed = 3;
-    [SerializeField] private float _damage = 1;
+    [SerializeField] protected float _speed = 3;
+    [SerializeField] protected float _damage = 1;
+
+    protected Transform _playerTransform;
+    private Animator _animator;
 
     //실제 변화 스텟
-    private float _health;
+    public int id;
+    protected float _health;
 
     [Header("Items")]
     public GameObject[] ItemPrefabs;
@@ -25,6 +23,7 @@ public class Enemy : MonoBehaviour, IPoolable
 
     [Header("ExplosionPrefab")]
     public GameObject[] ExplosionPrefabs;
+   
 
     private void Awake()
     {
@@ -55,6 +54,11 @@ public class Enemy : MonoBehaviour, IPoolable
         id = EnemyObserver.Instance.InsertEnemy(gameObject);
     }
 
+    public int GetID()
+    {
+        return id;
+    }
+
     public void OnDeactive()
     {
         if (!EnemyObserver.IsManagerExist())
@@ -64,76 +68,34 @@ public class Enemy : MonoBehaviour, IPoolable
         gameObject.SetActive(false);
     }
 
-
-
     private void Update()
     {
-        if (_type == EEnemyType.Direction)
-        {
-            MoveDirection();
-        }
-        else if (_type == EEnemyType.Trace)
-        {
-            if(_playerTransform == null)
-            {
-                MoveDirection();
-            }
-            else
-            {
-                MoveTrace();
-            }
-        }
-        else if (_type == EEnemyType.Teleport)
-        {
-            MoveDirection();
-        }
+        OnMove();
     }
 
-    public int GetID()
-    {
-        return id;
-    }
-
-    
-    private void MoveDirection()
+    //적 별로 움직이는 로직
+    protected virtual void OnMove()
     {
         Vector2 direction = Vector2.down;
         transform.Translate(direction * _speed * Time.deltaTime);
     }
 
-    private void MoveTrace()
-    {
-        Vector2 direction = ((Vector2)_playerTransform.transform.position - (Vector2)transform.position).normalized;
-
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + SPRITE_ROTATION_OFFSET;
-        Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
-        transform.rotation = targetRotation;
-
-        transform.position += (Vector3)(direction * _speed * Time.deltaTime);
-    }
-
-    public void Hit(float damage)
+    //총알과 충돌당했을때 데미지 로직
+    public virtual void OnHit(float damage)
     {
         _animator.SetTrigger("Hit");
         _health -= damage;
-
-        if(_type == EEnemyType.Teleport && _health > 0)
-        {
-            float randomX = Random.Range(-2f, 2f);
-            transform.position = new Vector2(randomX, transform.position.y);
-        }
 
         if (_health <= 0)
         {
             OnDead();
         }
     }
-
     private void OnDead()
     {
         //70%확률로 아이템 드롭
         float dropCheckIndex = Random.Range(0f, 1f);
-        if (dropCheckIndex < 0.7f)
+        if (dropCheckIndex < ITEM_DROP_RATE)
         {
             SpawnItem();
         }
@@ -142,8 +104,6 @@ public class Enemy : MonoBehaviour, IPoolable
         ReportScoreOnDead();
         OnDeactive();
     }
-
-    
 
     private void ReportScoreOnDead()
     {
@@ -159,7 +119,7 @@ public class Enemy : MonoBehaviour, IPoolable
     {
         GameObject effect = Instantiate(ExplosionPrefabs[Random.Range(0, ExplosionPrefabs.Length)], transform.position, Quaternion.identity);
 
-        if(effect.TryGetComponent<CameraShake>(out CameraShake shaker))
+        if (effect.TryGetComponent<CameraShake>(out CameraShake shaker))
         {
             shaker.StartShake();
         }
@@ -168,7 +128,7 @@ public class Enemy : MonoBehaviour, IPoolable
         {
             SoundManager.Instance.CreateSFX(ESFXType.Explosion, transform.position, effect.transform);
         }
-        
+
     }
 
     private void SpawnItem()
@@ -205,17 +165,15 @@ public class Enemy : MonoBehaviour, IPoolable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(!collision.gameObject.CompareTag("Player")) 
+        if (!collision.gameObject.CompareTag("Player"))
             return;
 
         PlayerHealth player = collision.gameObject.GetComponent<PlayerHealth>();
-        if(player == null) 
+        if (player == null)
             return;
 
         player.Hit(_damage);
 
         OnDeactive();
     }
-
-    
 }

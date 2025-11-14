@@ -65,7 +65,7 @@ public abstract class BulletBase : MonoBehaviour, IPoolable
         if(collision == null)
             return;
 
-        if(collision.TryGetComponent<EnemyHitBox>(out EnemyHitBox hitBox))
+        if(collision.TryGetComponent(out EnemyHitBox hitBox))
         {
             ApplyDamage(hitBox);
             OnHitTarget();
@@ -79,8 +79,8 @@ public abstract class BulletBase : MonoBehaviour, IPoolable
     {
         if (hitBox == null)
             return;
-        Enemy enemy = hitBox.Owner;
-        enemy?.Hit(_damage * hitBox.DamageMultiplier);
+        EnemyBase enemy = hitBox.Owner;
+        enemy?.OnHit(_damage * hitBox.DamageMultiplier);
     }
 
     /// <summary>
@@ -90,6 +90,4 @@ public abstract class BulletBase : MonoBehaviour, IPoolable
     {
         OnDeactive();
     }
-
-    
 }

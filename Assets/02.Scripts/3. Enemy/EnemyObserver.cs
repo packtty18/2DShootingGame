@@ -56,7 +56,7 @@ public class EnemyObserver : SimpleSingleton<EnemyObserver>
                 Debug.LogError("RemoveError : " + enemy.Key);
             }
 
-            Enemy enemyInstance = enemyObject.GetComponent<Enemy>();
+            EnemyBase enemyInstance = enemyObject.GetComponent<EnemyBase>();
             
 
             Debug.Log("id : " + enemyInstance.GetID() + " name : " + enemy.Value.name);

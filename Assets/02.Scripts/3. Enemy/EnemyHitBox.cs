@@ -1,9 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyHitBox : MonoBehaviour
 {
-    public Enemy Owner;
+    public EnemyBase Owner;
 
     public float DamageMultiplier = 1.0f;
-
 }
