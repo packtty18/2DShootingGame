@@ -60,6 +60,7 @@ public class SoundManager : SimpleSingleton<SoundManager>
 
         SoundObject sound = soundObject.GetComponent<SoundObject>();
         sound.SetSound(clip, autoDestory);
+        sound.OnPlay();
 
         return soundObject;
     }
