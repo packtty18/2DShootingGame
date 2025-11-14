@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3944403944477678697}
   - component: {fileID: 3135129372307714735}
   - component: {fileID: 7897576817518744331}
-  - component: {fileID: 41910683505271100}
+  - component: {fileID: -2651118038993539884}
   m_Layer: 0
   m_Name: Enemy_Trace
   m_TagString: Enemy
@@ -187,7 +187,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
---- !u!114 &41910683505271100
+--- !u!114 &-2651118038993539884
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -196,15 +196,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1369522946472496108}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01d4835b016772b43ae3f96ff884ee7f, type: 3}
+  m_Script: {fileID: 11500000, guid: 4a6536939f6788048b7d7f89b421a85b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _type: 1
-  id: 0
   _score: 120
   _maxHealth: 80
   _speed: 3
   _damage: 1
+  id: 0
   ItemPrefabs:
   - {fileID: 6538928302844893629, guid: d9947bcc4b6c79d4b9070d983b19566c, type: 3}
   - {fileID: 2431613818223073192, guid: ebada3920e44eeb4bacfb0bd78149e93, type: 3}
@@ -214,7 +213,6 @@ MonoBehaviour:
   - 20
   - 10
   ExplosionPrefabs:
-  - {fileID: 2433282508537954060, guid: 604efbd689d7de84ba9bee42f2f5a7b3, type: 3}
   - {fileID: 725748389856807714, guid: cc0c05edc9bf38943b1f48df8eaae71a, type: 3}
 --- !u!1 &5276226250490130742
 GameObject:
@@ -335,5 +333,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12585a59abe177649ac6879c064d61da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Owner: {fileID: 41910683505271100}
+  Owner: {fileID: 0}
   DamageMultiplier: 1

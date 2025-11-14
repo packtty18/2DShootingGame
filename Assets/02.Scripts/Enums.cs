@@ -9,7 +9,8 @@ public enum EEnemyType
 {
     Direction,
     Trace,
-    Teleport
+    Teleport,
+    Boss
 }
 
 public enum EPlayerAIStateType
