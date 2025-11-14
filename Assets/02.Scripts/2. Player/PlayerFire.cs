@@ -63,8 +63,8 @@ public class PlayerFire : MonoBehaviour
             return;
         }
         BulletFactory factory = FactoryManager.Instance.GetFactory<BulletFactory>();
-        factory.MakeBullets(_mainBulletType, _firePosition.position + new Vector3(-_stat.FireOffset, 0, 0), true);
-        factory.MakeBullets(_mainBulletType, _firePosition.position + new Vector3(_stat.FireOffset, 0, 0), false);
+        factory.MakeBullets(_mainBulletType, _firePosition.position + new Vector3(-_stat.FireOffset, 0, 0),Quaternion.identity, true);
+        factory.MakeBullets(_mainBulletType, _firePosition.position + new Vector3(_stat.FireOffset, 0, 0), Quaternion.identity, false);
     }
 
     private void MakeSubBullets()
@@ -75,8 +75,8 @@ public class PlayerFire : MonoBehaviour
         }
 
         BulletFactory factory = FactoryManager.Instance.GetFactory<BulletFactory>();
-        factory.MakeBullets(_subBulletType, _subFirePositionLeft.position, true);
-        factory.MakeBullets(_subBulletType, _subFirePositionRight.position, false);
+        factory.MakeBullets(_subBulletType, _subFirePositionLeft.position, Quaternion.identity, true);
+        factory.MakeBullets(_subBulletType, _subFirePositionRight.position, Quaternion.identity, false);
     }
 
     private void MakeBomb()
@@ -87,7 +87,7 @@ public class PlayerFire : MonoBehaviour
         }
 
         BulletFactory factory = FactoryManager.Instance.GetFactory<BulletFactory>();
-        factory.MakeBullets(EBulletType.PlayerBomb, _firePosition.position, true);
+        factory.MakeBullets(EBulletType.PlayerBomb, _firePosition.position, Quaternion.identity, true);
     }
 
     public void SpeedUp(float value)

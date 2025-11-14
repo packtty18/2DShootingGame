@@ -11,12 +11,20 @@ public class EnemyBoss : EnemyBase
     [SerializeField] private float _rightLimit = 2f;
 
     [Header("Boss Attack")]
+    [SerializeField] private Transform _centerShooter;
     [SerializeField] private Transform _leftShooter;
     [SerializeField] private Transform _rightShooter;
     [SerializeField] private float _minAttackTime = 2;
     [SerializeField] private float _maxAttackTime = 4;
     [SerializeField] private float _attackTimer;
 
+    [Header("Attack Settings")]
+    [SerializeField] private float singleShotInterval = 1f;
+    [SerializeField] private int circleBulletCount = 10;
+    [SerializeField] private int fanBulletCount = 3;
+    [SerializeField] private float fanAngle = 60f;
+
+    private BulletFactory _bulletFactory => FactoryManager.Instance.GetFactory<BulletFactory>();
     private bool _spawnComplete = false;
     private bool _moveRight = true;
 
@@ -41,17 +49,11 @@ public class EnemyBoss : EnemyBase
         if(_attackTimer < 0)
         {
             _attackTimer = Random.Range(_minAttackTime, _maxAttackTime); ;
-            Attack();
+            RandomAttack();
         }
     }
 
-    private void Attack()
-    {
-        BulletFactory factory = FactoryManager.Instance.GetFactory<BulletFactory>();
 
-        factory.MakeBullets(EBulletType.EnemyDefault, _leftShooter.position, true);
-        factory.MakeBullets(EBulletType.EnemyDefault, _rightShooter.position, false);
-    }
 
     //보스가 움직이는 방법
     //생성 후 아래로 내려오고 특정 위치에서 정지후 양 옆으로 이동
@@ -135,4 +137,67 @@ public class EnemyBoss : EnemyBase
 
         health.Hit(_damage);
     }
+
+
+    private void RandomAttack()
+    {
+        int attackType = Random.Range(0, 3);
+
+        switch (attackType)
+        {
+            case 0: Attack_SingleShot(); break;
+            case 1: Attack_CircleShot(); break;
+            case 2: Attack_FanShotToPlayer(); break;
+        }
+    }
+
+    private void Attack_SingleShot()
+    {
+        Quaternion rotation = Quaternion.Euler(0, 0, -180f);
+        _bulletFactory.MakeBullets(EBulletType.EnemyDefault, _leftShooter.position, rotation,  true);
+        _bulletFactory.MakeBullets(EBulletType.EnemyDefault, _rightShooter.position, rotation, false);
+    }
+
+    private void Attack_CircleShot()
+    {
+        float angleStep = 360f / circleBulletCount;
+        float angle = 0f;
+
+        for (int i = 0; i < circleBulletCount; i++)
+        {
+            float radian = angle * Mathf.Deg2Rad;
+            Vector3 position = _centerShooter.position;
+            Vector3 direction = new Vector3(Mathf.Cos(radian), Mathf.Sin(radian), 0);
+
+            Quaternion rotation = Quaternion.Euler(0f, 0f, angle - 90f);
+            // 부채꼴/원형은 방향 계산 후 bullet 내부에서 처리
+            _bulletFactory.MakeBullets(EBulletType.EnemyDefault,position + direction * 0.5f,rotation , direction.x < 0);
+
+            angle += angleStep;
+        }
+    }
+
+    private void Attack_FanShotToPlayer()
+    {
+        if (_playerTransform == null) 
+            return;
+
+        Vector3 bossPos = _centerShooter.position;
+        Vector3 toPlayer = (_playerTransform.position - bossPos).normalized;
+        float baseAngle = Mathf.Atan2(toPlayer.y, toPlayer.x) * Mathf.Rad2Deg;
+
+        float startAngle = baseAngle - (fanAngle / 2f);
+        float step = fanAngle / (fanBulletCount - 1);
+
+        for (int i = 0; i < fanBulletCount; i++)
+        {
+            float angle = startAngle + step * i;
+            float radian = angle * Mathf.Deg2Rad;
+
+            Vector3 direction = new Vector3(Mathf.Cos(radian), Mathf.Sin(radian), 0);
+            Quaternion rotation = Quaternion.Euler(0f, 0f, angle - 90f);
+            _bulletFactory.MakeBullets(EBulletType.EnemyDefault, bossPos, rotation,  direction.x < 0);
+        }
+    }
 }
+

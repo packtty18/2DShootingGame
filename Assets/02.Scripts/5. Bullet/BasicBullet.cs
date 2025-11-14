@@ -8,7 +8,7 @@ public class BasicBullet : PlayerBullet
 {
     protected override Vector2 GetNewPosition()
     {
-        return (Vector2)transform.position + Vector2.up * _speed * Time.deltaTime;
+        return (Vector2)transform.position + (Vector2)transform.up * _speed * Time.deltaTime;
     }
 
 }

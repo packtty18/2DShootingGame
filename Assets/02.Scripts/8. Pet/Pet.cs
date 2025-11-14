@@ -50,7 +50,7 @@ public class Pet : MonoBehaviour
         }
 
         BulletFactory factory = FactoryManager.Instance.GetFactory<BulletFactory>();
-        factory.MakeBullets(EBulletType.PlayerSub, _fireTransform.position, true);
+        factory.MakeBullets(EBulletType.PlayerSub, _fireTransform.position, Quaternion.identity, true);
     }
 
     public void SetInit(Transform parent)

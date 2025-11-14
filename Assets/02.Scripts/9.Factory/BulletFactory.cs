@@ -34,14 +34,14 @@ public class BulletFactory : FactoryBase<EBulletType>
     }
 
     //전처리까지 해서 반환
-    public GameObject MakeBullets(EBulletType type, Vector3 position, bool isleft = true)
+    public GameObject MakeBullets(EBulletType type, Vector3 position, Quaternion rotation, bool isleft = true)
     {
         //여기서 풀에서 빼오기
         BulletBase bullet = CreateObject(type).GetComponent<BulletBase>();
        
         bullet.IsLeft = isleft;
         bullet.transform.position = position;
-
+        bullet.transform.rotation = rotation;
         bullet.OnActiveInit();
         bullet.gameObject.SetActive(true);
         return bullet.gameObject;
