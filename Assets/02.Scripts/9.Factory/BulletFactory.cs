@@ -39,7 +39,7 @@ public class BulletFactory : MonoBehaviour
             { EBulletType.PlayerBezier, _playerBezierPrefab },
             { EBulletType.PlayerSpiral, _playerSpiralPrefab },
             { EBulletType.PlayerBomb, _playerBombPrefab },
-            { EBulletType.EnemyDefault, _enemyDefaultPrefab }
+            { EBulletType.EnemyDefault, _playerBombPrefab } //임시
         };
     }
 
