@@ -19,15 +19,15 @@ public class EnemyBoss : EnemyBase
     [SerializeField] private float _attackTimer;
 
     [Header("Attack Settings")]
-    [SerializeField] private int circleBulletCount = 10;
-    [SerializeField] private int fanBulletCount = 3;
-    [SerializeField] private float fanAngle = 60f;
+    [SerializeField] private int _circleBulletCount = 10;
+    [SerializeField] private int _arkBulletCount = 3;
+    [SerializeField] private float _arkAngle = 60f;
 
     private BulletFactory _bulletFactory => FactoryManager.Instance.GetFactory<BulletFactory>();
     private bool _spawnComplete = false;
     private bool _moveRight = true;
 
-    private BossSpawner _spawner;
+    public BossSpawner Spawner;
 
     protected override void Init()
     {
@@ -38,7 +38,7 @@ public class EnemyBoss : EnemyBase
 
     public void SetSpawner(BossSpawner spawner)
     {
-        _spawner = spawner;
+        Spawner = spawner;
     }
 
     protected override void Update()
@@ -127,7 +127,7 @@ public class EnemyBoss : EnemyBase
         {
             return;
         }
-        _spawner.ResetBossSpawn();
+        Spawner.ResetBossSpawn();
         base.Remove();
     }
 
@@ -148,13 +148,14 @@ public class EnemyBoss : EnemyBase
     private void RandomAttack()
     {
         //int attackType = Random.Range(0, 3);
-        attackType += 1;
+        
         switch (attackType)
         {
             case 0: Attack_SingleShot(); break;
             case 1: Attack_CircleShot(); break;
             case 2: Attack_FanShotToPlayer(); break;
         }
+        attackType = (attackType + 1) % 3;
     }
 
     private void Attack_SingleShot()
@@ -166,10 +167,10 @@ public class EnemyBoss : EnemyBase
 
     private void Attack_CircleShot()
     {
-        float angleStep = 360f / circleBulletCount;
+        float angleStep = 360f / _circleBulletCount;
         float angle = 0f;
 
-        for (int i = 0; i < circleBulletCount; i++)
+        for (int i = 0; i < _circleBulletCount; i++)
         {
             float radian = angle * Mathf.Deg2Rad;
             Vector3 position = _centerShooter.position;
@@ -192,10 +193,10 @@ public class EnemyBoss : EnemyBase
         Vector3 toPlayer = (_playerTransform.position - bossPos).normalized;
         float baseAngle = Mathf.Atan2(toPlayer.y, toPlayer.x) * Mathf.Rad2Deg;
 
-        float startAngle = baseAngle - (fanAngle / 2f);
-        float step = fanAngle / (fanBulletCount - 1);
+        float startAngle = baseAngle - (_arkAngle / 2f);
+        float step = _arkAngle / (_arkBulletCount - 1);
 
-        for (int i = 0; i < fanBulletCount; i++)
+        for (int i = 0; i < _arkBulletCount; i++)
         {
             float angle = startAngle + step * i;
             float radian = angle * Mathf.Deg2Rad;

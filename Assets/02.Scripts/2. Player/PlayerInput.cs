@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerInput : MonoBehaviour
 {
-    // 이동 입력
     public Vector2 MoveDirection { get; private set; } = Vector2.zero;
 
     // 대쉬
@@ -21,9 +21,22 @@ public class PlayerInput : MonoBehaviour
     
     private void Update()
     {
+        Vector2 moveInput = Vector2.zero;
+        
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
-        MoveDirection = new Vector2(h, v).normalized;
+        moveInput = new Vector2(h, v).normalized;
+
+        //모바일 빌드시에는 풀기
+        //if (UIManager.IsManagerExist())
+        //{
+        //    var ui = UIManager.Instance;
+        //    moveInput = new Vector2(ui.JoyStick.Horizontal, ui.JoyStick.Vertical);
+        //}
+
+        MoveDirection = moveInput;
+        // 데스크톱: 키보드 입력
+        IsinputFire = Input.GetKey(KeyCode.Space);
 
         IsInputDash = Input.GetKey(KeyCode.LeftShift);
         IsinputFire = Input.GetKey(KeyCode.Space);
