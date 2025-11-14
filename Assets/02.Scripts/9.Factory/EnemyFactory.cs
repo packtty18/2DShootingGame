@@ -8,6 +8,7 @@ public class EnemyFactory : FactoryBase<EEnemyType>
     [SerializeField] private GameObject _directEnemyPrefab;
     [SerializeField] private GameObject _chaseEnemyPrefab;
     [SerializeField] private GameObject _teleportEnemyPrefab;
+    [SerializeField] private GameObject _bossEnemyPrefab;
 
     protected override void RegisterPrefabs()
     {
@@ -15,7 +16,8 @@ public class EnemyFactory : FactoryBase<EEnemyType>
         {
             { EEnemyType.Direction, _directEnemyPrefab },
             { EEnemyType.Trace, _chaseEnemyPrefab },
-            { EEnemyType.Teleport, _teleportEnemyPrefab }
+            { EEnemyType.Teleport, _teleportEnemyPrefab },
+            { EEnemyType.Boss, _bossEnemyPrefab }
         };
     }
 

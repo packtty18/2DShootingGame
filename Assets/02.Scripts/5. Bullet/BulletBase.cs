@@ -1,7 +1,4 @@
-﻿using System;
-using System.Buffers;
-using UnityEngine;
-
+﻿using UnityEngine;
 
 /// <summary>
 /// 총알의 기본 클래스
@@ -60,27 +57,29 @@ public abstract class BulletBase : MonoBehaviour, IPoolable
         return (Vector2)transform.position + Vector2.up * _speed * Time.deltaTime;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision == null)
             return;
-
-        if(collision.TryGetComponent(out EnemyHitBox hitBox))
-        {
-            ApplyDamage(hitBox);
-            OnHitTarget();
-        }
     }
 
     /// <summary>
     /// 히트박스를 가진 적에게 데미지 적용
     /// </summary>
-    private void ApplyDamage(EnemyHitBox hitBox)
+    protected void ApplyDamage(EnemyHitBox hitBox)
     {
         if (hitBox == null)
             return;
         EnemyBase enemy = hitBox.Owner;
         enemy?.OnHit(_damage * hitBox.DamageMultiplier);
+    }
+
+    protected void ApplyDamage(PlayerHealth health)
+    {
+        if (health == null)
+            return;
+
+        health.Hit(_damage);
     }
 
     /// <summary>

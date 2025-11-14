@@ -3,7 +3,7 @@
 /// <summary>
 /// 베지어 곡선을 통해 뒤로 이동했다가 유턴하는 총알
 /// </summary>
-public class BazierBullet : BulletBase
+public class BazierBullet : PlayerBullet
 {
     [Header("Debug Bezier")]
     [Header("베지어 곡선의 제어점 변수")]

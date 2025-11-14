@@ -29,7 +29,7 @@ public class BulletFactory : FactoryBase<EBulletType>
             { EBulletType.PlayerBezier, _playerBezierPrefab },
             { EBulletType.PlayerSpiral, _playerSpiralPrefab },
             { EBulletType.PlayerBomb, _playerBombPrefab },
-            { EBulletType.EnemyDefault, _playerBombPrefab } //임시
+            { EBulletType.EnemyDefault, _enemyDefaultPrefab }
         };
     }
 

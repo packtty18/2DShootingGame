@@ -3,7 +3,7 @@
 /// <summary>
 /// 나선형으로 회전하며 이동하는 총알
 /// </summary>
-public class SpiralBullet : BulletBase
+public class SpiralBullet : PlayerBullet
 {
     [Header("Debug Sprial")]
     [Tooltip("각도 변화량 정도")]
