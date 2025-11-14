@@ -99,17 +99,35 @@ public class EnemyBoss : EnemyBase
 
         return;
     }
+    public override void OnHit(float damage)
+    {
+        if (!_spawnComplete)
+        {
+            return;
+        }
+        base.OnHit(damage);
+    }
 
     protected override void DamageLogic(float damage)
     {
-        _health = Mathf.Min(damage, MAX_DAMAGE_OF_HITTED);
+        _health -= Mathf.Min(damage, MAX_DAMAGE_OF_HITTED);
     }
 
-    
+
+    protected override void Remove()
+    {
+        if (!_spawnComplete)
+        {
+            return;
+        }
+        base.Remove();
+    }
+
 
     //보스는 플레이어와 충돌해도 파괴되지 않음
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
+        
         if (!collision.gameObject.TryGetComponent(out PlayerHealth health))
         {
             return;

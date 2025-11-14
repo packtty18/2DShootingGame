@@ -16,7 +16,7 @@ public class EnemyBase : MonoBehaviour, IPoolable
 
     //실제 변화 스텟
     public int id;
-    protected float _health;
+    [SerializeField] protected float _health;
 
     [Header("Items")]
     public GameObject[] ItemPrefabs;
@@ -59,6 +59,11 @@ public class EnemyBase : MonoBehaviour, IPoolable
     }
 
     public void OnDeactive()
+    {
+        Remove();
+    }
+
+    protected virtual void Remove()
     {
         if (!EnemyObserver.IsManagerExist())
         {
@@ -143,7 +148,7 @@ public class EnemyBase : MonoBehaviour, IPoolable
 
     private void SpawnItem()
     {
-        if (ItemPrefabs == null || ItemPrefabs.Length != ItemWeight.Length)
+        if (ItemPrefabs == null || ItemPrefabs.Length == 0 ||ItemPrefabs.Length != ItemWeight.Length)
             return;
 
         float totalWeight = 0f;

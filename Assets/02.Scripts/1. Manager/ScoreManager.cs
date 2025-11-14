@@ -41,7 +41,10 @@ public class ScoreManager : SimpleSingleton<ScoreManager>
         RefreshtextUI();
     }
 
-    
+    public int GetCurrentScore()
+    {
+        return _currentScore;
+    }    
 
     private void RefreshtextUI(bool tween = true)
     {
