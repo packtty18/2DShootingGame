@@ -3,17 +3,17 @@
 public class CooltimeSpawner : SpanwerBase
 {
     [Header("Enemy Prefabs")]
-    public EEnemyType[] SpawnType;
-    public float[] SpawnWeight;
+    [SerializeField] private EEnemyType[] _spawnType;
+    [SerializeField] private float[] _spawnWeight;
 
 
     //쿨타임형 스포너
     [Header("CoolTime")]
-    public float CoolTime = 2f;
+    [SerializeField] private float _coolTime = 2f;
     private float _coolTimer;
 
-    public float MinCoolTime = 1.0f;
-    public float MaxCoolTime = 3.0f;
+    [SerializeField] private float _minCoolTime = 1.0f;
+    [SerializeField] private float _maxCoolTime = 3.0f;
 
     private void Start()
     {
@@ -22,25 +22,25 @@ public class CooltimeSpawner : SpanwerBase
 
     protected override void Init()
     {
-        CoolTime = GetRandomCoolTime(MinCoolTime, MaxCoolTime);
+        _coolTime = GetRandomCoolTime(_minCoolTime, _maxCoolTime);
     }
     
     protected override void Spawn()
     {
         _coolTimer += Time.deltaTime;
 
-        if (_coolTimer >= CoolTime)
+        if (_coolTimer >= _coolTime)
         {
             _coolTimer = 0f;
 
             //스폰할때마다 스폰시간 재설정
-            CoolTime = GetRandomCoolTime(MinCoolTime, MaxCoolTime);
+            _coolTime = GetRandomCoolTime(_minCoolTime, _maxCoolTime);
 
-            if (SpawnType == null || SpawnType.Length != SpawnWeight.Length)
+            if (_spawnType == null || _spawnType.Length != _spawnWeight.Length)
                 return;
 
             float totalWeight = 0f;
-            foreach (float w in SpawnWeight)
+            foreach (float w in _spawnWeight)
             {
                 totalWeight += w;
             }
@@ -51,9 +51,9 @@ public class CooltimeSpawner : SpanwerBase
             float cumulateSum = 0f; //누적합계
             int selectedIndex = 0;
 
-            for (int i = 0; i < SpawnWeight.Length; i++)
+            for (int i = 0; i < _spawnWeight.Length; i++)
             {
-                cumulateSum += SpawnWeight[i];
+                cumulateSum += _spawnWeight[i];
                 if (randomValue <= cumulateSum)
                 {
                     selectedIndex = i;
@@ -67,7 +67,7 @@ public class CooltimeSpawner : SpanwerBase
             }
 
             EnemyFactory factory = FactoryManager.Instance.GetFactory<EnemyFactory>();
-            factory.MakeEnemy(SpawnType[selectedIndex], transform.position);
+            factory.MakeEnemy(_spawnType[selectedIndex], transform.position);
         }
     }
    
