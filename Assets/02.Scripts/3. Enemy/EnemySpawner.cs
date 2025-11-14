@@ -1,9 +1,9 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
     [Header("Enemy Prefabs")]
-    public GameObject[] EnemyPrefab;
+    public EEnemyType[] SpawnEnemyTypes;
     public float[] SpawnWeight;   
 
     [Header("CoolTime")]
@@ -26,10 +26,10 @@ public class EnemySpawner : MonoBehaviour
         {
             _coolTimer = 0f;
 
-            //½ºÆùÇÒ¶§¸¶´Ù ½ºÆù½Ã°£ Àç¼³Á¤
+            //ìŠ¤í°í• ë•Œë§ˆë‹¤ ìŠ¤í°ì‹œê°„ ì¬ì„¤ì •
             CoolTime = GetRandomCoolTime(MinCoolTime, MaxCoolTime);
 
-            if (EnemyPrefab == null || EnemyPrefab.Length != SpawnWeight.Length)
+            if (SpawnEnemyTypes == null || SpawnEnemyTypes.Length != SpawnWeight.Length)
                 return;
 
             float totalWeight = 0f;
@@ -41,8 +41,8 @@ public class EnemySpawner : MonoBehaviour
 
             float randomValue = Random.Range(0f, totalWeight);
 
-            float cumulateSum = 0f; //´©ÀûÇÕ°è
-            int selectedIndex = 0; //¼±ÅÃµÈ ¾ÆÀÌÅÛ
+            float cumulateSum = 0f; //ëˆ„ì í•©ê³„
+            int selectedIndex = 0; //ì„ íƒëœ ì•„ì´í…œ
 
             for (int i = 0; i < SpawnWeight.Length; i++)
             {
@@ -54,10 +54,13 @@ public class EnemySpawner : MonoBehaviour
                 }
             }
 
-            GameObject spawnedEnemy = Instantiate(EnemyPrefab[selectedIndex]);
-            
-            spawnedEnemy.GetComponent<Enemy>().OnInstantiated();
-            spawnedEnemy.transform.position = transform.position;
+            if (!FactoryManager.IsManagerExist())
+            {
+                return;
+            }
+
+            EnemyFactory factory = FactoryManager.Instance.GetFactory<EnemyFactory>();
+            factory.MakeEnemy(SpawnEnemyTypes[selectedIndex], transform.position);
         }
     }
 

@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 
-
-
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IPoolable
 {
     private const float SPRITE_ROTATION_OFFSET = 90f;
     private Transform _playerTransform;
@@ -18,10 +16,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _speed = 3;
     [SerializeField] private float _damage = 1;
 
+    //실제 변화 스텟
     private float _health;
-
-
-    
 
     [Header("Items")]
     public GameObject[] ItemPrefabs;
@@ -37,9 +33,38 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
+        Init();
+    }
+
+    public void OnActiveInit()
+    {
+        Init();
+    }
+
+    protected virtual void Init()
+    {
         _health = _maxHealth;
         _playerTransform = GameObject.FindWithTag("Player")?.transform;
+
+        if (!EnemyObserver.IsManagerExist())
+        {
+            Debug.LogError("There's no Observer");
+            return;
+        }
+
+        id = EnemyObserver.Instance.InsertEnemy(gameObject);
     }
+
+    public void OnDeactive()
+    {
+        if (!EnemyObserver.IsManagerExist())
+        {
+            EnemyObserver.Instance.RemoveEnemy(id);
+        }
+        gameObject.SetActive(false);
+    }
+
+
 
     private void Update()
     {
@@ -64,30 +89,12 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
-    {
-        if (!EnemyObserver.IsManagerExist())
-        {
-            EnemyObserver.Instance.RemoveEnemy(id);
-        }
-    }
-
     public int GetID()
     {
         return id;
     }
 
-    public void OnInstantiated()
-    {
-        if(!EnemyObserver.IsManagerExist()) 
-        {
-            Debug.LogError("There's no Observer");
-            return;
-        }
-
-        id = EnemyObserver.Instance.InsertEnemy(gameObject);
-    }
-
+    
     private void MoveDirection()
     {
         Vector2 direction = Vector2.down;
@@ -133,8 +140,10 @@ public class Enemy : MonoBehaviour
 
         MakeExplosionEffect();
         ReportScoreOnDead();
-        Destroy(gameObject);
+        OnDeactive();
     }
+
+    
 
     private void ReportScoreOnDead()
     {
@@ -172,11 +181,11 @@ public class Enemy : MonoBehaviour
         {
             totalWeight += w;
         }
-            
+
 
         float randomValue = Random.Range(0f, totalWeight);
 
-        float cumulateSum= 0f; //누적합계
+        float cumulateSum = 0f; //누적합계
         int selectedIndex = 0; //선택된 아이템
 
         for (int i = 0; i < ItemWeight.Length; i++)
@@ -194,7 +203,6 @@ public class Enemy : MonoBehaviour
         spawnedItem.transform.position = transform.position;
     }
 
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(!collision.gameObject.CompareTag("Player")) 
@@ -206,7 +214,7 @@ public class Enemy : MonoBehaviour
 
         player.Hit(_damage);
 
-        Destroy(gameObject);
+        OnDeactive();
     }
 
     

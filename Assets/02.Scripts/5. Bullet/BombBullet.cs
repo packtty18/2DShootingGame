@@ -17,7 +17,7 @@ public class BombBullet : BulletBase
         base.Start();
     }
 
-    public override void InitBullet()
+    protected override void InitBullet()
     {
         base.InitBullet();
         //목표지점의 방향 도출

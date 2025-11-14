@@ -1,16 +1,51 @@
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class FactoryManager : MonoBehaviour
+public enum EFactoryType
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    Bullet,
+    Enemy,
+    Item
+}
+
+public class FactoryManager : SimpleSingleton<FactoryManager>
+{
+    [Header("Factories")]
+    [SerializeField] private List<FactoryBase> factoryList = new List<FactoryBase>();
+    private Dictionary<Type, FactoryBase> factoryMap;
+
+    protected override void Awake()
     {
-        
+        base.Awake();
+        SetFactoryMap();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void SetFactoryMap()
     {
-        
+        factoryMap = new Dictionary<Type, FactoryBase>();
+
+        foreach (FactoryBase factory in factoryList)
+        {
+            if (factory == null) 
+                continue;
+
+            Type t = factory.GetType();
+            if (!factoryMap.ContainsKey(t))
+            {
+                factoryMap.Add(t, factory);
+            }
+        }
     }
+
+    public T GetFactory<T>() where T : FactoryBase
+    {
+        Type key = typeof(T);
+        if (factoryMap.TryGetValue(key, out FactoryBase value))
+            return value as T;
+
+        Debug.LogError($"FactoryManager: {key.Name} not registered!");
+        return null;
+    }
+
 }

@@ -9,8 +9,6 @@ public class Pet : MonoBehaviour
     [SerializeField] private int _followDelay = 30;
     [SerializeField] private float _attackTime =1;
 
-    private BulletFactory _bulletFactory;
-
     private Transform _parent;
     private Queue<Vector3> _parentPos;
     private Vector3 _followPos;
@@ -23,7 +21,6 @@ public class Pet : MonoBehaviour
     }
     private void Start()
     {
-        _bulletFactory = GameObject.Find("BulletFactory").GetComponent<BulletFactory>();
         _attackTimer = _attackTime;
     }
 
@@ -47,7 +44,13 @@ public class Pet : MonoBehaviour
 
     private void CreateBullet()
     {
-        _bulletFactory.MakeBullets(EBulletType.PlayerSub, _fireTransform.position, true);
+        if(!FactoryManager.IsManagerExist())
+        {
+            return;
+        }
+
+        BulletFactory factory = FactoryManager.Instance.GetFactory<BulletFactory>();
+        factory.MakeBullets(EBulletType.PlayerSub, _fireTransform.position, true);
     }
 
     public void SetInit(Transform parent)

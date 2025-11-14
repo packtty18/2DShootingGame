@@ -26,7 +26,7 @@ public class BazierBullet : BulletBase
         base.Start();
     }
 
-    public override void InitBullet()
+    protected override void InitBullet()
     {
         base.InitBullet();
         //베지어 제어점 설정
