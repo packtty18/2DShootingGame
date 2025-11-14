@@ -3,7 +3,7 @@
 public class CooltimeSpawner : SpanwerBase
 {
     [Header("Enemy Prefabs")]
-    public EEnemyType[] spawnType;
+    public EEnemyType[] SpawnType;
     public float[] SpawnWeight;
 
 
@@ -36,7 +36,7 @@ public class CooltimeSpawner : SpanwerBase
             //스폰할때마다 스폰시간 재설정
             CoolTime = GetRandomCoolTime(MinCoolTime, MaxCoolTime);
 
-            if (spawnType == null || spawnType.Length != SpawnWeight.Length)
+            if (SpawnType == null || SpawnType.Length != SpawnWeight.Length)
                 return;
 
             float totalWeight = 0f;
@@ -67,7 +67,7 @@ public class CooltimeSpawner : SpanwerBase
             }
 
             EnemyFactory factory = FactoryManager.Instance.GetFactory<EnemyFactory>();
-            factory.MakeEnemy(spawnType[selectedIndex], transform.position);
+            factory.MakeEnemy(SpawnType[selectedIndex], transform.position);
         }
     }
    
