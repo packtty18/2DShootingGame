@@ -28,7 +28,7 @@ public class SimpleSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         if(_instance == null)
         {
-            Debug.LogWarning($"{nameof(T)} is not Exist");
+            Debug.LogWarning($"{typeof(T).Name} is not Exist");
         }
 
         return _instance != null;

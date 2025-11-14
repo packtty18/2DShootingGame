@@ -19,7 +19,7 @@ public class SpiralBullet : BulletBase
         
     }
 
-    public override void InitBullet()
+    protected override void InitBullet()
     {
         base.InitBullet();
         _center = transform.position;

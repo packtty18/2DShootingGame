@@ -18,7 +18,7 @@ public class CurveBullet : BulletBase
         base.Start();
     }
 
-    public override void InitBullet()
+    protected override void InitBullet()
     {
         base.InitBullet();
         _time = 0f;

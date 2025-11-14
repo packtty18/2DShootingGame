@@ -17,8 +17,6 @@ public class PlayerFire : MonoBehaviour
     private PlayerStat _stat;
     private PlayerInput _input;
     private PlayerEffector _effect;
-    private BulletFactory _bulletFactory;
-
     private float _coolTimer;
 
     private void Awake()
@@ -30,7 +28,6 @@ public class PlayerFire : MonoBehaviour
 
     private void Start()
     {
-        _bulletFactory = GameObject.Find("BulletFactory").GetComponent<BulletFactory>();
         _coolTimer = _stat.CoolTime;
     }
 
@@ -61,19 +58,36 @@ public class PlayerFire : MonoBehaviour
 
     private void MakeBullets()
     {
-        _bulletFactory.MakeBullets(_mainBulletType, _firePosition.position + new Vector3(-_stat.FireOffset, 0, 0), true);
-        _bulletFactory.MakeBullets(_mainBulletType, _firePosition.position + new Vector3(_stat.FireOffset, 0, 0), false);
+        if (!FactoryManager.IsManagerExist())
+        {
+            return;
+        }
+        BulletFactory factory = FactoryManager.Instance.GetFactory<BulletFactory>();
+        factory.MakeBullets(_mainBulletType, _firePosition.position + new Vector3(-_stat.FireOffset, 0, 0), true);
+        factory.MakeBullets(_mainBulletType, _firePosition.position + new Vector3(_stat.FireOffset, 0, 0), false);
     }
 
     private void MakeSubBullets()
     {
-        _bulletFactory.MakeBullets(_subBulletType, _subFirePositionLeft.position, true);
-        _bulletFactory.MakeBullets(_subBulletType, _subFirePositionRight.position, false);
+        if (!FactoryManager.IsManagerExist())
+        {
+            return;
+        }
+
+        BulletFactory factory = FactoryManager.Instance.GetFactory<BulletFactory>();
+        factory.MakeBullets(_subBulletType, _subFirePositionLeft.position, true);
+        factory.MakeBullets(_subBulletType, _subFirePositionRight.position, false);
     }
 
     private void MakeBomb()
     {
-        _bulletFactory.MakeBullets(EBulletType.PlayerBomb, _firePosition.position, true);
+        if (!FactoryManager.IsManagerExist())
+        {
+            return;
+        }
+
+        BulletFactory factory = FactoryManager.Instance.GetFactory<BulletFactory>();
+        factory.MakeBullets(EBulletType.PlayerBomb, _firePosition.position, true);
     }
 
     public void SpeedUp(float value)

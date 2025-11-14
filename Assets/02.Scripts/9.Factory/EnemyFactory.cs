@@ -1,16 +1,31 @@
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyFactory : MonoBehaviour
+public class EnemyFactory : FactoryBase<EEnemyType>
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    [Header("프리팹")]
+    [SerializeField] private GameObject _directEnemyPrefab;
+    [SerializeField] private GameObject _chaseEnemyPrefab;
+    [SerializeField] private GameObject _teleportEnemyPrefab;
+
+    protected override void RegisterPrefabs()
     {
-        
+        _prefabMap = new Dictionary<EEnemyType, GameObject>
+        {
+            { EEnemyType.Direction, _directEnemyPrefab },
+            { EEnemyType.Trace, _chaseEnemyPrefab },
+            { EEnemyType.Teleport, _teleportEnemyPrefab }
+        };
     }
 
-    // Update is called once per frame
-    void Update()
+    public GameObject MakeEnemy(EEnemyType type, Vector3 position)
     {
-        
+        Enemy enemy = CreateObject(type).GetComponent<Enemy>();
+
+        enemy.transform.position = position;
+        enemy.gameObject.SetActive(true);
+        enemy.OnActiveInit();
+        return enemy.gameObject;
     }
 }

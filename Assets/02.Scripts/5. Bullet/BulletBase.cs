@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// 총알의 기본 클래스
 /// </summary>
-public abstract class BulletBase : MonoBehaviour
+public abstract class BulletBase : MonoBehaviour, IPoolable
 {
     [Header("BulletBase")]
     [SerializeField] private float _startSpeed = 1f;
@@ -25,7 +25,17 @@ public abstract class BulletBase : MonoBehaviour
         InitBullet();
     }
 
-    public virtual void InitBullet()
+    public void OnActiveInit()
+    {
+        InitBullet();
+    }
+
+    public void OnDeactive()
+    {
+        gameObject.SetActive(false);
+    }
+
+    protected virtual void InitBullet()
     {
         _speed = _startSpeed;
         _damage = _statDamage;
@@ -78,11 +88,8 @@ public abstract class BulletBase : MonoBehaviour
     /// </summary>
     protected virtual void OnHitTarget()
     {
-        DeActiveBullet();
+        OnDeactive();
     }
 
-    public void DeActiveBullet()
-    {
-        gameObject.SetActive(false);
-    }
+    
 }

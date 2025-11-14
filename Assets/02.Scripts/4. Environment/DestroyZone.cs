@@ -5,9 +5,9 @@ public class DestroyZone : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent<BulletBase>(out BulletBase bullet))
+        if(collision.TryGetComponent<IPoolable>(out IPoolable poolable))
         {
-            bullet.DeActiveBullet();
+            poolable.OnDeactive();
             return;
         }
 
