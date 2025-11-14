@@ -27,7 +27,7 @@ public class EnemyBoss : EnemyBase
     private bool _spawnComplete = false;
     private bool _moveRight = true;
 
-    private BossSpawner _spawner;
+    public BossSpawner Spawner;
 
     protected override void Init()
     {
@@ -38,7 +38,7 @@ public class EnemyBoss : EnemyBase
 
     public void SetSpawner(BossSpawner spawner)
     {
-        _spawner = spawner;
+        Spawner = spawner;
     }
 
     protected override void Update()
@@ -127,7 +127,7 @@ public class EnemyBoss : EnemyBase
         {
             return;
         }
-        _spawner.ResetBossSpawn();
+        Spawner.ResetBossSpawn();
         base.Remove();
     }
 
@@ -148,13 +148,14 @@ public class EnemyBoss : EnemyBase
     private void RandomAttack()
     {
         //int attackType = Random.Range(0, 3);
-        attackType += 1;
+        
         switch (attackType)
         {
             case 0: Attack_SingleShot(); break;
             case 1: Attack_CircleShot(); break;
             case 2: Attack_FanShotToPlayer(); break;
         }
+        attackType = (attackType + 1) % 3;
     }
 
     private void Attack_SingleShot()
