@@ -41,19 +41,23 @@ public class PlayerFire : MonoBehaviour
         {
             MakeBomb();
         }
-        
+
         //타이머가 0보다 작으면 발사 가능
         _coolTimer -= Time.deltaTime;
-        if (_coolTimer > 0) 
-            return; 
+        if (_coolTimer > 0)
+            return;
         if (_input.IsinputFire || _stat.IsAutoMode)
         {
-            _coolTimer = _stat.CoolTime;
-            MakeBullets();
-            MakeSubBullets();
-
-            _effect.PlayFireSound();
+            Fire();
         }
+    }
+
+    public void Fire()
+    {
+        _coolTimer = _stat.CoolTime;
+        MakeBullets();
+        MakeSubBullets();
+        _effect.PlayFireSound();
     }
 
     private void MakeBullets()
@@ -63,8 +67,8 @@ public class PlayerFire : MonoBehaviour
             return;
         }
         BulletFactory factory = FactoryManager.Instance.GetFactory<BulletFactory>();
-        factory.MakeBullets(_mainBulletType, _firePosition.position + new Vector3(-_stat.FireOffset, 0, 0), true);
-        factory.MakeBullets(_mainBulletType, _firePosition.position + new Vector3(_stat.FireOffset, 0, 0), false);
+        factory.MakeBullets(_mainBulletType, _firePosition.position + new Vector3(-_stat.FireOffset, 0, 0),Quaternion.identity, true);
+        factory.MakeBullets(_mainBulletType, _firePosition.position + new Vector3(_stat.FireOffset, 0, 0), Quaternion.identity, false);
     }
 
     private void MakeSubBullets()
@@ -75,8 +79,8 @@ public class PlayerFire : MonoBehaviour
         }
 
         BulletFactory factory = FactoryManager.Instance.GetFactory<BulletFactory>();
-        factory.MakeBullets(_subBulletType, _subFirePositionLeft.position, true);
-        factory.MakeBullets(_subBulletType, _subFirePositionRight.position, false);
+        factory.MakeBullets(_subBulletType, _subFirePositionLeft.position, Quaternion.identity, true);
+        factory.MakeBullets(_subBulletType, _subFirePositionRight.position, Quaternion.identity, false);
     }
 
     private void MakeBomb()
@@ -87,7 +91,7 @@ public class PlayerFire : MonoBehaviour
         }
 
         BulletFactory factory = FactoryManager.Instance.GetFactory<BulletFactory>();
-        factory.MakeBullets(EBulletType.PlayerBomb, _firePosition.position, true);
+        factory.MakeBullets(EBulletType.PlayerBomb, _firePosition.position, Quaternion.identity, true);
     }
 
     public void SpeedUp(float value)

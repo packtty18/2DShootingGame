@@ -3,7 +3,7 @@
 /// <summary>
 /// 나선형으로 회전하며 이동하는 총알
 /// </summary>
-public class SpiralBullet : BulletBase
+public class SpiralBullet : PlayerBullet
 {
     [Header("Debug Sprial")]
     [Tooltip("각도 변화량 정도")]
@@ -33,7 +33,7 @@ public class SpiralBullet : BulletBase
         _timer += dt;
 
         //중심점. 이점을 중심으로 회전
-        _center += Vector2.up * _speed * dt;
+        _center += (Vector2)transform.up * _speed * dt;
         _angle += _angularSpeed * dt; //시간별 각도의 변화 적용
         
         //코사인과 사인을 활용해 나선궤적 형성

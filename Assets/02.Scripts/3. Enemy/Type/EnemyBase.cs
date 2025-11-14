@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 public class EnemyBase : MonoBehaviour, IPoolable
 {
     private const float ITEM_DROP_RATE = 0.7f;
     [Header("Stat")] //적의 공통 스텟
-    
+
     [SerializeField] private int _score = 100;
     [SerializeField] private float _maxHealth = 100;
     [SerializeField] protected float _speed = 3;
@@ -15,7 +16,7 @@ public class EnemyBase : MonoBehaviour, IPoolable
 
     //실제 변화 스텟
     public int id;
-    protected float _health;
+    [SerializeField] protected float _health;
 
     [Header("Items")]
     public GameObject[] ItemPrefabs;
@@ -23,8 +24,6 @@ public class EnemyBase : MonoBehaviour, IPoolable
 
     [Header("ExplosionPrefab")]
     public GameObject[] ExplosionPrefabs;
-   
-
     private void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -61,6 +60,11 @@ public class EnemyBase : MonoBehaviour, IPoolable
 
     public void OnDeactive()
     {
+        Remove();
+    }
+
+    protected virtual void Remove()
+    {
         if (!EnemyObserver.IsManagerExist())
         {
             EnemyObserver.Instance.RemoveEnemy(id);
@@ -68,7 +72,7 @@ public class EnemyBase : MonoBehaviour, IPoolable
         gameObject.SetActive(false);
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         OnMove();
     }
@@ -83,14 +87,25 @@ public class EnemyBase : MonoBehaviour, IPoolable
     //총알과 충돌당했을때 데미지 로직
     public virtual void OnHit(float damage)
     {
-        _animator.SetTrigger("Hit");
-        _health -= damage;
+        SetHitTrigger();
+        DamageLogic(damage);
 
         if (_health <= 0)
         {
             OnDead();
         }
     }
+
+    private void SetHitTrigger()
+    {
+        _animator.SetTrigger("Hit");
+    }
+
+    protected virtual void DamageLogic(float damage)
+    {
+        _health -= damage;
+    }
+
     private void OnDead()
     {
         //70%확률로 아이템 드롭
@@ -133,7 +148,7 @@ public class EnemyBase : MonoBehaviour, IPoolable
 
     private void SpawnItem()
     {
-        if (ItemPrefabs == null || ItemPrefabs.Length != ItemWeight.Length)
+        if (ItemPrefabs == null || ItemPrefabs.Length == 0 ||ItemPrefabs.Length != ItemWeight.Length)
             return;
 
         float totalWeight = 0f;
@@ -163,17 +178,14 @@ public class EnemyBase : MonoBehaviour, IPoolable
         spawnedItem.transform.position = transform.position;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.gameObject.CompareTag("Player"))
+        if (!collision.gameObject.TryGetComponent(out PlayerHealth health))
+        {
             return;
+        }
 
-        PlayerHealth player = collision.gameObject.GetComponent<PlayerHealth>();
-        if (player == null)
-            return;
-
-        player.Hit(_damage);
-
+        health.Hit(_damage);
         OnDeactive();
     }
 }

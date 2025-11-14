@@ -10,6 +10,10 @@ public class UIManager : SimpleSingleton<UIManager>
     [SerializeField] private Vector3 _tweeningSize;
     [SerializeField] private float _tweenDuration;
 
+    [Header("Input")]
+    public DynamicJoystick JoyStick;
+    public Button AttackButton;
+
     private void ChangeText(Text target, string text)
     {
         target.text = text;

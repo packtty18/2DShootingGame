@@ -3,7 +3,7 @@
 /// <summary>
 /// 옆으로 휘는 총알
 /// </summary>
-public class CurveBullet : BulletBase
+public class CurveBullet : PlayerBullet
 {
     [Header("Debug Curve")]
     [Tooltip("휘는 크기")]
