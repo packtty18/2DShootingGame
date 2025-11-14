@@ -25,7 +25,7 @@ public class BombBullet : PlayerBullet
         float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
 
         //목표지점을 바라보도록 회전
-        Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
         transform.rotation = targetRotation;
     }
 

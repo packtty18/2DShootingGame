@@ -1,16 +1,12 @@
 ﻿using UnityEngine;
 
-public class ScoreSpawner : SpanwerBase
+public class BossSpawner : SpanwerBase
 {
     [SerializeField] private EEnemyType _type;
-    private int _bossSpawnScore;
+    [SerializeField] private int _bossSpawnScore;
     [SerializeField] private int _bossSpawnScoreOffset = 500;
 
-    private void Start()
-    {
-        
-    }
-
+    private bool isOnBoss = false;
     protected override void Init()
     {
         SetBossScore();
@@ -18,19 +14,25 @@ public class ScoreSpawner : SpanwerBase
 
     protected override void Spawn()
     {
-        if (_bossSpawnScore > ScoreManager.Instance.GetCurrentScore())
+        if (isOnBoss || _bossSpawnScore > ScoreManager.Instance.GetCurrentScore())
         {
             return;
         }
 
         EnemyFactory enemyFactory = FactoryManager.Instance.GetFactory<EnemyFactory>();
-        enemyFactory.MakeEnemy(_type, new Vector3(0, transform.position.y, 0));
-        SetBossScore();
+        EnemyBoss boss = enemyFactory.MakeEnemy(_type, new Vector3(0, transform.position.y, 0)).GetComponent<EnemyBoss>();
+        boss.SetSpawner(this);
+        isOnBoss = true;
     }
 
     private void SetBossScore()
     {
         _bossSpawnScore = ScoreManager.Instance.GetCurrentScore() + _bossSpawnScoreOffset;
+    }
+
+    public void ResetBossSpawn()
+    {
+        SetBossScore();
     }
 
 }

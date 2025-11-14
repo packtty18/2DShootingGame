@@ -19,7 +19,6 @@ public class EnemyBoss : EnemyBase
     [SerializeField] private float _attackTimer;
 
     [Header("Attack Settings")]
-    [SerializeField] private float singleShotInterval = 1f;
     [SerializeField] private int circleBulletCount = 10;
     [SerializeField] private int fanBulletCount = 3;
     [SerializeField] private float fanAngle = 60f;
@@ -28,12 +27,18 @@ public class EnemyBoss : EnemyBase
     private bool _spawnComplete = false;
     private bool _moveRight = true;
 
+    private BossSpawner _spawner;
+
     protected override void Init()
     {
         base.Init();
         _spawnComplete = false;
         _attackTimer = Random.Range(_minAttackTime, _maxAttackTime);
+    }
 
+    public void SetSpawner(BossSpawner spawner)
+    {
+        _spawner = spawner;
     }
 
     protected override void Update()
@@ -122,6 +127,7 @@ public class EnemyBoss : EnemyBase
         {
             return;
         }
+        _spawner.ResetBossSpawn();
         base.Remove();
     }
 
@@ -138,11 +144,11 @@ public class EnemyBoss : EnemyBase
         health.Hit(_damage);
     }
 
-
+    int attackType = 0;
     private void RandomAttack()
     {
-        int attackType = Random.Range(0, 3);
-
+        //int attackType = Random.Range(0, 3);
+        attackType += 1;
         switch (attackType)
         {
             case 0: Attack_SingleShot(); break;

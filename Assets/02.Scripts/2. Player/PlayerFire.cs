@@ -41,19 +41,23 @@ public class PlayerFire : MonoBehaviour
         {
             MakeBomb();
         }
-        
+
         //타이머가 0보다 작으면 발사 가능
         _coolTimer -= Time.deltaTime;
-        if (_coolTimer > 0) 
-            return; 
+        if (_coolTimer > 0)
+            return;
         if (_input.IsinputFire || _stat.IsAutoMode)
         {
-            _coolTimer = _stat.CoolTime;
-            MakeBullets();
-            MakeSubBullets();
-
-            _effect.PlayFireSound();
+            Fire();
         }
+    }
+
+    public void Fire()
+    {
+        _coolTimer = _stat.CoolTime;
+        MakeBullets();
+        MakeSubBullets();
+        _effect.PlayFireSound();
     }
 
     private void MakeBullets()

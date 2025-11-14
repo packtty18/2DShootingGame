@@ -2,7 +2,10 @@
 
 public abstract class SpanwerBase : MonoBehaviour
 {
-    
+    private void Start()
+    {
+        Init();
+    }
     private void Update()
     {
         Spawn();

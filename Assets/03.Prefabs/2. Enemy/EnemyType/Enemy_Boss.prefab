@@ -747,8 +747,8 @@ MonoBehaviour:
   _maxAttackTime: 4
   _attackTimer: 0
   singleShotInterval: 1
-  circleBulletCount: 20
-  fanBulletCount: 10
+  circleBulletCount: 10
+  fanBulletCount: 3
   fanAngle: 60
 --- !u!1 &7357576723401077201
 GameObject:
