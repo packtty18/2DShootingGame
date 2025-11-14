@@ -11,6 +11,7 @@ public abstract class FactoryBase : MonoBehaviour
 public abstract class FactoryBase<TEnum> : FactoryBase where TEnum : Enum
 {
     [SerializeField] protected Transform _rootTransform;
+
     [Header("Pooling")]
     [SerializeField] protected int _poolSize = 10;
 

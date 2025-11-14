@@ -12,8 +12,8 @@ public enum EFactoryType
 public class FactoryManager : SimpleSingleton<FactoryManager>
 {
     [Header("Factories")]
-    [SerializeField] private List<FactoryBase> factoryList = new List<FactoryBase>();
-    private Dictionary<Type, FactoryBase> factoryMap;
+    [SerializeField] private List<FactoryBase> _factoryList = new List<FactoryBase>();
+    private Dictionary<Type, FactoryBase> _factoryMap;
 
     protected override void Awake()
     {
@@ -23,17 +23,17 @@ public class FactoryManager : SimpleSingleton<FactoryManager>
 
     private void SetFactoryMap()
     {
-        factoryMap = new Dictionary<Type, FactoryBase>();
+        _factoryMap = new Dictionary<Type, FactoryBase>();
 
-        foreach (FactoryBase factory in factoryList)
+        foreach (FactoryBase factory in _factoryList)
         {
             if (factory == null) 
                 continue;
 
             Type t = factory.GetType();
-            if (!factoryMap.ContainsKey(t))
+            if (!_factoryMap.ContainsKey(t))
             {
-                factoryMap.Add(t, factory);
+                _factoryMap.Add(t, factory);
             }
         }
     }
@@ -41,7 +41,7 @@ public class FactoryManager : SimpleSingleton<FactoryManager>
     public T GetFactory<T>() where T : FactoryBase
     {
         Type key = typeof(T);
-        if (factoryMap.TryGetValue(key, out FactoryBase value))
+        if (_factoryMap.TryGetValue(key, out FactoryBase value))
             return value as T;
 
         Debug.LogError($"FactoryManager: {key.Name} not registered!");
