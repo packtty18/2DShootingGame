@@ -203,7 +203,9 @@ MonoBehaviour:
   _maxHealth: 80
   _speed: 3
   _damage: 1
+  _damageMultiplier: 1
   id: 0
+  _health: 0
   ItemPrefabs:
   - {fileID: 6538928302844893629, guid: d9947bcc4b6c79d4b9070d983b19566c, type: 3}
   - {fileID: 2431613818223073192, guid: ebada3920e44eeb4bacfb0bd78149e93, type: 3}
@@ -333,5 +335,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12585a59abe177649ac6879c064d61da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Owner: {fileID: 0}
+  Owner: {fileID: -2651118038993539884}
   DamageMultiplier: 1

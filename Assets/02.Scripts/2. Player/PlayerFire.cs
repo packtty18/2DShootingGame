@@ -2,9 +2,12 @@
 using NUnit.Framework.Internal;
 using UnityEngine;
 using UnityEngine.Windows;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerFire : MonoBehaviour
 {
+    private const int DAMAGE_INCREASE_SCORE = 300;
+    private const float DAMAGE_INCREASE_RATE = 0.1f;
     [Header("FirePos")]
     [SerializeField] private Transform _firePosition;
     [SerializeField] private Transform _subFirePositionLeft;
@@ -17,8 +20,12 @@ public class PlayerFire : MonoBehaviour
     private PlayerStat _stat;
     private PlayerInput _input;
     private PlayerEffector _effect;
+    private float _coolTime;
     private float _coolTimer;
+    private float _damageMultipliers;
 
+
+    [SerializeField] private bool _isReadyToFire;
     private void Awake()
     {
         _stat = GetComponent<PlayerStat>();
@@ -28,38 +35,60 @@ public class PlayerFire : MonoBehaviour
 
     private void Start()
     {
-        _coolTimer = _stat.CoolTime;
+        _coolTime = _stat.CoolTime;
+        _coolTimer = _coolTime;
+        _damageMultipliers = _stat.DamageMultiply;
+        _isReadyToFire = false;
     }
 
     private void Update()
     {
         // 자동사격 입력
-        if(_input.IsInputAutoMode)
+        if (_input.IsInputAutoMode)
             _stat.IsAutoMode = !_stat.IsAutoMode;
 
-        if(_input.IsInputSpecialAttack)
+        if (_input.IsInputSpecialAttack)
         {
-            MakeBomb();
+            OnBomb();
         }
 
-        //타이머가 0보다 작으면 발사 가능
         _coolTimer -= Time.deltaTime;
         if (_coolTimer > 0)
+        {
             return;
+        }
+        else if( !_isReadyToFire)
+        {
+            _isReadyToFire = true;
+        }
+
         if (_input.IsinputFire || _stat.IsAutoMode)
         {
-            Fire();
+            OnFire();
         }
     }
 
-    public void Fire()
+    public void OnBomb()
     {
-        _coolTimer = _stat.CoolTime;
+        MakeBomb();
+    }
+
+
+    public void OnFire()
+    {
+        if(!_isReadyToFire)
+        {
+            return;
+        }
+
+        _isReadyToFire = false;
+        _coolTimer = _coolTime;
         MakeBullets();
         MakeSubBullets();
         _effect.PlayFireSound();
     }
 
+  
     private void MakeBullets()
     {
         if (!FactoryManager.IsManagerExist())
@@ -67,8 +96,17 @@ public class PlayerFire : MonoBehaviour
             return;
         }
         BulletFactory factory = FactoryManager.Instance.GetFactory<BulletFactory>();
-        factory.MakeBullets(_mainBulletType, _firePosition.position + new Vector3(-_stat.FireOffset, 0, 0),Quaternion.identity, true);
-        factory.MakeBullets(_mainBulletType, _firePosition.position + new Vector3(_stat.FireOffset, 0, 0), Quaternion.identity, false);
+        BulletBase bullet1 = factory.MakeBullets(_mainBulletType, 
+            _firePosition.position + new Vector3(-_stat.FireOffset, 0, 0),
+            Quaternion.identity).GetComponent<BulletBase>();
+        bullet1.SetLeft(true);
+        bullet1.SetDamage(_damageMultipliers);
+
+        BulletBase bullet2 = factory.MakeBullets(_mainBulletType,
+            _firePosition.position + new Vector3(_stat.FireOffset, 0, 0),
+            Quaternion.identity).GetComponent<BulletBase>();
+        bullet2.SetLeft(false);
+        bullet2.SetDamage(_damageMultipliers);
     }
 
     private void MakeSubBullets()
@@ -79,8 +117,17 @@ public class PlayerFire : MonoBehaviour
         }
 
         BulletFactory factory = FactoryManager.Instance.GetFactory<BulletFactory>();
-        factory.MakeBullets(_subBulletType, _subFirePositionLeft.position, Quaternion.identity, true);
-        factory.MakeBullets(_subBulletType, _subFirePositionRight.position, Quaternion.identity, false);
+        BulletBase bullet1 = factory.MakeBullets(_subBulletType,
+            _subFirePositionLeft.position,
+            Quaternion.identity).GetComponent<BulletBase>();
+        bullet1.SetLeft(true);
+        bullet1.SetDamage(_damageMultipliers);
+
+        BulletBase bullet2 = factory.MakeBullets(_subBulletType,
+            _subFirePositionLeft.position,
+            Quaternion.identity).GetComponent<BulletBase>();
+        bullet2.SetLeft(false);
+        bullet2.SetDamage(_damageMultipliers);
     }
 
     private void MakeBomb()
@@ -91,11 +138,28 @@ public class PlayerFire : MonoBehaviour
         }
 
         BulletFactory factory = FactoryManager.Instance.GetFactory<BulletFactory>();
-        factory.MakeBullets(EBulletType.PlayerBomb, _firePosition.position, Quaternion.identity, true);
+        factory.MakeBullets(EBulletType.PlayerBomb, _firePosition.position, Quaternion.identity);
     }
 
     public void SpeedUp(float value)
     {
-        _coolTimer -= value;
+        _coolTime -= value;
+    }
+
+    
+
+    public void DamageUp()
+    {
+        _damageMultipliers += DAMAGE_INCREASE_RATE;
+        if(!ScoreManager.IsManagerExist())
+        {
+            return;
+        }
+
+        ScoreManager score = ScoreManager.Instance;
+        if (score.IsScoreCanReduce(DAMAGE_INCREASE_SCORE))
+        {
+            score.ReduceScore(DAMAGE_INCREASE_SCORE);
+        }
     }
 }

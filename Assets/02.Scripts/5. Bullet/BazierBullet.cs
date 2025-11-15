@@ -34,7 +34,7 @@ public class BazierBullet : PlayerBullet
         _startPos = transform.position;
         
         //왼쪽이냐 오른쪽이냐에 따라 다름
-        if (IsLeft)
+        if (_isLeft)
         {
             _p1 = _startPos + new Vector2(-_sideOffset / 2, -_downOffset);
             _p2 = _startPos + new Vector2(-_sideOffset, 0f);

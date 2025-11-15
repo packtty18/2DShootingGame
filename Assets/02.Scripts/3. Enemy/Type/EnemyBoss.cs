@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UIElements;
 
 public class EnemyBoss : EnemyBase
 {
@@ -141,7 +142,7 @@ public class EnemyBoss : EnemyBase
             return;
         }
 
-        health.Hit(_damage);
+        health.Hit((int)_damage );
     }
 
     int attackType = 0;
@@ -161,8 +162,19 @@ public class EnemyBoss : EnemyBase
     private void Attack_SingleShot()
     {
         Quaternion rotation = Quaternion.Euler(0, 0, -180f);
-        _bulletFactory.MakeBullets(EBulletType.EnemyDefault, _leftShooter.position, rotation,  true);
-        _bulletFactory.MakeBullets(EBulletType.EnemyDefault, _rightShooter.position, rotation, false);
+        BulletBase bullet1 = _bulletFactory.MakeBullets(EBulletType.EnemyDefault,
+                _leftShooter.position,
+                rotation).GetComponent<BulletBase>();
+        bullet1.SetDamage();
+        bullet1.SetLeft();
+
+        BulletBase bullet2 = _bulletFactory.MakeBullets(EBulletType.EnemyDefault,
+                _rightShooter.position,
+                rotation).GetComponent<BulletBase>();
+        bullet1.SetDamage();
+        bullet1.SetLeft(false);
+
+
     }
 
     private void Attack_CircleShot()
@@ -178,7 +190,11 @@ public class EnemyBoss : EnemyBase
 
             Quaternion rotation = Quaternion.Euler(0f, 0f, angle - 90f);
             // 부채꼴/원형은 방향 계산 후 bullet 내부에서 처리
-            _bulletFactory.MakeBullets(EBulletType.EnemyDefault,position + direction * 0.5f,rotation , direction.x < 0);
+            BulletBase bullet = _bulletFactory.MakeBullets(EBulletType.EnemyDefault,
+                position + direction * 0.5f,
+                rotation).GetComponent<BulletBase>();
+            bullet.SetDamage();
+            bullet.SetLeft(direction.x < 0);
 
             angle += angleStep;
         }
@@ -203,7 +219,12 @@ public class EnemyBoss : EnemyBase
 
             Vector3 direction = new Vector3(Mathf.Cos(radian), Mathf.Sin(radian), 0);
             Quaternion rotation = Quaternion.Euler(0f, 0f, angle - 90f);
-            _bulletFactory.MakeBullets(EBulletType.EnemyDefault, bossPos, rotation,  direction.x < 0);
+
+            BulletBase bullet = _bulletFactory.MakeBullets(EBulletType.EnemyDefault,
+                bossPos,
+                rotation).GetComponent<BulletBase>();
+            bullet.SetDamage();
+            bullet.SetLeft(direction.x < 0);
         }
     }
 }

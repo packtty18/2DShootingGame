@@ -29,7 +29,7 @@ public class CurveBullet : PlayerBullet
         _time += Time.deltaTime;
 
         float newY = transform.position.y + _speed * Time.deltaTime;
-        float directionMultiplier = IsLeft ? -1f : 1f;
+        float directionMultiplier = _isLeft ? -1f : 1f;
 
         // 좌우로 S자 이동 (sin 함수 사용)
         float newX = transform.position.x + Mathf.Sin(_time * _frequency) * _amplitude * Time.deltaTime * directionMultiplier;

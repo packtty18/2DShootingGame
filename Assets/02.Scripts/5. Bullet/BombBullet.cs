@@ -3,7 +3,7 @@
 public class BombBullet : PlayerBullet
 {
     //현재 위치에서 0,0,0으로 이동
-    [Header("Bomb")]
+    [Header("OnBomb")]
     [SerializeField] private GameObject _bombPrefab;
     [SerializeField] private GameObject _effect;
 

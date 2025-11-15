@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PlayerInput : MonoBehaviour
 {
@@ -31,7 +32,8 @@ public class PlayerInput : MonoBehaviour
         //if (UIManager.IsManagerExist())
         //{
         //    var ui = UIManager.Instance;
-        //    moveInput = new Vector2(ui.JoyStick.Horizontal, ui.JoyStick.Vertical);
+        //    DynamicJoystick joystick = ui.GetJoystick();
+        //    moveInput = new Vector2(joystick.Horizontal, joystick.Vertical);
         //}
 
         MoveDirection = moveInput;
@@ -49,5 +51,6 @@ public class PlayerInput : MonoBehaviour
         IsInputSpeedUp = Input.GetKeyDown(KeyCode.Q);
         IsInputSpeedDown = Input.GetKeyDown(KeyCode.E);
     }
+
 }
 

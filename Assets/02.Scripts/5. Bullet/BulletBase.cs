@@ -13,9 +13,7 @@ public abstract class BulletBase : MonoBehaviour, IPoolable
 
     protected float _speed;
     protected float _damage;
-
-    [HideInInspector]
-    public bool IsLeft;
+    protected bool _isLeft;
 
     protected virtual void Start()
     {
@@ -35,7 +33,17 @@ public abstract class BulletBase : MonoBehaviour, IPoolable
     protected virtual void InitBullet()
     {
         _speed = _startSpeed;
-        _damage = _statDamage;
+        SetDamage();
+    }
+
+    public void SetDamage(float damageMultiply = 1f)
+    {
+        _damage = _statDamage * damageMultiply;
+    }
+
+    public void SetLeft(bool isLeft = true)
+    {
+        _isLeft = isLeft;
     }
 
     protected virtual void Update()
@@ -79,7 +87,7 @@ public abstract class BulletBase : MonoBehaviour, IPoolable
         if (health == null)
             return;
 
-        health.Hit(_damage);
+        health.Hit((int)_damage);
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 
 public class ScoreManager : SimpleSingleton<ScoreManager>
 {
@@ -7,8 +8,6 @@ public class ScoreManager : SimpleSingleton<ScoreManager>
      */
     private int _highScore = 0;
     private int _currentScore = 0;
-
-
     private void Start()
     {
         GetHighScoreFromSaveData();
@@ -39,6 +38,15 @@ public class ScoreManager : SimpleSingleton<ScoreManager>
         }
 
         RefreshtextUI();
+    }
+
+    public bool IsScoreCanReduce(int score)
+    {
+        return _currentScore - score >= 0;
+    }
+    public void ReduceScore(int score)
+    {
+        _currentScore = Mathf.Min(_currentScore - score, 0);
     }
 
     public int GetCurrentScore()
