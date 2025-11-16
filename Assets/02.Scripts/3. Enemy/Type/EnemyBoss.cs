@@ -142,7 +142,7 @@ public class EnemyBoss : EnemyBase
             return;
         }
 
-        health.Hit((int)_damage );
+        health.OnHit((int)_damage );
     }
 
     int attackType = 0;

@@ -9,10 +9,10 @@ public abstract class BulletBase : MonoBehaviour, IPoolable
     [SerializeField] private float _startSpeed = 1f;
     [SerializeField] private float _endSpeed = 7f;
     [SerializeField] private float _duration = 1.2f;
-    [SerializeField] private float _statDamage =1;
+    [SerializeField] private float _baseDamage = 60;
 
     protected float _speed;
-    protected float _damage;
+    protected float _bulletDamage;
     protected bool _isLeft;
 
     protected virtual void Start()
@@ -38,7 +38,7 @@ public abstract class BulletBase : MonoBehaviour, IPoolable
 
     public void SetDamage(float damageMultiply = 1f)
     {
-        _damage = _statDamage * damageMultiply;
+        _bulletDamage = _baseDamage * damageMultiply;
     }
 
     public void SetLeft(bool isLeft = true)
@@ -79,7 +79,7 @@ public abstract class BulletBase : MonoBehaviour, IPoolable
         if (hitBox == null)
             return;
         EnemyBase enemy = hitBox.Owner;
-        enemy?.OnHit(_damage * hitBox.DamageMultiplier);
+        enemy?.OnHit(_bulletDamage * hitBox.DamageMultiplier);
     }
 
     protected void ApplyDamage(PlayerHealth health)
@@ -87,7 +87,7 @@ public abstract class BulletBase : MonoBehaviour, IPoolable
         if (health == null)
             return;
 
-        health.Hit((int)_damage);
+        health.OnHit((int)_bulletDamage);
     }
 
     /// <summary>

@@ -1,14 +1,37 @@
 ﻿using Unity.VisualScripting;
 using UnityEngine;
 
+//오로지 세이브 데이터의 저장과 로드 및 세이브 파일의 전달만 담당
 public class SaveManager : SimpleSingleton<SaveManager>
 {
     private const string SAVE_KEY = "SaveData";
-    private SaveData _saveData;
+    [SerializeField]private SaveData _saveData;
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
         _saveData = Load();
+        InitSave();
+    }
+
+    private void InitSave()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        PlayerStat stat = player.GetComponent<PlayerStat>();
+
+        // 초기값 세팅
+        stat.Initialize(
+            _saveData.CurrentPlayerHealth,
+            _saveData.CurrentPlayerMoveSpeed,
+            _saveData.CurrentPlayerFireCooltime,
+            _saveData.CurrentPlayerDamageLevel
+        );
+
+        // 이벤트 구독
+        stat.OnHealthChanged += hp => _saveData.SetCurrentPlayerHealth(hp);
+        stat.OnSpeedChanged += speed => _saveData.SetCurrentPlayerMoveSpeed(speed);
+        stat.OnFireCooltimeChanged += cooltime => _saveData.SetCurrentPlayerFireCooltime(cooltime);
+        stat.OnDamageLevelChanged += level => _saveData.SetCurrentPlayerDamageLevel(level);
     }
 
     public SaveData GetSaveData()
@@ -33,6 +56,7 @@ public class SaveManager : SimpleSingleton<SaveManager>
         {
             Debug.LogWarning("There's no SaveFile");
             _saveData = new SaveData();
+            _saveData.ResetCurrentData();
             return _saveData;
         }
 

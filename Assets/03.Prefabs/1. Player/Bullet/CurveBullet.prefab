@@ -85,8 +85,7 @@ MonoBehaviour:
   _startSpeed: 1
   _endSpeed: 7
   _duration: 1.2
-  _statDamage: 50
-  IsLeft: 0
+  _baseDamage: 30
   _amplitude: 3
   _frequency: 1
 --- !u!1 &6932002694644954005

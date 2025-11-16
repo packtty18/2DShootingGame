@@ -195,6 +195,5 @@ MonoBehaviour:
   _startSpeed: 1
   _endSpeed: 7
   _duration: 1.2
-  _statDamage: 50
-  IsLeft: 0
+  _baseDamage: 40
   _angularSpeed: 10

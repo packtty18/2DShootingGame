@@ -85,8 +85,7 @@ MonoBehaviour:
   _startSpeed: 1
   _endSpeed: 7
   _duration: 1.2
-  _statDamage: 30
-  IsLeft: 0
+  _baseDamage: 30
 --- !u!1 &479399102069692160
 GameObject:
   m_ObjectHideFlags: 0

@@ -185,7 +185,7 @@ public class EnemyBase : MonoBehaviour, IPoolable
             return;
         }
 
-        health.Hit(_damage);
+        health.OnHit(_damage);
         OnDeactive();
     }
 }

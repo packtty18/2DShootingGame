@@ -195,8 +195,7 @@ MonoBehaviour:
   _startSpeed: 1
   _endSpeed: 7
   _duration: 1.2
-  _statDamage: 40
-  IsLeft: 0
+  _baseDamage: 40
   _downOffset: 4
   _sideOffset: 2
   _destinationOffset: 5

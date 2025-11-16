@@ -22,21 +22,21 @@ public class Item : MonoBehaviour
         {
             case EItemType.MoveSpeedUp:
                 {
-                    PlayerMove playerMove = collision.GetComponent<PlayerMove>();
-                    playerMove.SpeedUp(_value);
+                    PlayerStat stat = collision.GetComponent<PlayerStat>();
+                    stat.SpeedUp(_value);
                     break;
                 }
 
             case EItemType.AttackSpeedUp:
                 {
-                    PlayerFire playerFire = collision.GetComponent<PlayerFire>();
-                    playerFire.SpeedUp(_value);
+                    PlayerStat stat = collision.GetComponent<PlayerStat>();
+                    stat.DecreaseFireCooltime(_value);
                     break;
                 }
             case EItemType.HealthUp:
                 {
-                    PlayerHealth player = collision.GetComponent<PlayerHealth>();
-                    player.Heal(_value);
+                    PlayerStat stat = collision.GetComponent<PlayerStat>();
+                    stat.HealthUp(_value);
                     break;
                 }
         }

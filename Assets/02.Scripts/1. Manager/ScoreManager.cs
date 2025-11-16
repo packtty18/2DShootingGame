@@ -1,74 +1,65 @@
-﻿using JetBrains.Annotations;
+﻿using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class ScoreManager : SimpleSingleton<ScoreManager>
 {
-    /*
-     * 목표 : 적을 죽일때마다 점수 올리고 UI 반영
-     */
-    private int _highScore = 0;
-    private int _currentScore = 0;
+    private SaveData _saveData;
+    
+    private int _highScore => _saveData.HighScore;
+    private int _currentScore => _saveData.CurrentScore;
+
     private void Start()
     {
-        GetHighScoreFromSaveData();
-        _currentScore = 0;
-
-        RefreshtextUI(false);
-    }
-
-    private void GetHighScoreFromSaveData()
-    {
-        if (!SaveManager.IsManagerExist())
-        {
+        if (!SaveManager.IsManagerExist()) 
             return;
-        }
 
-        SaveData data = SaveManager.Instance.GetSaveData();
-        _highScore = data.HighScore;
+        _saveData = SaveManager.Instance.GetSaveData();
+        RefreshTextUI(false);
     }
 
+    /// <summary>
+    /// 점수 추가
+    /// </summary>
     public void AddScore(int score)
     {
-        _currentScore += score;
+        int newScore = _currentScore + score;
+        _saveData.SetCurrentScore(newScore); // SaveData 갱신
 
         if (IsHighScore())
         {
-            _highScore = _currentScore;
-            SaveHighScore(_highScore);
+            _saveData.SetHighScore(newScore);
         }
 
-        RefreshtextUI();
+        SaveManager.Instance.Save(); // 변경 즉시 저장
+        RefreshTextUI();
     }
 
+    /// <summary>
+    /// 점수 차감 가능 여부
+    /// </summary>
     public bool IsScoreCanReduce(int score)
     {
         return _currentScore - score >= 0;
     }
+
+    /// <summary>
+    /// 점수 차감
+    /// </summary>
     public void ReduceScore(int score)
     {
-        _currentScore = Mathf.Min(_currentScore - score, 0);
+        if(!IsScoreCanReduce(score))
+        {
+            return;
+        }
+
+        _saveData.SetCurrentScore(_currentScore - score);
+        SaveManager.Instance.Save();
+        RefreshTextUI();
     }
 
     public int GetCurrentScore()
     {
         return _currentScore;
-    }    
-
-    private void RefreshtextUI(bool tween = true)
-    {
-        
-        if (!UIManager.IsManagerExist())
-        {
-            return;
-
-        }
-
-        UIManager ui = UIManager.Instance;
-        string changeHighText = $"최고 점수 : {_highScore.ToString("N0")}";
-        ui.ChangeHighScoreText(changeHighText);
-
-        string changeText = $"현재 점수 : {_currentScore.ToString("N0")}";
-        ui.ChangeScoreText(changeText, tween);
     }
 
     private bool IsHighScore()
@@ -76,28 +67,15 @@ public class ScoreManager : SimpleSingleton<ScoreManager>
         return _highScore < _currentScore;
     }
 
-
-    private void SaveHighScore(int score)
+    /// <summary>
+    /// UI 갱신
+    /// </summary>
+    private void RefreshTextUI(bool tween = true)
     {
-        if (!SaveManager.IsManagerExist())
-        {
-            return;
-        }
+        if (!UIManager.IsManagerExist()) return;
 
-        SaveManager save = SaveManager.Instance;
-        SaveData data = save.GetSaveData();
-        data.SetHighScore(score);
-        save.Save();
-    }
-
-    [ContextMenu("ResetHighScore")]
-    public void ResetScore()
-    {
-        if (!SaveManager.IsManagerExist())
-        {
-            return;
-        }
-
-        SaveManager.Instance.DeleteSave();
+        var ui = UIManager.Instance;
+        ui.ChangeHighScoreText($"최고 점수 : {_highScore:N0}");
+        ui.ChangeScoreText($"현재 점수 : {_currentScore:N0}", tween);
     }
 }

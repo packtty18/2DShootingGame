@@ -7,13 +7,19 @@ public class BossSpawner : SpanwerBase
     [SerializeField] private int _bossSpawnScoreOffset = 500;
 
     private bool _isOnBoss = false;
-    protected override void Init()
+
+    protected override void Initialize()
     {
         SetBossScore();
     }
 
     protected override void Spawn()
     {
+        if(!ScoreManager.IsManagerExist())
+        {
+            return;
+        }
+
         if (_isOnBoss || _bossSpawnScore > ScoreManager.Instance.GetCurrentScore())
         {
             return;
@@ -27,7 +33,12 @@ public class BossSpawner : SpanwerBase
 
     private void SetBossScore()
     {
-        _bossSpawnScore = ScoreManager.Instance.GetCurrentScore() + _bossSpawnScoreOffset;
+        if (!SaveManager.IsManagerExist())
+        {
+            return;
+        }
+
+        _bossSpawnScore = SaveManager.Instance.GetSaveData().CurrentScore + _bossSpawnScoreOffset;
     }
 
     public void ResetBossSpawn()

@@ -1,34 +1,93 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class PlayerStat : MonoBehaviour
 {
-    //start시 초기화할 플레이어의 디버그 스텟
     [Header("Health")]
-    public float Health = 3;
+    private float _maxHealth = 3;
+    [SerializeField] private float _currentHealth = 3;
+    public float CurrentHealth => _currentHealth;
+    public float MaxHealth => _maxHealth;
 
     [Header("Move")]
     public float Speed = 3;
-    public float MaxSpeed = 5;
-    public float MinSpeed = 1;
-    public float ShiftSpeed = 1.5f;
-
-    public float MinX = -2;
-    public float MaxX = 2;
-    public float MinY = -5;
-    public float MaxY = 0;
+    private float _maxSpeed = 5;
+    private float _minSpeed = 1;
 
     [Header("AutoMove")]
     public bool IsAutoMode = false;
-    public float YDistanceOnFindTarget = 3;
-    public float XDistanceOnFindTarget = 1.5f;
-    public float RetreatDistance = 4;
-    public float AvoidDistance = 3;
-    public float YDashMoveInChase = 6f;
-    public float YJustMoveInChase = 4;
-    public float XDistanceToEnemyThreshHoldInChase = 0.1f;
-    public float XDistanceToMoveInChase = 1f;
 
     [Header("Fire")]
-    public float FireOffset = 0.3f;
-    public float CoolTime = 0.6f;
+    public float FireCoolTime = 0.6f;
+    public int DamageLevel = 1;
+
+    // 이벤트 선언
+    public event Action<float> OnHealthChanged;
+    public event Action<float> OnSpeedChanged;
+    public event Action<float> OnFireCooltimeChanged;
+    public event Action<int> OnDamageLevelChanged;
+
+    // 초기값 세팅 (SaveManager가 호출)
+    public void Initialize(float health, float speed, float fireCooltime, int damageLevel)
+    {
+        _currentHealth = health;
+        Speed = speed;
+        FireCoolTime = fireCooltime;
+        DamageLevel = damageLevel;
+    }
+
+    #region Health
+
+    
+
+    public void HealthUp(float value)
+    {
+        _currentHealth = Mathf.Min(_maxHealth, _currentHealth + value);
+        OnHealthChanged?.Invoke(_currentHealth);
+    }
+
+    public void HealthDown(float value)
+    {
+        _currentHealth = Mathf.Max(0, _currentHealth - value);
+        OnHealthChanged?.Invoke(_currentHealth);
+    }
+
+    public bool IsAbleToDecreaseHealth(float value)
+    {
+        return _currentHealth - value >= 0;
+    }   
+
+    public bool IsDead()
+    {
+        return _currentHealth <= 0;
+    }
+    #endregion
+
+    #region Move
+    public void SpeedUp(float value)
+    {
+        Speed = Mathf.Min(_maxSpeed, Speed + value);
+        OnSpeedChanged?.Invoke(Speed);
+    }
+
+    public void SpeedDown(float value)
+    {
+        Speed = Mathf.Max(_minSpeed, Speed - value);
+        OnSpeedChanged?.Invoke(Speed);
+    }
+    #endregion
+
+    #region Fire
+    public void DecreaseFireCooltime(float value)
+    {
+        FireCoolTime -= value;
+        OnFireCooltimeChanged?.Invoke(FireCoolTime);
+    }
+
+    public void IncreaseDamageLevel()
+    {
+        DamageLevel += 1;
+        OnDamageLevelChanged?.Invoke(DamageLevel);
+    }
+    #endregion
 }

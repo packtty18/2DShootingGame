@@ -8,7 +8,13 @@ public class PlayerMove : MonoBehaviour
     private PlayerInput _input;
     private Animator _animator;
 
-    private float _speed;
+    private float _minX = -2;
+    private float _maxX = 2;
+    private float _minY = -5;
+    private float _maxY = 0;
+
+    
+    private float _shiftSpeedMultiplier = 1.5f;
 
     //시작위치
     private Vector2 _originPosition;
@@ -16,6 +22,14 @@ public class PlayerMove : MonoBehaviour
     //자동이동 관련
     private EPlayerMoveState _state;
     private GameObject _targetEnemy = null;
+    public float YDistanceOnFindTarget = 3;
+    public float XDistanceOnFindTarget = 1.5f;
+    public float RetreatDistance = 4;
+    public float AvoidDistance = 3;
+    public float YDashMoveInChase = 6f;
+    public float YJustMoveInChase = 4;
+    public float XDistanceToEnemyThreshHoldInChase = 0.1f;
+    public float XDistanceToMoveInChase = 1f;
 
     private void Awake()
     {
@@ -27,7 +41,6 @@ public class PlayerMove : MonoBehaviour
     private void Start()
     {
         _originPosition = transform.position;
-        _speed = _stat.Speed;
         //자동
         GameObject PlayerObject = GameObject.FindGameObjectWithTag("Player");
         if (PlayerObject == null)
@@ -36,24 +49,17 @@ public class PlayerMove : MonoBehaviour
         }
 
     }
-    public float GetPlayerSpeed()
-    {
-        return _speed;
-    }
-
 
     private void Update()
     {
         if (_input.IsInputSpeedUp)
         {
-            _speed++;
+            _stat.SpeedUp(1);
         }
         else if (_input.IsInputSpeedDown)
         {
-            _speed--;
+            _stat.SpeedDown(1);
         }
-
-        _speed = Mathf.Clamp(_speed, _stat.MinSpeed, _stat.MaxSpeed);
 
         if (_stat.IsAutoMode)
         {
@@ -79,16 +85,16 @@ public class PlayerMove : MonoBehaviour
 
     private Vector2 EditValidPosition(Vector2 newPosition)
     {
-        if (newPosition.x < _stat.MinX)
+        if (newPosition.x < _minX)
         {
-            newPosition.x = _stat.MaxX;
+            newPosition.x = _maxX;
         }
-        else if (newPosition.x > _stat.MaxX)
+        else if (newPosition.x > _maxX)
         {
-            newPosition.x = _stat.MinX;
+            newPosition.x = _minX;
         }
 
-        newPosition.y = Mathf.Clamp(newPosition.y, _stat.MinY, _stat.MaxY);
+        newPosition.y = Mathf.Clamp(newPosition.y, _minY, _maxY);
         return newPosition;
     }
 
@@ -100,15 +106,11 @@ public class PlayerMove : MonoBehaviour
     {
         //목표방향 = 목표위치 - 현재위치
         Vector2 direction = _originPosition - (Vector2)transform.position;
-        float speed = _input.IsInputDash ? _speed * _stat.ShiftSpeed : _speed;
+        float speed = _input.IsInputDash ? _stat.Speed * _shiftSpeedMultiplier : _stat.Speed;
         transform.Translate(direction * speed * Time.deltaTime);
     }
 
-    public void SpeedUp(float value)
-    {
-        _speed += value;
-        _speed = Mathf.Min(_stat.MaxSpeed, _speed);
-    }
+    
 
 
     private void OnAutoMode()
@@ -158,11 +160,11 @@ public class PlayerMove : MonoBehaviour
         float xDistance = direction.x;
 
         // Y축 이동
-        if (yDistance >= _stat.YDashMoveInChase)
+        if (yDistance >=YDashMoveInChase)
         {
             Move(Vector2.up, true);
         }
-        else if (yDistance >= _stat.YJustMoveInChase)
+        else if (yDistance >= YJustMoveInChase)
         {
             Move(Vector2.up);
         }
@@ -172,9 +174,9 @@ public class PlayerMove : MonoBehaviour
         }
 
         // X축 이동
-        if (Mathf.Abs(xDistance) > _stat.XDistanceToEnemyThreshHoldInChase)
+        if (Mathf.Abs(xDistance) > XDistanceToEnemyThreshHoldInChase)
         {
-            if (Mathf.Abs(xDistance) > _stat.XDistanceToMoveInChase)
+            if (Mathf.Abs(xDistance) >XDistanceToMoveInChase)
             {
                 Move(xDistance < 0 ? Vector2.left : Vector2.right, true);
             }
@@ -196,7 +198,7 @@ public class PlayerMove : MonoBehaviour
         Vector2 direction = (Vector2)_targetEnemy.transform.position - (Vector2)transform.position;
         float yDistance = direction.y;
 
-        if (yDistance <= _stat.AvoidDistance)
+        if (yDistance <= AvoidDistance)
         {
             if (!FindTarget())
             {
@@ -209,7 +211,7 @@ public class PlayerMove : MonoBehaviour
             return;
         }
 
-        if (yDistance <= _stat.RetreatDistance)
+        if (yDistance <= RetreatDistance)
         {
             Move(Vector2.down);
         }
@@ -236,7 +238,7 @@ public class PlayerMove : MonoBehaviour
             float yDistance = enemyObject.transform.position.y - transform.position.y;
             float xDistance = Mathf.Abs(enemyObject.transform.position.x - transform.position.x);
 
-            if (yDistance < _stat.YDistanceOnFindTarget || xDistance <= _stat.XDistanceOnFindTarget) 
+            if (yDistance <YDistanceOnFindTarget || xDistance <= XDistanceOnFindTarget) 
                 continue;
 
             float distance = enemyObject.transform.position.sqrMagnitude;
@@ -255,7 +257,7 @@ public class PlayerMove : MonoBehaviour
     {
         _animator.SetInteger("x", (int)direction.x);
 
-        float moveSpeed = onDash ? _speed * _stat.ShiftSpeed : _speed;
+        float moveSpeed = onDash ? _stat.Speed * _shiftSpeedMultiplier : _stat.Speed;
         Vector2 newPos = (Vector2)transform.position + direction.normalized * moveSpeed * Time.deltaTime;
         transform.position = EditValidPosition(newPos);
     }

@@ -8,7 +8,7 @@ public class CooltimeSpawner : SpanwerBase
 
 
     //쿨타임형 스포너
-    [Header("CoolTime")]
+    [Header("FireCoolTime")]
     [SerializeField] private float _coolTime = 2f;
     private float _coolTimer;
 
@@ -17,10 +17,10 @@ public class CooltimeSpawner : SpanwerBase
 
     private void Start()
     {
-        Init();
+        Initialize();
     }
 
-    protected override void Init()
+    protected override void Initialize()
     {
         _coolTime = GetRandomCoolTime(_minCoolTime, _maxCoolTime);
     }
