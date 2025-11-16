@@ -7,7 +7,6 @@ public class ScoreManager : SimpleSingleton<ScoreManager>
     
     private int _highScore => _saveData.HighScore;
     private int _currentScore => _saveData.CurrentScore;
-
     private void Start()
     {
         if (!SaveManager.IsManagerExist()) 
@@ -25,9 +24,17 @@ public class ScoreManager : SimpleSingleton<ScoreManager>
         int newScore = _currentScore + score;
         _saveData.SetCurrentScore(newScore); // SaveData 갱신
 
+        //하이스코어 체크
         if (IsHighScore())
         {
             _saveData.SetHighScore(newScore);
+        }
+
+        //페이즈 업 체크
+        if (_currentScore > _saveData.CurrentPhase * 1000)
+        {
+            int newPhase = _currentScore / 1000;
+            _saveData.SetPhase(newPhase);
         }
 
         SaveManager.Instance.Save(); // 변경 즉시 저장

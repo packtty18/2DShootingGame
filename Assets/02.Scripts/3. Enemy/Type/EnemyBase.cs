@@ -17,6 +17,7 @@ public class EnemyBase : MonoBehaviour, IPoolable
     //실제 변화 스텟
     public int id;
     [SerializeField] protected float _health;
+    [SerializeField] protected float _statMultipliers = 1f;
 
     [Header("Items")]
     public GameObject[] ItemPrefabs;
@@ -41,7 +42,7 @@ public class EnemyBase : MonoBehaviour, IPoolable
 
     protected virtual void Init()
     {
-        _health = _maxHealth;
+        _health = _maxHealth * _statMultipliers;
         _playerTransform = GameObject.FindWithTag("Player")?.transform;
 
         if (!EnemyObserver.IsManagerExist())
@@ -56,6 +57,11 @@ public class EnemyBase : MonoBehaviour, IPoolable
     public int GetID()
     {
         return id;
+    }
+
+    public void SetStatMultiplier(float value)
+    {
+        _statMultipliers = value;
     }
 
     public void OnDeactive()

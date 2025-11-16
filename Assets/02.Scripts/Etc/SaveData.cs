@@ -7,7 +7,7 @@ public class SaveData
     // 점수 및 진행 단계
     [SerializeField] private int _highScore;           // 최고 점수
     [SerializeField] private int _currentScore;        // 현재 누적 점수
-    [SerializeField] private int _phase;               // 현재 진행 단계(적 강함 정도)
+    [SerializeField] private int _currentPhase;               // 현재 진행 단계(적 강함 정도)
 
     // 플레이어 스탯
     [SerializeField] private float _currentPlayerHealth;        // 현재 체력
@@ -17,9 +17,9 @@ public class SaveData
 
     // 프로퍼티로 읽기만 가능
     public int HighScore => _highScore;
-    public int CurrentScore => _currentScore;
-    public int Phase => _phase;
 
+    public int CurrentScore => _currentScore;
+    public int CurrentPhase => _currentPhase;
     public float CurrentPlayerHealth => _currentPlayerHealth;
     public int CurrentPlayerDamageLevel => _currentPlayerDamageLevel;
     public float CurrentPlayerMoveSpeed => _currentPlayerMoveSpeed;
@@ -38,7 +38,7 @@ public class SaveData
 
     public void SetPhase(int phase)
     {
-        _phase = phase;
+        _currentPhase = phase;
     }
 
     public void SetCurrentPlayerHealth(float hp)
@@ -65,9 +65,9 @@ public class SaveData
     public void ResetCurrentData()
     {
         _currentScore = 0;
-        _phase = 1;
+        _currentPhase = 1;
         _currentPlayerHealth = 3f;
-        _currentPlayerDamageLevel = 1;
+        _currentPlayerDamageLevel = 0;
         _currentPlayerMoveSpeed = 3f;
         _currentPlayerFireCooltime = 0.6f;
     }   

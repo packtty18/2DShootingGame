@@ -19,7 +19,7 @@ public class PlayerStat : MonoBehaviour
 
     [Header("Fire")]
     public float FireCoolTime = 0.6f;
-    public int DamageLevel = 1;
+    public int DamageLevel = 0;
 
     // 이벤트 선언
     public event Action<float> OnHealthChanged;

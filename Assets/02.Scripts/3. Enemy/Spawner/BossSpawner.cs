@@ -15,11 +15,6 @@ public class BossSpawner : SpanwerBase
 
     protected override void Spawn()
     {
-        if(!ScoreManager.IsManagerExist())
-        {
-            return;
-        }
-
         if (_isOnBoss || _bossSpawnScore > ScoreManager.Instance.GetCurrentScore())
         {
             return;
@@ -28,6 +23,7 @@ public class BossSpawner : SpanwerBase
         EnemyFactory enemyFactory = FactoryManager.Instance.GetFactory<EnemyFactory>();
         EnemyBoss boss = enemyFactory.MakeEnemy(_type, new Vector3(0, transform.position.y, 0)).GetComponent<EnemyBoss>();
         boss.SetSpawner(this);
+        boss.SetStatMultiplier(1 + (0.2f * SaveManager.Instance.GetSaveData().CurrentPhase));
         _isOnBoss = true;
     }
 

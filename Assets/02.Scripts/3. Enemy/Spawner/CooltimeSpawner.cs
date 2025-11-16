@@ -67,7 +67,8 @@ public class CooltimeSpawner : SpanwerBase
             }
 
             EnemyFactory factory = FactoryManager.Instance.GetFactory<EnemyFactory>();
-            factory.MakeEnemy(_spawnType[selectedIndex], transform.position);
+            EnemyBase enemy = factory.MakeEnemy(_spawnType[selectedIndex], transform.position).GetComponent<EnemyBase>();
+            enemy.SetStatMultiplier(1 + (0.2f * SaveManager.Instance.GetSaveData().CurrentPhase));
         }
     }
    

@@ -22,7 +22,7 @@ public class PlayerFire : MonoBehaviour
     private PlayerEffector _effect;
 
     private float _coolTimer;
-    private float _damageMultipliers;
+    [SerializeField]private float _damageMultipliers => 1 + (_stat.DamageLevel * DAMAGE_INCREASE_RATE);
 
 
     [SerializeField] private bool _isReadyToFire;
@@ -36,7 +36,6 @@ public class PlayerFire : MonoBehaviour
     private void Start()
     {
         _coolTimer = _stat.FireCoolTime;
-        _damageMultipliers = 1;
         _isReadyToFire = false;
     }
 
@@ -92,7 +91,22 @@ public class PlayerFire : MonoBehaviour
         _effect.PlayFireSound();
     }
 
-  
+    public void DamageUp()
+    {
+        if (!ScoreManager.IsManagerExist())
+        {
+            return;
+        }
+
+        ScoreManager score = ScoreManager.Instance;
+        if (score.IsScoreCanReduce(DAMAGE_INCREASE_SCORE))
+        {
+            score.ReduceScore(DAMAGE_INCREASE_SCORE);
+            _stat.IncreaseDamageLevel();
+        }
+    }
+
+
     private void MakeBullets()
     {
         if (!FactoryManager.IsManagerExist())
@@ -145,19 +159,5 @@ public class PlayerFire : MonoBehaviour
         factory.MakeBullets(EBulletType.PlayerBomb, _firePosition.position, Quaternion.identity);
     }
 
-    public void DamageUp()
-    {
-        _damageMultipliers += DAMAGE_INCREASE_RATE;
-        if(!ScoreManager.IsManagerExist())
-        {
-            return;
-        }
-
-        ScoreManager score = ScoreManager.Instance;
-        if (score.IsScoreCanReduce(DAMAGE_INCREASE_SCORE))
-        {
-            score.ReduceScore(DAMAGE_INCREASE_SCORE);
-            _stat.IncreaseDamageLevel();
-        }
-    }
+    
 }
