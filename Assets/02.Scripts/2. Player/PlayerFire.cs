@@ -37,7 +37,7 @@ public class PlayerFire : MonoBehaviour
     {
         _coolTime = _stat.CoolTime;
         _coolTimer = _coolTime;
-        _damageMultipliers = _stat.DamageMultiply;
+        _damageMultipliers = 1;
         _isReadyToFire = false;
     }
 

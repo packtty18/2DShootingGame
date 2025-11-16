@@ -14,7 +14,7 @@ public class UIManager : SimpleSingleton<UIManager>
 {
     [SerializeField] private Text _highScoreTextUI;
     [SerializeField] private Text _scoreTextUI;
-    [SerializeField] private HealthUI _healthUI;
+
     
 
     [SerializeField] private Vector3 _tweeningSize;
@@ -50,23 +50,6 @@ public class UIManager : SimpleSingleton<UIManager>
     {
         ChangeText(_highScoreTextUI, text);
     }
-
-    public void IncreaseHealthUI(int value)
-    {
-        for (int i = 0; i < value; i++)
-        {
-            _healthUI.IncreaseHealthUI();
-        }
-    }
-
-    public void DecreaseHealthUI(int value)
-    {
-        for (int i = 0; i < value; i++)
-        {
-            _healthUI.DecreaseHealthUI();
-        }
-    }
-    
 
     public void ChangeScoreText(string text, bool tween = true)
     {
